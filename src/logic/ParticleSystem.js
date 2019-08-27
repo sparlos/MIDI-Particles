@@ -8,9 +8,9 @@ export default class ParticleSystem {
 
     this.cooldown = false;
     this.cooldownTime = 0;
-    this.maxCooldown = 100;
+    this.maxCooldown = 50;
     this.particles = [];
-    this.maxParticles = 50;
+    this.maxParticles = 100;
 
     this.active = true;
     this.toBeDestroyed = false;
@@ -18,7 +18,7 @@ export default class ParticleSystem {
 
   createParticle() {
     if (this.particles.length < this.maxParticles && this.active) {
-      this.particles.push(new Particle(this.x, this.y, this.randomRange(1, 4)));
+      this.particles.push(new Particle(this.x, this.y, this.randomRange(2, 5)));
     }
   }
 

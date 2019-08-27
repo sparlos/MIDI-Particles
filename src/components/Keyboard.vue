@@ -92,7 +92,7 @@ export default {
       z-index: 1;
       background-color: rgba(0, 0, 0, 0.2);
       opacity: 0;
-      transition: opacity .02s;
+      transition: opacity .1s;
     }
   }
 
@@ -112,7 +112,7 @@ export default {
       z-index: 30;
       background-color: rgba(255, 255, 255, 0.2);
       opacity: 0;
-      transition: opacity .02s;
+      transition: opacity .1s;
     }
   }
 }

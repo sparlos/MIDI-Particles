@@ -50,15 +50,8 @@ export default {
         window.innerHeight -
         this.$refs.keyboard.$el.getBoundingClientRect().height;
     },
-
-    //animation methods
-    loop(time) {
-      requestAnimationFrame(time => this.loop(time));
-      let deltaTime = time - this.previousTime;
-      if (isNaN(deltaTime)) deltaTime = 0;
-      this.previousTime = time;
-
-      //reset canvas
+    resetCanvas() {
+      // this.ctx.globalAlpha = .5;
       this.ctx.fillStyle = "black";
       this.ctx.fillRect(
         0,
@@ -66,6 +59,16 @@ export default {
         this.$refs.canvas.width,
         this.$refs.canvas.height
       );
+      // this.ctx.globalAlpha = 1;
+    },
+    //animation methods
+    loop(time) {
+      requestAnimationFrame(time => this.loop(time));
+      let deltaTime = time - this.previousTime;
+      if (isNaN(deltaTime)) deltaTime = 0;
+      this.previousTime = time;
+
+      this.resetCanvas();
 
       // ===== implement again when you have particle systems in place =====
 
@@ -138,6 +141,10 @@ export default {
     createParticleSystem(number, color) {
       //calculate position
       let el = this.midiAssignments[number];
+
+      //stop function if key not visible
+      if(!el) return;
+
       let rect = el.getBoundingClientRect();
       let center = Math.floor(rect.left + rect.width / 2);
       let top = rect.top;
