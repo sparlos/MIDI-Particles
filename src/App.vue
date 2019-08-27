@@ -15,7 +15,7 @@
 
 <script>
 import Keyboard from "./components/Keyboard.vue";
-import Particle from "./logic/Particle";
+import ParticleSystem from "./logic/ParticleSystem";
 
 export default {
   name: "app",
@@ -33,11 +33,11 @@ export default {
     //particle data
     particleCooldown: false,
     previousParticleTime: 0,
-    particleColor: 'white',
+    particleColor: "white",
     particleSystems: []
   }),
   methods: {
-    //canvas/animation methods
+    //canvas methods
     canvasSetup() {
       //resize canvas on window resize
       window.addEventListener("resize", () => {
@@ -50,10 +50,12 @@ export default {
         window.innerHeight -
         this.$refs.keyboard.$el.getBoundingClientRect().height;
     },
+
+    //animation methods
     loop(time) {
       requestAnimationFrame(time => this.loop(time));
       let deltaTime = time - this.previousTime;
-      if(isNaN(deltaTime)) deltaTime = 0;
+      if (isNaN(deltaTime)) deltaTime = 0;
       this.previousTime = time;
 
       //reset canvas
@@ -78,49 +80,62 @@ export default {
       //loop over active notes and create particles
       for (let noteNumber in this.activeNotes) {
         let note = this.activeNotes[noteNumber];
-        if (note.on) {
-          if (!this.particleCooldown) {
-            this.createParticle(noteNumber);
-            // this.particleCooldown = true;
-          }
+        if (note.on && !note.system) {
+          this.createParticleSystem(noteNumber, 'white');
+        } else if (!note.on && note.system) {
+          note.system.active = false;
+          if(note.system.toBeDestroyed) note.system = null;
+        } else if (note.on && note.system) {
+          note.system.active = true;
         }
       }
 
-      //loop over particles and render them
-      for (let i in this.particleSystems) {
-        let particle = this.particleSystems[i];
-
-        //animate particle
-        particle.y -= particle.dy;
-        particle.x += particle.dx;
-        this.ctx.fillStyle = this.particleColor;
-        //glow stuff
-        this.ctx.shadowColor = this.particleColor;
-        this.ctx.shadowBlur = 10;
-
-        if (particle.currentLife >= particle.lifespan - 1000) {
-          this.ctx.globalAlpha = particle.currentAlpha;
-          particle.currentAlpha -= particle.fadeSpeed;
-          if(particle.currentAlpha <= 0) particle.currentAlpha = 0;
-          this.ctx.fillRect(particle.x, particle.y, 3, 3);
-          this.ctx.globalAlpha = 1;
-        } else {
-          this.ctx.fillRect(particle.x, particle.y, 3, 3);
-        }
-
-        //remove particle if it has reached the end of its lifespan
-        particle.currentLife += deltaTime;
-        if (particle.currentLife >= particle.lifespan) {
+      //loop over particle systems and render them
+      for(let i in this.particleSystems) {
+        let particleSystem = this.particleSystems[i];
+        particleSystem.draw(this.ctx, deltaTime);
+        if(particleSystem.toBeDestroyed) {
           this.particleSystems.splice(i, 1);
         }
       }
+
+      // //loop over particles and render them
+      // for (let i in this.particleSystems) {
+      //   let particle = this.particleSystems[i];
+
+      //   //animate particle
+      //   particle.y -= particle.dy;
+      //   particle.x += particle.dx;
+      //   this.ctx.fillStyle = this.particleColor;
+      //   //glow stuff
+      //   this.ctx.shadowColor = this.particleColor;
+      //   this.ctx.shadowBlur = 10;
+
+      //   if (particle.currentLife >= particle.lifespan - 1000) {
+      //     this.ctx.globalAlpha = particle.currentAlpha;
+      //     particle.currentAlpha -= particle.fadeSpeed;
+      //     if (particle.currentAlpha <= 0) particle.currentAlpha = 0;
+      //     this.ctx.fillRect(particle.x, particle.y, 3, 3);
+      //     this.ctx.globalAlpha = 1;
+      //   } else {
+      //     this.ctx.fillRect(particle.x, particle.y, 3, 3);
+      //   }
+
+      //   //remove particle if it has reached the end of its lifespan
+      //   particle.currentLife += deltaTime;
+      //   if (particle.currentLife >= particle.lifespan) {
+      //     this.particleSystems.splice(i, 1);
+      //   }
+      // }
 
       this.$forceUpdate();
     },
     run() {
       this.loop();
     },
-    createParticle(number) {
+
+    //particle methods
+    createParticleSystem(number, color) {
       //calculate position
       let el = this.midiAssignments[number];
       let rect = el.getBoundingClientRect();
@@ -128,13 +143,16 @@ export default {
       let top = rect.top;
 
       //add particles
-      this.particleSystems.push(new Particle(center, top));
+      let system = new ParticleSystem(center, top, color);
+      this.activeNotes[number].system = system;
+      this.particleSystems.push(system);
 
       // debug
       // this.ctx.fillStyle = "red";
       // this.ctx.fillRect(center, top - 100, 100, 100);
     },
-    //MIDI IO handling
+
+    //MIDI IO methods
     handleUpdateRefs(white, black) {
       this.whiteKeys = white;
       this.blackKeys = black;
