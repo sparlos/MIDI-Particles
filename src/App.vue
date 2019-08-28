@@ -3,7 +3,7 @@
     <div class="container" @click="playVideo">
       <div class="background">
         <div class="background__overlay"></div>
-        <youtube video-id="bZNFRIwlQxQ" width="100%" height="100%" ref="youtube"></youtube>
+        <youtube video-id="hjKO0d_umLc" width="100%" height="100%" ref="youtube"></youtube>
       </div>
       <canvas ref="canvas"></canvas>
       <Keyboard
@@ -27,7 +27,7 @@ export default {
     Keyboard
   },
   data: () => ({
-    octaves: 5,
+    octaves: 3,
     octave: 3,
     ctx: null,
     whiteKeys: null,
@@ -37,7 +37,7 @@ export default {
     //particle data
     particleCooldown: false,
     previousParticleTime: 0,
-    particleColor: "white",
+    particleColor: "green",
     particleSystems: []
   }),
   methods: {
@@ -93,12 +93,13 @@ export default {
       for (let noteNumber in this.activeNotes) {
         let note = this.activeNotes[noteNumber];
         if (note.on && !note.system) {
-          this.createParticleSystem(noteNumber, "white");
+          this.createParticleSystem(noteNumber, this.particleColor, note.velocity);
         } else if (!note.on && note.system) {
           note.system.active = false;
           if (note.system.toBeDestroyed) note.system = null;
         } else if (note.on && note.system) {
           note.system.active = true;
+          note.system.strength = note.velocity;
         }
       }
 
@@ -147,7 +148,7 @@ export default {
     },
 
     //particle methods
-    createParticleSystem(number, color) {
+    createParticleSystem(number, color, strength) {
       //calculate position
       let el = this.midiAssignments[number];
 
@@ -159,7 +160,7 @@ export default {
       let top = rect.top;
 
       //add particles
-      let system = new ParticleSystem(center, top, color);
+      let system = new ParticleSystem(center, top, color, strength);
       this.activeNotes[number].system = system;
       this.particleSystems.push(system);
 

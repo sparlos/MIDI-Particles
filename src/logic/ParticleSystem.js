@@ -1,10 +1,11 @@
 import Particle from "./Particle";
 
 export default class ParticleSystem {
-  constructor(x, y, color) {
+  constructor(x, y, color, strength) {
     this.x = x;
     this.y = y;
     this.color = color;
+    this.strength = strength;
 
     this.cooldown = false;
     this.cooldownTime = 0;
@@ -18,7 +19,7 @@ export default class ParticleSystem {
 
   createParticle() {
     if (this.particles.length < this.maxParticles && this.active) {
-      this.particles.push(new Particle(this.x, this.y, this.randomRange(2, 5)));
+      this.particles.push(new Particle(this.x, this.y, this.randomRange(2, 5), this.strength));
     }
   }
 
