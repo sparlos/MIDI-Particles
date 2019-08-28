@@ -1,6 +1,10 @@
 <template>
   <div id="app">
-    <div class="container">
+    <div class="container" @click="playVideo">
+      <div class="background">
+        <div class="background__overlay"></div>
+        <youtube video-id="bZNFRIwlQxQ" width="100%" height="100%" ref="youtube"></youtube>
+      </div>
       <canvas ref="canvas"></canvas>
       <Keyboard
         :octaves="octaves"
@@ -23,7 +27,7 @@ export default {
     Keyboard
   },
   data: () => ({
-    octaves: 4,
+    octaves: 5,
     octave: 3,
     ctx: null,
     whiteKeys: null,
@@ -37,6 +41,11 @@ export default {
     particleSystems: []
   }),
   methods: {
+    //video methods
+    playVideo() {
+      this.$refs.youtube.player.playVideo();
+      this.$refs.youtube.player.mute();
+    },
     //canvas methods
     canvasSetup() {
       //resize canvas on window resize
@@ -52,8 +61,8 @@ export default {
     },
     resetCanvas() {
       // this.ctx.globalAlpha = .5;
-      this.ctx.fillStyle = "black";
-      this.ctx.fillRect(
+      // this.ctx.fillStyle = "black";
+      this.ctx.clearRect(
         0,
         0,
         this.$refs.canvas.width,
@@ -84,20 +93,20 @@ export default {
       for (let noteNumber in this.activeNotes) {
         let note = this.activeNotes[noteNumber];
         if (note.on && !note.system) {
-          this.createParticleSystem(noteNumber, 'white');
+          this.createParticleSystem(noteNumber, "white");
         } else if (!note.on && note.system) {
           note.system.active = false;
-          if(note.system.toBeDestroyed) note.system = null;
+          if (note.system.toBeDestroyed) note.system = null;
         } else if (note.on && note.system) {
           note.system.active = true;
         }
       }
 
       //loop over particle systems and render them
-      for(let i in this.particleSystems) {
+      for (let i in this.particleSystems) {
         let particleSystem = this.particleSystems[i];
         particleSystem.draw(this.ctx, deltaTime);
-        if(particleSystem.toBeDestroyed) {
+        if (particleSystem.toBeDestroyed) {
           this.particleSystems.splice(i, 1);
         }
       }
@@ -143,7 +152,7 @@ export default {
       let el = this.midiAssignments[number];
 
       //stop function if key not visible
-      if(!el) return;
+      if (!el) return;
 
       let rect = el.getBoundingClientRect();
       let center = Math.floor(rect.left + rect.width / 2);
@@ -229,6 +238,27 @@ export default {
 .container {
   width: 100vw;
   min-height: 100vh;
-  background-color: black;
+}
+
+.background {
+  position: absolute;
+  z-index: -10;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+
+  & iframe {
+    z-index: -12;
+  }
+
+  &__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+  }
 }
 </style>

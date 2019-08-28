@@ -3,8 +3,8 @@ export default class Particle {
     this.x = x;
     this.y = y;
     this.size = size;
-    this.dy = 3;
-    this.dx = this.randomRange(-.25, .25);
+    this.dy = .3;
+    this.dx = this.randomRange(-.05, .05);
     this.currentAlpha = 1;
     this.fadeSpeed = .1;
     this.currentLife = 0;

@@ -45,8 +45,8 @@ export default class ParticleSystem {
       let particle = this.particles[i];
 
       //animate particle
-      particle.y -= particle.dy;
-      particle.x += particle.dx;
+      particle.y -= (particle.dy) * delta;
+      particle.x += (particle.dx) * delta;
       ctx.fillStyle = this.color;
       //glow stuff
       ctx.shadowColor = this.color;
