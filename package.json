@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "core-js": "^2.6.5",
+    "stats.js": "^0.17.0",
     "vue": "^2.6.10",
     "vue-youtube": "^1.3.5"
   },

@@ -3,7 +3,7 @@
     <div class="container" @click="playVideo">
       <div class="background">
         <div class="background__overlay"></div>
-        <youtube video-id="hjKO0d_umLc" width="100%" height="100%" ref="youtube"></youtube>
+        <youtube video-id="bZNFRIwlQxQ" width="100%" height="100%" ref="youtube"></youtube>
       </div>
       <canvas ref="canvas"></canvas>
       <Keyboard
@@ -20,6 +20,7 @@
 <script>
 import Keyboard from "./components/Keyboard.vue";
 import ParticleSystem from "./logic/ParticleSystem";
+import Stats from "stats.js";
 
 export default {
   name: "app",
@@ -27,7 +28,7 @@ export default {
     Keyboard
   },
   data: () => ({
-    octaves: 3,
+    octaves: 4,
     octave: 3,
     ctx: null,
     whiteKeys: null,
@@ -37,8 +38,9 @@ export default {
     //particle data
     particleCooldown: false,
     previousParticleTime: 0,
-    particleColor: "green",
-    particleSystems: []
+    particleColor: "#d16aff",
+    particleSystems: [],
+    stats: new Stats()
   }),
   methods: {
     //video methods
@@ -72,7 +74,8 @@ export default {
     },
     //animation methods
     loop(time) {
-      requestAnimationFrame(time => this.loop(time));
+      this.stats.begin();
+
       let deltaTime = time - this.previousTime;
       if (isNaN(deltaTime)) deltaTime = 0;
       this.previousTime = time;
@@ -142,6 +145,10 @@ export default {
       // }
 
       this.$forceUpdate();
+
+      this.stats.end();
+
+      requestAnimationFrame(time => this.loop(time));
     },
     run() {
       this.loop();
@@ -226,6 +233,10 @@ export default {
     this.canvasSetup();
     this.ctx = this.$refs.canvas.getContext("2d");
     this.run();
+
+    //stats js stuff
+    this.stats.showPanel(0);
+    document.body.appendChild(this.stats.dom);
   }
 };
 </script>
