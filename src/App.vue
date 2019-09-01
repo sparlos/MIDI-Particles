@@ -21,7 +21,7 @@
 import Keyboard from "./components/Keyboard.vue";
 import ParticleSystem from "./logic/ParticleSystem";
 import Stats from "stats.js";
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
   name: "app",
@@ -43,7 +43,7 @@ export default {
     stats: new Stats()
   }),
   methods: {
-    ...mapMutations('keyboard', {
+    ...mapActions('keyboard', {
       changeColor: 'changeColor'
     }),
     //video methods
@@ -214,7 +214,9 @@ export default {
     this.stats.showPanel(0);
     document.body.appendChild(this.stats.dom);
 
-    this.changeColor('white');
+    this.changeColor({
+      color: 'white'
+    });
   }
 };
 </script>

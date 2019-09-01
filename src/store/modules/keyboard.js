@@ -7,12 +7,14 @@ const getters = {
 }
 
 const actions = {
-
+  changeColor({ commit }, payload) {
+    commit('changeColor', payload);
+  }
 }
 
 const mutations = {
-  changeColor(state, newColor) {
-    state.color = newColor;
+  changeColor(state, payload) {
+    state.color = payload.color;
   }
 }
 
