@@ -6,7 +6,7 @@
         <youtube video-id="bZNFRIwlQxQ" width="100%" height="100%" ref="youtube"></youtube>
       </div>
       <canvas ref="canvas"></canvas>
-      <OptionsMenu />
+      <OptionsMenu @resetParticles="resetParticles" />
       <Keyboard
         :octaves="octaves"
         @updateRefs="handleUpdateRefs"
@@ -23,7 +23,9 @@ import Keyboard from "./components/Keyboard.vue";
 import OptionsMenu from "./components/OptionsMenu.vue";
 import ParticleSystem from "./logic/ParticleSystem";
 import Stats from "stats.js";
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions } from "vuex";
+
+let previousTime = 0;
 
 export default {
   name: "app",
@@ -38,7 +40,6 @@ export default {
     whiteKeys: null,
     blackKeys: null,
     activeNotes: {},
-    previousTime: 0,
     //particle data
     particleCooldown: false,
     previousParticleTime: 0,
@@ -46,8 +47,8 @@ export default {
     stats: new Stats()
   }),
   methods: {
-    ...mapActions('keyboard', {
-      changeColor: 'changeColor'
+    ...mapActions("keyboard", {
+      changeColor: "changeColor"
     }),
     //video methods
     playVideo() {
@@ -82,9 +83,9 @@ export default {
     loop(time) {
       this.stats.begin();
 
-      let deltaTime = time - this.previousTime;
+      let deltaTime = time - previousTime;
       if (isNaN(deltaTime)) deltaTime = 0;
-      this.previousTime = time;
+      previousTime = time;
 
       this.resetCanvas();
 
@@ -110,7 +111,6 @@ export default {
           this.particleSystems.splice(i, 1);
         }
       }
-      this.$forceUpdate();
 
       this.stats.end();
 
@@ -141,7 +141,9 @@ export default {
       // this.ctx.fillStyle = "red";
       // this.ctx.fillRect(center, top - 100, 100, 100);
     },
-
+    resetParticles() {
+      this.activeNotes = {};
+    },
     //MIDI IO methods
     handleUpdateRefs(white, black) {
       this.whiteKeys = white;
@@ -171,16 +173,23 @@ export default {
     },
     //shortcut methods
     setupShortcuts() {
-      document.addEventListener('keyup', (e)=>{
+      document.addEventListener("keyup", e => {
         switch (e.key) {
-          case 'o':
-            this.$modal.show('options');
+          case "o":
+            this.showModal();
             break;
-        
+
           default:
             break;
         }
       });
+    },
+    //settings methods
+    showModal() {
+      for(let note in this.activeNotes) {
+        this.handleDeactivateNote(note);
+      }
+      this.$modal.show("options");
     }
   },
   computed: {
@@ -215,7 +224,7 @@ export default {
     this.canvasSetup();
     this.ctx = this.$refs.canvas.getContext("2d");
     this.run();
-    this.setupShortcuts();  
+    this.setupShortcuts();
 
     //stats js stuff
     this.stats.showPanel(0);

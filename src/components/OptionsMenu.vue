@@ -1,5 +1,5 @@
 <template>
-  <modal name="options">
+  <modal name="options" @opened="modalOpened" @closed="modalClosed">
     <input type="color" v-model="color">
   </modal>
 </template>
@@ -11,8 +11,19 @@ import { mapActions } from 'vuex';
     name: 'OptionsMenu',
     methods: {
       ...mapActions('keyboard', {
-        changeColor: 'changeColor'
-      })
+        changeColor: 'changeColor',
+        setState: 'setState'
+      }),
+      modalOpened() {
+        this.setState({
+          disabled: true
+        })
+      },
+      modalClosed() {
+        this.setState({
+          disabled: false
+        })
+      }
     },
     computed: {
       color: {
@@ -25,6 +36,9 @@ import { mapActions } from 'vuex';
           })
         }
       }
+    },
+    updated() {
+      this.$emit('resetParticles');
     }
   }
 </script>

@@ -13,24 +13,23 @@
 
 <script>
 export default {
-  name: 'Keyboard',
+  name: "Keyboard",
   props: {
     octaves: Number
   },
   data: () => ({
-    accidentalIndicies: [1,2,4,5,6]
+    accidentalIndicies: [1, 2, 4, 5, 6]
   }),
   methods: {
     createMidiIO() {
-      if(navigator.requestMIDIAccess) {
-        navigator.requestMIDIAccess()
-          .then(this.handleMidiAccess)
+      if (navigator.requestMIDIAccess) {
+        navigator.requestMIDIAccess().then(this.handleMidiAccess);
       } else {
         //handle browser with no midi access
       }
     },
     handleMidiAccess(access) {
-      for(let input of access.inputs.values()) {
+      for (let input of access.inputs.values()) {
         input.onmidimessage = this.handleMidiMessage;
       }
     },
@@ -38,32 +37,35 @@ export default {
       let [value, note, velocity] = message.data;
       const NOTE_ON = 144;
       const NOTE_OFF = 128;
-      if(value === NOTE_ON && note) {
+      if (value === NOTE_ON && note) {
         this.activateNote(note, velocity);
       } else if (value === NOTE_OFF && note) {
         this.deactivateNote(note);
       }
     },
     activateNote(note, velocity) {
-      this.$emit('activateNote', note, velocity);
+      if(!this.disabled) this.$emit("activateNote", note, velocity);
     },
     deactivateNote(note) {
-      this.$emit('deactivateNote', note);
+      if(!this.disabled) this.$emit("deactivateNote", note);
+    }
+  },
+  computed: {
+    disabled() {
+      return this.$store.state.keyboard.disabled;
     }
   },
   updated() {
-    this.$emit('updateRefs', this.$refs.white, this.$refs.black);
+    this.$emit("updateRefs", this.$refs.white, this.$refs.black);
   },
   mounted() {
     this.createMidiIO();
-    this.$emit('updateRefs', this.$refs.white, this.$refs.black);
+    this.$emit("updateRefs", this.$refs.white, this.$refs.black);
   }
-}
-
+};
 </script>
 
 <style scoped lang='scss'>
-
 .keyboard {
   width: 100%;
   position: absolute;
@@ -78,7 +80,6 @@ export default {
 }
 
 .key {
-
   &__white {
     border: 1px solid black;
     flex: 1 1 auto;
@@ -92,7 +93,7 @@ export default {
       z-index: 1;
       background-color: rgba(0, 0, 0, 0.2);
       opacity: 0;
-      transition: opacity .1s;
+      transition: opacity 0.1s;
     }
   }
 
@@ -112,9 +113,8 @@ export default {
       z-index: 30;
       background-color: rgba(255, 255, 255, 0.2);
       opacity: 0;
-      transition: opacity .1s;
+      transition: opacity 0.1s;
     }
   }
 }
-
 </style>
