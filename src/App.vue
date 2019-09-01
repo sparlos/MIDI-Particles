@@ -6,6 +6,7 @@
         <youtube video-id="bZNFRIwlQxQ" width="100%" height="100%" ref="youtube"></youtube>
       </div>
       <canvas ref="canvas"></canvas>
+      <OptionsMenu />
       <Keyboard
         :octaves="octaves"
         @updateRefs="handleUpdateRefs"
@@ -19,6 +20,7 @@
 
 <script>
 import Keyboard from "./components/Keyboard.vue";
+import OptionsMenu from "./components/OptionsMenu.vue";
 import ParticleSystem from "./logic/ParticleSystem";
 import Stats from "stats.js";
 import { mapState, mapActions } from 'vuex';
@@ -26,7 +28,8 @@ import { mapState, mapActions } from 'vuex';
 export default {
   name: "app",
   components: {
-    Keyboard
+    Keyboard,
+    OptionsMenu
   },
   data: () => ({
     octaves: 4,
@@ -84,16 +87,6 @@ export default {
       this.previousTime = time;
 
       this.resetCanvas();
-
-      // ===== implement again when you have particle systems in place =====
-
-      //deal with particle cooldown
-      // this.previousParticleTime += deltaTime;
-
-      // if(this.particleCooldown && this.previousParticleTime >= 1) {
-      //   this.previousParticleTime = 0;
-      //   this.particleCooldown = false;
-      // }
 
       //loop over active notes and create particles
       for (let noteNumber in this.activeNotes) {
@@ -175,6 +168,19 @@ export default {
         let el = this.midiAssignments[note];
         el.children[0].style.opacity = 0;
       }
+    },
+    //shortcut methods
+    setupShortcuts() {
+      document.addEventListener('keyup', (e)=>{
+        switch (e.key) {
+          case 'o':
+            this.$modal.show('options');
+            break;
+        
+          default:
+            break;
+        }
+      });
     }
   },
   computed: {
@@ -209,14 +215,11 @@ export default {
     this.canvasSetup();
     this.ctx = this.$refs.canvas.getContext("2d");
     this.run();
+    this.setupShortcuts();  
 
     //stats js stuff
     this.stats.showPanel(0);
     document.body.appendChild(this.stats.dom);
-
-    this.changeColor({
-      color: 'white'
-    });
   }
 };
 </script>
@@ -225,6 +228,10 @@ export default {
 * {
   margin: 0;
   padding: 0;
+}
+
+#app {
+  overflow: hidden;
 }
 
 .container {

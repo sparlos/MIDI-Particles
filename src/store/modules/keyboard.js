@@ -12,7 +12,7 @@ const actions = {
   }
 }
 
-const mutations = {
+const mutations = { 
   changeColor(state, payload) {
     state.color = payload.color;
   }
