@@ -21,6 +21,7 @@
 import Keyboard from "./components/Keyboard.vue";
 import ParticleSystem from "./logic/ParticleSystem";
 import Stats from "stats.js";
+import { mapState, mapMutations } from 'vuex';
 
 export default {
   name: "app",
@@ -38,11 +39,13 @@ export default {
     //particle data
     particleCooldown: false,
     previousParticleTime: 0,
-    particleColor: "#d16aff",
     particleSystems: [],
     stats: new Stats()
   }),
   methods: {
+    ...mapMutations('keyboard', {
+      changeColor: 'changeColor'
+    }),
     //video methods
     playVideo() {
       this.$refs.youtube.player.playVideo();
@@ -96,7 +99,7 @@ export default {
       for (let noteNumber in this.activeNotes) {
         let note = this.activeNotes[noteNumber];
         if (note.on && !note.system) {
-          this.createParticleSystem(noteNumber, this.particleColor, note.velocity);
+          this.createParticleSystem(noteNumber, this.color, note.velocity);
         } else if (!note.on && note.system) {
           note.system.active = false;
           if (note.system.toBeDestroyed) note.system = null;
@@ -114,36 +117,6 @@ export default {
           this.particleSystems.splice(i, 1);
         }
       }
-
-      // //loop over particles and render them
-      // for (let i in this.particleSystems) {
-      //   let particle = this.particleSystems[i];
-
-      //   //animate particle
-      //   particle.y -= particle.dy;
-      //   particle.x += particle.dx;
-      //   this.ctx.fillStyle = this.particleColor;
-      //   //glow stuff
-      //   this.ctx.shadowColor = this.particleColor;
-      //   this.ctx.shadowBlur = 10;
-
-      //   if (particle.currentLife >= particle.lifespan - 1000) {
-      //     this.ctx.globalAlpha = particle.currentAlpha;
-      //     particle.currentAlpha -= particle.fadeSpeed;
-      //     if (particle.currentAlpha <= 0) particle.currentAlpha = 0;
-      //     this.ctx.fillRect(particle.x, particle.y, 3, 3);
-      //     this.ctx.globalAlpha = 1;
-      //   } else {
-      //     this.ctx.fillRect(particle.x, particle.y, 3, 3);
-      //   }
-
-      //   //remove particle if it has reached the end of its lifespan
-      //   particle.currentLife += deltaTime;
-      //   if (particle.currentLife >= particle.lifespan) {
-      //     this.particleSystems.splice(i, 1);
-      //   }
-      // }
-
       this.$forceUpdate();
 
       this.stats.end();
@@ -205,6 +178,9 @@ export default {
     }
   },
   computed: {
+    ...mapState({
+      color: state => state.keyboard.color
+    }),
     midiAssignments() {
       //for translating keys to midi values
       const WHITE_KEY_MAP = [0, 2, 4, 5, 7, 9, 11];
@@ -237,6 +213,8 @@ export default {
     //stats js stuff
     this.stats.showPanel(0);
     document.body.appendChild(this.stats.dom);
+
+    this.changeColor('white');
   }
 };
 </script>
