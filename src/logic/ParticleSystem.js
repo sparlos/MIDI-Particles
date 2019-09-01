@@ -1,4 +1,5 @@
 import Particle from "./Particle";
+import hexToRgba from 'hex-to-rgba';
 
 export default class ParticleSystem {
   constructor(x, y, color, strength) {
@@ -19,7 +20,7 @@ export default class ParticleSystem {
 
   createParticle() {
     if (this.particles.length < this.maxParticles && this.active) {
-      this.particles.push(new Particle(this.x, this.y, this.randomRange(2, 5), this.strength));
+      this.particles.push(new Particle(this.x, this.y, this.randomRange(2, 5), this.strength, this.color));
     }
   }
 
@@ -48,20 +49,19 @@ export default class ParticleSystem {
       //animate particle
       particle.y -= (particle.dy) * delta;
       particle.x += (particle.dx) * delta;
-      ctx.fillStyle = this.color;
+      ctx.fillStyle = particle.color;
       //glow stuff
-      ctx.shadowColor = this.color;
-      ctx.shadowBlur = 10;
+      // ctx.shadowColor = this.color;
+      // ctx.shadowBlur = 10;
 
       //fade out stuff
       if (particle.currentLife >= particle.lifespan - 1000) {
-        ctx.globalAlpha = particle.currentAlpha;
         particle.currentAlpha -= particle.fadeSpeed;
+        ctx.fillStyle = hexToRgba(particle.color, particle.currentAlpha);
         if (particle.currentAlpha <= 0) particle.currentAlpha = 0;
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.size, 0, 2*Math.PI);
         ctx.fill();
-        ctx.globalAlpha = 1;
       } else {
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.size, 0, 2*Math.PI);
