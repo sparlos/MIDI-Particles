@@ -1,10 +1,7 @@
 <template>
   <div id="app">
-    <div class="container" @click="playVideo">
-      <div class="background">
-        <div class="background__overlay"></div>
-        <youtube video-id="bZNFRIwlQxQ" width="100%" height="100%" ref="youtube"></youtube>
-      </div>
+    <div class="container">
+      <Background />
       <canvas ref="canvas"></canvas>
       <OptionsMenu @resetParticles="resetParticles" />
       <Keyboard
@@ -20,6 +17,7 @@
 
 <script>
 import Keyboard from "./components/Keyboard.vue";
+import Background from "./components/Background.vue";
 import OptionsMenu from "./components/OptionsMenu.vue";
 import ParticleSystem from "./logic/ParticleSystem";
 import Stats from "stats.js";
@@ -31,7 +29,8 @@ export default {
   name: "app",
   components: {
     Keyboard,
-    OptionsMenu
+    OptionsMenu,
+    Background
   },
   data: () => ({
     octaves: 4,
@@ -50,11 +49,6 @@ export default {
     ...mapActions("keyboard", {
       changeColor: "changeColor"
     }),
-    //video methods
-    playVideo() {
-      this.$refs.youtube.player.playVideo();
-      this.$refs.youtube.player.mute();
-    },
     //canvas methods
     canvasSetup() {
       //resize canvas on window resize
@@ -246,27 +240,5 @@ export default {
 .container {
   width: 100vw;
   min-height: 100vh;
-}
-
-.background {
-  position: absolute;
-  z-index: -10;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-
-  & iframe {
-    z-index: -12;
-  }
-
-  &__overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-  }
 }
 </style>
