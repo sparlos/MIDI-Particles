@@ -16,6 +16,9 @@ const actions = {
   },
   changeOctaves({ commit }, payload) {
     commit("changeOctaves", payload);
+  },
+  changeBaseOctave({commit}, payload) {
+    commit("changeBaseOctave", payload);
   }
 };
 
@@ -28,6 +31,9 @@ const mutations = {
   },
   changeOctaves(state, payload) {
     state.octaves = payload.octaves;
+  },
+  changeBaseOctave(state, payload) {
+    state.baseOctave = payload.baseOctave;
   }
 };
 

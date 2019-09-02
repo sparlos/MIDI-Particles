@@ -32,7 +32,6 @@ export default {
     Background
   },
   data: () => ({
-    octave: 3,
     ctx: null,
     whiteKeys: null,
     blackKeys: null,
@@ -186,7 +185,8 @@ export default {
   },
   computed: {
     ...mapState({
-      color: state => state.keyboard.color
+      color: state => state.keyboard.color,
+      baseOctave: state => state.keyboard.baseOctave
     }),
     midiAssignments() {
       //for translating keys to midi values
@@ -194,7 +194,7 @@ export default {
       const BLACK_KEY_MAP = [1, 3, 6, 8, 10];
 
       let mappedElements = {};
-      let baseOctave = this.octave * 12;
+      let baseOctave = this.baseOctave * 12;
 
       for (let i = 0; i < this.whiteKeys.length; i++) {
         let octave = Math.floor(i / 7) * 12 + baseOctave;
