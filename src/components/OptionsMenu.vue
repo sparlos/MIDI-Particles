@@ -46,7 +46,7 @@ export default {
       },
       set(value) {
         this.changeColor({
-          color: newValue
+          color: value
         });
       }
     },
