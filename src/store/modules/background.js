@@ -1,13 +1,14 @@
 import { getIdFromUrl } from 'vue-youtube';
 
 const state = {
-  type: 'color',
+  type: 'video',
   color: 'green',
   url: 'https://www.youtube.com/watch?v=bZNFRIwlQxQ',
   presets: {
     videos: [],
     colors: []
-  }
+  },
+  overlayOpacity: .7
 }
 
 const getters = {

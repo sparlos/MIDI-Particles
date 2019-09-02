@@ -1,7 +1,10 @@
 <template>
   <div class="background">
-    <div class="background__overlay"></div>
-    <youtube video-id="bZNFRIwlQxQ" width="100%" height="100%" ref="youtube"></youtube>
+    <div class="background__overlay" :style="{opacity: overlayOpacity}"></div>
+    <div class="background__color" v-if="type==='color'" :style="{backgroundColor: color}"></div>
+    <div class="background__video" v-if="type==='video'">
+      <youtube :video-id="id" width="100%" height="100%" ref="youtube"></youtube>
+    </div>
   </div>
 </template>
 
@@ -12,7 +15,13 @@ export default {
   name: "Background",
   computed: {
     ...mapGetters("background", ["id"]),
-    ...mapState("background", ["type", "color", "url", "presets"])
+    ...mapState("background", [
+      "type",
+      "color",
+      "url",
+      "presets",
+      "overlayOpacity"
+    ])
   }
 };
 </script>
@@ -26,17 +35,27 @@ export default {
   top: 0;
   left: 0;
 
-  & iframe {
-    z-index: -12;
-  }
-
   &__overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 1);
+  }
+
+  &__video,
+  &__color {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+
+    & iframe {
+      z-index: -12;
+    }
   }
 }
 </style>
