@@ -5,7 +5,6 @@
       <canvas ref="canvas"></canvas>
       <OptionsMenu @resetParticles="resetParticles" />
       <Keyboard
-        :octaves="octaves"
         @updateRefs="handleUpdateRefs"
         @activateNote="handleActivateNote"
         @deactivateNote="handleDeactivateNote"
@@ -33,7 +32,6 @@ export default {
     Background
   },
   data: () => ({
-    octaves: 4,
     octave: 3,
     ctx: null,
     whiteKeys: null,

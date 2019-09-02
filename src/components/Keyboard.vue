@@ -12,11 +12,10 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   name: "Keyboard",
-  props: {
-    octaves: Number
-  },
   data: () => ({
     accidentalIndicies: [1, 2, 4, 5, 6]
   }),
@@ -44,13 +43,16 @@ export default {
       }
     },
     activateNote(note, velocity) {
-      if(!this.disabled) this.$emit("activateNote", note, velocity);
+      if (!this.disabled) this.$emit("activateNote", note, velocity);
     },
     deactivateNote(note) {
-      if(!this.disabled) this.$emit("deactivateNote", note);
+      if (!this.disabled) this.$emit("deactivateNote", note);
     }
   },
   computed: {
+    ...mapState('keyboard', [
+      'octaves'
+    ]),
     disabled() {
       return this.$store.state.keyboard.disabled;
     }
