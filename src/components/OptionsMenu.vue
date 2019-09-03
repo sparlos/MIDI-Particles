@@ -4,8 +4,8 @@
     <input type="number" min="1" max="8" v-model.number="octaves" />
     base octave:
     <input type="number" min="1" max="5" v-model.number="baseOctave" />
-    color:
-    <input type="color" v-model="color" />
+    particle color:
+    <input type="color" v-model="particleColor" />
     opacity:
     <input type="number" min="0.1" max="1" step="0.1" v-model.number="opacity">
   </modal>
@@ -18,7 +18,7 @@ export default {
   name: "OptionsMenu",
   methods: {
     ...mapActions("keyboard", [
-      'changeColor',
+      'changeParticleColor',
       'setState',
       'changeOctaves',
       'changeBaseOctave',
@@ -37,20 +37,20 @@ export default {
   },
   computed: {
     ...mapState("keyboard", {
-      storeColor: "color",
+      storeParticleColor: "particleColor",
       storeOctaves: "octaves",
       storeBaseOctave: "baseOctave",
       storeOpacity: "opacity"
     }),
     ...mapState("background", {}),
     //two way computed for updating store w/ v-model
-    color: {
+    particleColor: {
       get() {
-        return this.storeColor;
+        return this.storeParticleColor;
       },
       set(value) {
-        this.changeColor({
-          color: value
+        this.changeParticleColor({
+          particleColor: value
         });
       }
     },

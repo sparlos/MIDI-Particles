@@ -43,9 +43,6 @@ export default {
     stats: new Stats()
   }),
   methods: {
-    ...mapActions("keyboard", {
-      changeColor: "changeColor"
-    }),
     //canvas methods
     canvasSetup() {
       //resize canvas on window resize
@@ -84,7 +81,7 @@ export default {
       for (let noteNumber in this.activeNotes) {
         let note = this.activeNotes[noteNumber];
         if (note.on && !note.system) {
-          this.createParticleSystem(noteNumber, this.color, note.velocity);
+          this.createParticleSystem(noteNumber, this.particleColor, note.velocity);
         } else if (!note.on && note.system) {
           note.system.active = false;
           if (note.system.toBeDestroyed) note.system = null;
@@ -185,7 +182,7 @@ export default {
   },
   computed: {
     ...mapState({
-      color: state => state.keyboard.color,
+      particleColor: state => state.keyboard.particleColor,
       baseOctave: state => state.keyboard.baseOctave
     }),
     midiAssignments() {

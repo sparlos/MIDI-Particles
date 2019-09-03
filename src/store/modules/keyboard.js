@@ -1,5 +1,5 @@
 const state = {
-  color: "#d16aff",
+  particleColor: "#d16aff",
   disabled: false,
   octaves: 4,
   baseOctave: 3,
@@ -11,8 +11,8 @@ const state = {
 const getters = {};
 
 const actions = {
-  changeColor({ commit }, payload) {
-    commit("changeColor", payload);
+  changeParticleColor({ commit }, payload) {
+    commit("changeParticleColor", payload);
   },
   setState({ commit }, payload) {
     commit("setState", payload);
@@ -29,8 +29,8 @@ const actions = {
 };
 
 const mutations = {
-  changeColor(state, payload) {
-    state.color = payload.color;
+  changeParticleColor(state, payload) {
+    state.particleColor = payload.particleColor;
   },
   setState(state, payload) {
     state.disabled = payload.disabled;
