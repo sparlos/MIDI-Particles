@@ -4,8 +4,8 @@ const state = {
   octaves: 4,
   baseOctave: 3,
   opacity: 1,
-  naturalsColor: 'white',
-  accidentalsColor: 'black'
+  naturalsColor: '#ffffff',
+  accidentalsColor: '#000'
 };
 
 const getters = {};
@@ -25,6 +25,9 @@ const actions = {
   },
   changeOpacity({ commit }, payload){
     commit('changeOpacity', payload);
+  },
+  changeNaturalsColor({ commit }, payload){
+    commit('changeNaturalsColor', payload);
   }
 };
 
@@ -42,7 +45,10 @@ const mutations = {
     state.baseOctave = payload.baseOctave;
   },
   changeOpacity(state, payload){
-    state.opacity = payload.opacity
+    state.opacity = payload.opacity;
+  },
+  changeNaturalsColor(state, payload){
+    state.naturalsColor = payload.naturalsColor;
   }
 };
 
