@@ -74,7 +74,7 @@ export default {
     ]),
     keyboardStyle() {
       //change height to 0 if visible is false
-      let height = this.visible ? this.heightPixels : 0;
+      let height = this.visible ? this.heightPixels : '0px';
       return {
         opacity: this.opacity,
         height: height

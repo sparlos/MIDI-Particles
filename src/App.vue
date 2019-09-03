@@ -52,9 +52,7 @@ export default {
     },
     resizeCanvas() {
       this.$refs.canvas.width = window.innerWidth;
-      this.$refs.canvas.height =
-        window.innerHeight -
-        this.$refs.keyboard.$el.getBoundingClientRect().height;
+      this.$refs.canvas.height = window.innerHeight;
     },
     resetCanvas() {
       // this.ctx.globalAlpha = .5;
