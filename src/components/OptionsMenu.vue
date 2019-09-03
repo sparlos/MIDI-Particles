@@ -6,6 +6,8 @@
     <input type="number" min="1" max="5" v-model.number="baseOctave" />
     color:
     <input type="color" v-model="color" />
+    opacity:
+    <input type="number" min="0.1" max="1" step="0.1" v-model.number="opacity">
   </modal>
 </template>
 
@@ -15,12 +17,13 @@ import { mapActions, mapMutations, mapState } from "vuex";
 export default {
   name: "OptionsMenu",
   methods: {
-    ...mapActions("keyboard", {
-      changeColor: "changeColor",
-      setState: "setState",
-      changeOctaves: "changeOctaves",
-      changeBaseOctave: "changeBaseOctave"
-    }),
+    ...mapActions("keyboard", [
+      'changeColor',
+      'setState',
+      'changeOctaves',
+      'changeBaseOctave',
+      'changeOpacity'
+    ]),
     modalOpened() {
       this.setState({
         disabled: true
@@ -36,7 +39,8 @@ export default {
     ...mapState("keyboard", {
       storeColor: "color",
       storeOctaves: "octaves",
-      storeBaseOctave: "baseOctave"
+      storeBaseOctave: "baseOctave",
+      storeOpacity: "opacity"
     }),
     ...mapState("background", {}),
     //two way computed for updating store w/ v-model
@@ -67,6 +71,16 @@ export default {
       set(value) {
         this.changeBaseOctave({
           baseOctave: value
+        })
+      }
+    },
+    opacity: {
+      get() {
+        return this.storeOpacity
+      },
+      set(value) {
+        this.changeOpacity({
+          opacity: value
         })
       }
     }

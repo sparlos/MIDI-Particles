@@ -1,5 +1,5 @@
 <template>
-  <div class="keyboard">
+  <div class="keyboard" :style="keyboardStyle">
     <div class="octave" v-for="octave in octaves" :key="octave">
       <div class="key__white" v-for="n in 7" :key="n" ref="white">
         <div class="key__white-highlight"></div>
@@ -51,10 +51,14 @@ export default {
   },
   computed: {
     ...mapState('keyboard', [
-      'octaves'
+      'octaves',
+      'opacity',
+      'disabled'
     ]),
-    disabled() {
-      return this.$store.state.keyboard.disabled;
+    keyboardStyle() {
+      return {
+        opacity: this.opacity
+      }
     }
   },
   updated() {

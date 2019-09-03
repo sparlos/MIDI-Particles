@@ -2,7 +2,10 @@ const state = {
   color: "#d16aff",
   disabled: false,
   octaves: 4,
-  baseOctave: 3
+  baseOctave: 3,
+  opacity: 1,
+  naturalsColor: 'white',
+  accidentalsColor: 'black'
 };
 
 const getters = {};
@@ -19,6 +22,9 @@ const actions = {
   },
   changeBaseOctave({commit}, payload) {
     commit("changeBaseOctave", payload);
+  },
+  changeOpacity({ commit }, payload){
+    commit('changeOpacity', payload);
   }
 };
 
@@ -34,6 +40,9 @@ const mutations = {
   },
   changeBaseOctave(state, payload) {
     state.baseOctave = payload.baseOctave;
+  },
+  changeOpacity(state, payload){
+    state.opacity = payload.opacity
   }
 };
 
