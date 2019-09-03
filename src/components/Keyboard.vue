@@ -1,9 +1,20 @@
 <template>
-  <div class="keyboard">
+  <div class="keyboard" :style="keyboardStyle">
     <div class="octave" v-for="octave in octaves" :key="octave">
-      <div class="key__white" v-for="n in 7" :key="n" ref="white">
+      <div
+        class="key__white"
+        v-for="n in 7"
+        :key="n"
+        ref="white"
+        :style="{backgroundColor: naturalsColor}"
+      >
         <div class="key__white-highlight"></div>
-        <div class="key__black" v-if="accidentalIndicies.includes(n)" ref="black">
+        <div
+          class="key__black"
+          v-if="accidentalIndicies.includes(n)"
+          :style="{backgroundColor: accidentalsColor}"
+          ref="black"
+        >
           <div class="key__black-highlight"></div>
         </div>
       </div>
@@ -12,25 +23,23 @@
 </template>
 
 <script>
+import { mapState, mapGetters } from "vuex";
+
 export default {
-  name: 'Keyboard',
-  props: {
-    octaves: Number
-  },
+  name: "Keyboard",
   data: () => ({
-    accidentalIndicies: [1,2,4,5,6]
+    accidentalIndicies: [1, 2, 4, 5, 6]
   }),
   methods: {
     createMidiIO() {
-      if(navigator.requestMIDIAccess) {
-        navigator.requestMIDIAccess()
-          .then(this.handleMidiAccess)
+      if (navigator.requestMIDIAccess) {
+        navigator.requestMIDIAccess().then(this.handleMidiAccess);
       } else {
         //handle browser with no midi access
       }
     },
     handleMidiAccess(access) {
-      for(let input of access.inputs.values()) {
+      for (let input of access.inputs.values()) {
         input.onmidimessage = this.handleMidiMessage;
       }
     },
@@ -38,37 +47,55 @@ export default {
       let [value, note, velocity] = message.data;
       const NOTE_ON = 144;
       const NOTE_OFF = 128;
-      if(value === NOTE_ON && note) {
+      if (value === NOTE_ON && note) {
         this.activateNote(note, velocity);
       } else if (value === NOTE_OFF && note) {
         this.deactivateNote(note);
       }
     },
     activateNote(note, velocity) {
-      this.$emit('activateNote', note, velocity);
+      if (!this.disabled) this.$emit("activateNote", note, velocity);
     },
     deactivateNote(note) {
-      this.$emit('deactivateNote', note);
+      if (!this.disabled) this.$emit("deactivateNote", note);
+    }
+  },
+  computed: {
+    ...mapState("keyboard", [
+      "octaves",
+      "opacity",
+      "disabled",
+      "naturalsColor",
+      "accidentalsColor",
+      "visible"
+    ]),
+    ...mapGetters("keyboard", [
+      "heightPixels"
+    ]),
+    keyboardStyle() {
+      //change height to 0 if visible is false
+      let height = this.visible ? this.heightPixels : 0;
+      return {
+        opacity: this.opacity,
+        height: height
+      };
     }
   },
   updated() {
-    this.$emit('updateRefs', this.$refs.white, this.$refs.black);
+    this.$emit("updateRefs", this.$refs.white, this.$refs.black);
   },
   mounted() {
     this.createMidiIO();
-    this.$emit('updateRefs', this.$refs.white, this.$refs.black);
+    this.$emit("updateRefs", this.$refs.white, this.$refs.black);
   }
-}
-
+};
 </script>
 
 <style scoped lang='scss'>
-
 .keyboard {
   width: 100%;
   position: absolute;
   bottom: 0;
-  height: 150px;
   display: flex;
 }
 
@@ -78,11 +105,9 @@ export default {
 }
 
 .key {
-
   &__white {
     border: 1px solid black;
     flex: 1 1 auto;
-    background-color: white;
     position: relative;
 
     &-highlight {
@@ -92,7 +117,7 @@ export default {
       z-index: 1;
       background-color: rgba(0, 0, 0, 0.2);
       opacity: 0;
-      transition: opacity .1s;
+      transition: opacity 0.1s;
     }
   }
 
@@ -103,7 +128,6 @@ export default {
     top: 0;
     left: calc(100% - 40% / 2);
     z-index: 20;
-    background-color: black;
 
     &-highlight {
       position: absolute;
@@ -112,9 +136,8 @@ export default {
       z-index: 30;
       background-color: rgba(255, 255, 255, 0.2);
       opacity: 0;
-      transition: opacity .1s;
+      transition: opacity 0.1s;
     }
   }
 }
-
 </style>

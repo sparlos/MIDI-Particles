@@ -1,13 +1,10 @@
 <template>
   <div id="app">
-    <div class="container" @click="playVideo">
-      <div class="background">
-        <div class="background__overlay"></div>
-        <youtube video-id="bZNFRIwlQxQ" width="100%" height="100%" ref="youtube"></youtube>
-      </div>
+    <div class="container">
+      <Background />
       <canvas ref="canvas"></canvas>
+      <OptionsMenu @resetParticles="resetParticles" />
       <Keyboard
-        :octaves="octaves"
         @updateRefs="handleUpdateRefs"
         @activateNote="handleActivateNote"
         @deactivateNote="handleDeactivateNote"
@@ -19,23 +16,26 @@
 
 <script>
 import Keyboard from "./components/Keyboard.vue";
+import Background from "./components/Background.vue";
+import OptionsMenu from "./components/OptionsMenu.vue";
 import ParticleSystem from "./logic/ParticleSystem";
 import Stats from "stats.js";
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions } from "vuex";
+
+let previousTime = 0;
 
 export default {
   name: "app",
   components: {
-    Keyboard
+    Keyboard,
+    OptionsMenu,
+    Background
   },
   data: () => ({
-    octaves: 4,
-    octave: 3,
     ctx: null,
     whiteKeys: null,
     blackKeys: null,
     activeNotes: {},
-    previousTime: 0,
     //particle data
     particleCooldown: false,
     previousParticleTime: 0,
@@ -43,14 +43,6 @@ export default {
     stats: new Stats()
   }),
   methods: {
-    ...mapActions('keyboard', {
-      changeColor: 'changeColor'
-    }),
-    //video methods
-    playVideo() {
-      this.$refs.youtube.player.playVideo();
-      this.$refs.youtube.player.mute();
-    },
     //canvas methods
     canvasSetup() {
       //resize canvas on window resize
@@ -79,27 +71,17 @@ export default {
     loop(time) {
       this.stats.begin();
 
-      let deltaTime = time - this.previousTime;
+      let deltaTime = time - previousTime;
       if (isNaN(deltaTime)) deltaTime = 0;
-      this.previousTime = time;
+      previousTime = time;
 
       this.resetCanvas();
-
-      // ===== implement again when you have particle systems in place =====
-
-      //deal with particle cooldown
-      // this.previousParticleTime += deltaTime;
-
-      // if(this.particleCooldown && this.previousParticleTime >= 1) {
-      //   this.previousParticleTime = 0;
-      //   this.particleCooldown = false;
-      // }
 
       //loop over active notes and create particles
       for (let noteNumber in this.activeNotes) {
         let note = this.activeNotes[noteNumber];
         if (note.on && !note.system) {
-          this.createParticleSystem(noteNumber, this.color, note.velocity);
+          this.createParticleSystem(noteNumber, this.particleColor, note.velocity);
         } else if (!note.on && note.system) {
           note.system.active = false;
           if (note.system.toBeDestroyed) note.system = null;
@@ -117,7 +99,6 @@ export default {
           this.particleSystems.splice(i, 1);
         }
       }
-      this.$forceUpdate();
 
       this.stats.end();
 
@@ -148,7 +129,9 @@ export default {
       // this.ctx.fillStyle = "red";
       // this.ctx.fillRect(center, top - 100, 100, 100);
     },
-
+    resetParticles() {
+      this.activeNotes = {};
+    },
     //MIDI IO methods
     handleUpdateRefs(white, black) {
       this.whiteKeys = white;
@@ -175,11 +158,32 @@ export default {
         let el = this.midiAssignments[note];
         el.children[0].style.opacity = 0;
       }
+    },
+    //shortcut methods
+    setupShortcuts() {
+      document.addEventListener("keyup", e => {
+        switch (e.key) {
+          case "o":
+            this.showModal();
+            break;
+
+          default:
+            break;
+        }
+      });
+    },
+    //settings methods
+    showModal() {
+      for(let note in this.activeNotes) {
+        this.handleDeactivateNote(note);
+      }
+      this.$modal.show("options");
     }
   },
   computed: {
     ...mapState({
-      color: state => state.keyboard.color
+      particleColor: state => state.keyboard.particleColor,
+      baseOctave: state => state.keyboard.baseOctave
     }),
     midiAssignments() {
       //for translating keys to midi values
@@ -187,7 +191,7 @@ export default {
       const BLACK_KEY_MAP = [1, 3, 6, 8, 10];
 
       let mappedElements = {};
-      let baseOctave = this.octave * 12;
+      let baseOctave = this.baseOctave * 12;
 
       for (let i = 0; i < this.whiteKeys.length; i++) {
         let octave = Math.floor(i / 7) * 12 + baseOctave;
@@ -209,14 +213,11 @@ export default {
     this.canvasSetup();
     this.ctx = this.$refs.canvas.getContext("2d");
     this.run();
+    this.setupShortcuts();
 
     //stats js stuff
     this.stats.showPanel(0);
     document.body.appendChild(this.stats.dom);
-
-    this.changeColor({
-      color: 'white'
-    });
   }
 };
 </script>
@@ -227,30 +228,12 @@ export default {
   padding: 0;
 }
 
+#app {
+  overflow: hidden;
+}
+
 .container {
   width: 100vw;
   min-height: 100vh;
-}
-
-.background {
-  position: absolute;
-  z-index: -10;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-
-  & iframe {
-    z-index: -12;
-  }
-
-  &__overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-  }
 }
 </style>

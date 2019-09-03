@@ -1,9 +1,10 @@
 export default class Particle {
-  constructor(x, y, size, strength) {
+  constructor(x, y, size, strength, color) {
     this.x = x;
     this.y = y;
     this.size = size;
     this.strength = strength;
+    this.color = color;
 
     //change strength if it's too low
     this.strength < 10 ? this.strength = 10 : null;
