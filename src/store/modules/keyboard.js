@@ -5,7 +5,7 @@ const state = {
   baseOctave: 3,
   opacity: 1,
   naturalsColor: '#ffffff',
-  accidentalsColor: '#000'
+  accidentalsColor: '#000000'
 };
 
 const getters = {};
@@ -28,6 +28,9 @@ const actions = {
   },
   changeNaturalsColor({ commit }, payload){
     commit('changeNaturalsColor', payload);
+  },
+  changeAccidentalsColor({ commit }, payload){
+    commit('changeAccidentalsColor', payload);
   }
 };
 
@@ -49,6 +52,9 @@ const mutations = {
   },
   changeNaturalsColor(state, payload){
     state.naturalsColor = payload.naturalsColor;
+  },
+  changeAccidentalsColor(state, payload){
+    state.accidentalsColor = payload.accidentalsColor;
   }
 };
 

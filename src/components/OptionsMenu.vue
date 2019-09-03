@@ -17,6 +17,10 @@
       <input type="color" v-model="naturalsColor" />
     </div>
     <div class="input">
+      keyboard accidentals color:
+      <input type="color" v-model="accidentalsColor" />
+    </div>
+    <div class="input">
       keyboard opacity:
       <input type="number" min="0.1" max="1" step="0.1" v-model.number="opacity" />
     </div>
@@ -35,7 +39,8 @@ export default {
       "changeOctaves",
       "changeBaseOctave",
       "changeOpacity",
-      "changeNaturalsColor"
+      "changeNaturalsColor",
+      "changeAccidentalsColor"
     ]),
     modalOpened() {
       this.setState({
@@ -54,7 +59,8 @@ export default {
       storeOctaves: "octaves",
       storeBaseOctave: "baseOctave",
       storeOpacity: "opacity",
-      storeNaturalsColor: "naturalsColor"
+      storeNaturalsColor: "naturalsColor",
+      storeAccidentalsColor: "accidentalsColor"
     }),
     ...mapState("background", {}),
     //two way computed for updating store w/ v-model
@@ -106,6 +112,16 @@ export default {
         this.changeNaturalsColor({
           naturalsColor: value
         });
+      }
+    },
+    accidentalsColor: {
+      get() {
+        return this.storeAccidentalsColor
+      },
+      set(value) {
+        this.changeAccidentalsColor({
+          accidentalsColor: value
+        })
       }
     }
   },

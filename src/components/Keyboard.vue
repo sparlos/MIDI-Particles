@@ -1,9 +1,20 @@
 <template>
   <div class="keyboard" :style="keyboardStyle">
     <div class="octave" v-for="octave in octaves" :key="octave">
-      <div class="key__white" v-for="n in 7" :key="n" ref="white" :style="{backgroundColor: naturalsColor}">
+      <div
+        class="key__white"
+        v-for="n in 7"
+        :key="n"
+        ref="white"
+        :style="{backgroundColor: naturalsColor}"
+      >
         <div class="key__white-highlight"></div>
-        <div class="key__black" v-if="accidentalIndicies.includes(n)" ref="black">
+        <div
+          class="key__black"
+          v-if="accidentalIndicies.includes(n)"
+          :style="{backgroundColor: accidentalsColor}"
+          ref="black"
+        >
           <div class="key__black-highlight"></div>
         </div>
       </div>
@@ -50,16 +61,17 @@ export default {
     }
   },
   computed: {
-    ...mapState('keyboard', [
-      'octaves',
-      'opacity',
-      'disabled',
-      'naturalsColor'
+    ...mapState("keyboard", [
+      "octaves",
+      "opacity",
+      "disabled",
+      "naturalsColor",
+      "accidentalsColor"
     ]),
     keyboardStyle() {
       return {
         opacity: this.opacity
-      }
+      };
     }
   },
   updated() {
@@ -110,7 +122,6 @@ export default {
     top: 0;
     left: calc(100% - 40% / 2);
     z-index: 20;
-    background-color: black;
 
     &-highlight {
       position: absolute;
