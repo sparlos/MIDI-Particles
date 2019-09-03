@@ -5,10 +5,15 @@ const state = {
   baseOctave: 3,
   opacity: 1,
   naturalsColor: '#ffffff',
-  accidentalsColor: '#000000'
+  accidentalsColor: '#000000',
+  height: 150
 };
 
-const getters = {};
+const getters = {
+  heightPixels: state => {
+    return `${state.height}px`;
+  }
+};
 
 const actions = {
   changeParticleColor({ commit }, payload) {
@@ -31,6 +36,9 @@ const actions = {
   },
   changeAccidentalsColor({ commit }, payload){
     commit('changeAccidentalsColor', payload);
+  },
+  changeHeight({ commit }, payload){
+    commit('changeHeight', payload);
   }
 };
 
@@ -55,6 +63,9 @@ const mutations = {
   },
   changeAccidentalsColor(state, payload){
     state.accidentalsColor = payload.accidentalsColor;
+  },
+  changeHeight(state, payload){
+    state.height = payload.height;
   }
 };
 

@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 
 export default {
   name: "Keyboard",
@@ -68,9 +68,13 @@ export default {
       "naturalsColor",
       "accidentalsColor"
     ]),
+    ...mapGetters("keyboard", [
+      "heightPixels"
+    ]),
     keyboardStyle() {
       return {
-        opacity: this.opacity
+        opacity: this.opacity,
+        height: this.heightPixels
       };
     }
   },
@@ -89,7 +93,6 @@ export default {
   width: 100%;
   position: absolute;
   bottom: 0;
-  height: 150px;
   display: flex;
 }
 

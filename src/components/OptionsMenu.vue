@@ -24,11 +24,15 @@
       keyboard opacity:
       <input type="number" min="0.1" max="1" step="0.1" v-model.number="opacity" />
     </div>
+    <div class="input">
+      keyboard height:
+      <input type="number" min="0" max="300" step="10" v-model="height">
+    </div>
   </modal>
 </template>
 
 <script>
-import { mapActions, mapMutations, mapState } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 
 export default {
   name: "OptionsMenu",
@@ -40,7 +44,8 @@ export default {
       "changeBaseOctave",
       "changeOpacity",
       "changeNaturalsColor",
-      "changeAccidentalsColor"
+      "changeAccidentalsColor",
+      "changeHeight"
     ]),
     modalOpened() {
       this.setState({
@@ -60,9 +65,9 @@ export default {
       storeBaseOctave: "baseOctave",
       storeOpacity: "opacity",
       storeNaturalsColor: "naturalsColor",
-      storeAccidentalsColor: "accidentalsColor"
+      storeAccidentalsColor: "accidentalsColor",
+      storeHeight: "height"
     }),
-    ...mapState("background", {}),
     //two way computed for updating store w/ v-model
     particleColor: {
       get() {
@@ -121,6 +126,16 @@ export default {
       set(value) {
         this.changeAccidentalsColor({
           accidentalsColor: value
+        })
+      }
+    },
+    height: {
+      get() {
+        return this.storeHeight
+      },
+      set(value) {
+        this.changeHeight({
+          height: value
         })
       }
     }
