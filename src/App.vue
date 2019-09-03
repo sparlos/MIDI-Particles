@@ -20,7 +20,7 @@ import Background from "./components/Background.vue";
 import OptionsMenu from "./components/OptionsMenu.vue";
 import ParticleSystem from "./logic/ParticleSystem";
 import Stats from "stats.js";
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapGetters } from "vuex";
 
 let previousTime = 0;
 
@@ -109,10 +109,12 @@ export default {
     //particle methods
     createParticleSystem(number, color, strength) {
       //calculate position
-      let el = this.midiAssignments[number];
+      let assignment = this.midiAssignments[number];
 
       //stop function if key not visible
-      if (!el) return;
+      if (!assignment) return;
+
+      let el = assignment.el;
 
       let rect = el.getBoundingClientRect();
       let center = Math.floor(rect.left + rect.width / 2);
@@ -144,7 +146,7 @@ export default {
       this.$set(this.activeNotes[note], "velocity", velocity);
 
       if (this.midiAssignments[note]) {
-        let el = this.midiAssignments[note];
+        let el = this.midiAssignments[note].el;
         el.children[0].style.opacity = 1;
       }
     },
@@ -153,7 +155,7 @@ export default {
       this.activeNotes[note].velocity = 0;
 
       if (this.midiAssignments[note]) {
-        let el = this.midiAssignments[note];
+        let el = this.midiAssignments[note].el;
         el.children[0].style.opacity = 0;
       }
     },
@@ -183,6 +185,9 @@ export default {
       particleColor: state => state.keyboard.particleColor,
       baseOctave: state => state.keyboard.baseOctave
     }),
+    ...mapGetters('keyboard', {
+      keyboardLength: 'length'
+    }),
     midiAssignments() {
       //for translating keys to midi values
       const WHITE_KEY_MAP = [0, 2, 4, 5, 7, 9, 11];
@@ -194,13 +199,17 @@ export default {
       for (let i = 0; i < this.whiteKeys.length; i++) {
         let octave = Math.floor(i / 7) * 12 + baseOctave;
         let midiValue = WHITE_KEY_MAP[i % 7] + octave;
-        mappedElements[midiValue] = this.whiteKeys[i];
+        mappedElements[midiValue] = {};
+        mappedElements[midiValue].el = this.whiteKeys[i];
+        mappedElements[midiValue].position = midiValue - baseOctave;
       }
 
       for (let i = 0; i < this.blackKeys.length; i++) {
         let octave = Math.floor(i / 5) * 12 + baseOctave;
         let midiValue = BLACK_KEY_MAP[i % 5] + octave;
-        mappedElements[midiValue] = this.blackKeys[i];
+        mappedElements[midiValue] = {};
+        mappedElements[midiValue].el = this.blackKeys[i];
+        mappedElements[midiValue].position = midiValue - baseOctave;
       }
 
       return mappedElements;

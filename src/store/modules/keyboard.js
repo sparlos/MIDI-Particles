@@ -13,6 +13,9 @@ const state = {
 const getters = {
   heightPixels: state => {
     return `${state.height}px`;
+  },
+  length: state => {
+    return 12 * state.octaves;
   }
 };
 
