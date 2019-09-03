@@ -79,7 +79,15 @@ export default {
       for (let noteNumber in this.activeNotes) {
         let note = this.activeNotes[noteNumber];
         if (note.on && !note.system) {
-          this.createParticleSystem(noteNumber, this.particleColor, note.velocity);
+          if(this.colorMode === 'gradient') {
+            if(this.midiAssignments[noteNumber]) {
+              let position = this.midiAssignments[noteNumber].position;
+              let color = this.gradientArray[position];
+              this.createParticleSystem(noteNumber, color, note.velocity);
+            }
+          } else if (this.colorMode === 'solid') {
+            this.createParticleSystem(noteNumber, this.particleColor, note.velocity);
+          }
         } else if (!note.on && note.system) {
           note.system.active = false;
           if (note.system.toBeDestroyed) note.system = null;
@@ -183,10 +191,12 @@ export default {
   computed: {
     ...mapState({
       particleColor: state => state.keyboard.particleColor,
-      baseOctave: state => state.keyboard.baseOctave
+      baseOctave: state => state.keyboard.baseOctave,
+      colorMode: state => state.keyboard.colorMode
     }),
     ...mapGetters('keyboard', {
-      keyboardLength: 'length'
+      keyboardLength: 'length',
+      gradientArray: 'gradientArray'
     }),
     midiAssignments() {
       //for translating keys to midi values

@@ -9,8 +9,21 @@
       <input type="number" min="1" max="5" v-model.number="baseOctave" />
     </div>
     <div class="input">
+      particle color mode:
+      <input type="radio" id="color-mode-solid" value="solid" v-model="colorMode">
+      <label for="color-mode-solid">solid</label>
+      <input type="radio" id="color-mode-gradient" value="gradient" v-model="colorMode">
+      <label for="color-mode-gradient">gradient</label>
+    </div>
+    <div class="input" v-if="colorMode === 'solid'">
       particle color:
       <input type="color" v-model="particleColor" />
+    </div>
+    <div class="input" v-if="colorMode === 'gradient'">
+      first stop:
+      <input type="color" :value="storeParticleGradient[0]" @input="handleGradientChange($event, 0)">
+      second stop:
+      <input type="color" :value="storeParticleGradient[1]" @input="handleGradientChange($event, 1)">
     </div>
     <div class="input">
       keyboard naturals color:
@@ -50,7 +63,9 @@ export default {
       "changeNaturalsColor",
       "changeAccidentalsColor",
       "changeHeight",
-      "changeVisible"
+      "changeVisible",
+      "changeColorMode",
+      "changeParticleGradient"
     ]),
     modalOpened() {
       this.setState({
@@ -60,6 +75,13 @@ export default {
     modalClosed() {
       this.setState({
         disabled: false
+      });
+    },
+    handleGradientChange(e, i) {
+      let color = e.target.value;
+      this.changeParticleGradient({
+        index: i,
+        color: color
       });
     }
   },
@@ -72,7 +94,9 @@ export default {
       storeNaturalsColor: "naturalsColor",
       storeAccidentalsColor: "accidentalsColor",
       storeHeight: "height",
-      storeVisible: "visible"
+      storeVisible: "visible",
+      storeColorMode: "colorMode",
+      storeParticleGradient: "particleGradient"
     }),
     //two way computed for updating store w/ v-model
     particleColor: {
@@ -152,6 +176,16 @@ export default {
       set(value) {
         this.changeVisible({
           visible: value
+        })
+      }
+    },
+    colorMode: {
+      get() {
+        return this.storeColorMode
+      },
+      set(value) {
+        this.changeColorMode({
+          colorMode: value
         })
       }
     }
