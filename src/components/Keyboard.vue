@@ -66,15 +66,18 @@ export default {
       "opacity",
       "disabled",
       "naturalsColor",
-      "accidentalsColor"
+      "accidentalsColor",
+      "visible"
     ]),
     ...mapGetters("keyboard", [
       "heightPixels"
     ]),
     keyboardStyle() {
+      //change height to 0 if visible is false
+      let height = this.visible ? this.heightPixels : 0;
       return {
         opacity: this.opacity,
-        height: this.heightPixels
+        height: height
       };
     }
   },

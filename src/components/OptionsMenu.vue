@@ -28,6 +28,10 @@
       keyboard height:
       <input type="number" min="0" max="300" step="10" v-model="height">
     </div>
+    <div class="input">
+      keyboard visible:
+      <input type="checkbox" v-model="visible">
+    </div>
   </modal>
 </template>
 
@@ -45,7 +49,8 @@ export default {
       "changeOpacity",
       "changeNaturalsColor",
       "changeAccidentalsColor",
-      "changeHeight"
+      "changeHeight",
+      "changeVisible"
     ]),
     modalOpened() {
       this.setState({
@@ -66,7 +71,8 @@ export default {
       storeOpacity: "opacity",
       storeNaturalsColor: "naturalsColor",
       storeAccidentalsColor: "accidentalsColor",
-      storeHeight: "height"
+      storeHeight: "height",
+      storeVisible: "visible"
     }),
     //two way computed for updating store w/ v-model
     particleColor: {
@@ -136,6 +142,16 @@ export default {
       set(value) {
         this.changeHeight({
           height: value
+        })
+      }
+    },
+    visible: {
+      get() {
+        return this.storeVisible
+      },
+      set(value) {
+        this.changeVisible({
+          visible: value
         })
       }
     }

@@ -6,7 +6,8 @@ const state = {
   opacity: 1,
   naturalsColor: '#ffffff',
   accidentalsColor: '#000000',
-  height: 150
+  height: 150,
+  visible: true
 };
 
 const getters = {
@@ -39,6 +40,9 @@ const actions = {
   },
   changeHeight({ commit }, payload){
     commit('changeHeight', payload);
+  },
+  changeVisible({ commit }, payload) {
+    commit('changeVisible', payload);
   }
 };
 
@@ -66,6 +70,9 @@ const mutations = {
   },
   changeHeight(state, payload){
     state.height = payload.height;
+  },
+  changeVisible(state, payload){
+    state.visible = payload.visible;
   }
 };
 
