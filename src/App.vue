@@ -257,10 +257,12 @@ export default {
 
 #app {
   overflow: hidden;
+  position: relative;
 }
 
 .container {
   width: 100vw;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
 }
 </style>
