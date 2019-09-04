@@ -45,6 +45,12 @@
       keyboard visible:
       <input type="checkbox" v-model="visible">
     </div>
+    <div class="input">
+      <ValidationProvider rules="secret" v-slot="{errors}">
+        <input type="text" v-model="email">
+        <span> {{ errors[0] }} </span>
+      </ValidationProvider>
+    </div>
   </modal>
 </template>
 
@@ -53,6 +59,9 @@ import { mapActions, mapState, mapGetters } from "vuex";
 
 export default {
   name: "OptionsMenu",
+  data: () => ({
+    email: ''
+  }),
   methods: {
     ...mapActions("keyboard", [
       "changeParticleColor",
