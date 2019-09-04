@@ -49,6 +49,10 @@
       Current URL: {{storeUrl}}
     </div>
     <div class="input">
+      Play on MIDI input?
+      <input type="checkbox" v-model="playOnMidi">
+    </div>
+    <div class="input">
       Change Background Video:
       <br>
       <ValidationProvider rules="required|youtubeUrl" name="url" v-slot="{errors, valid}">
@@ -84,7 +88,8 @@ export default {
       "changeParticleGradient"
     ]),
     ...mapActions("background", [
-      "changeUrl"
+      "changeUrl",
+      "changePlayOnMidi"
     ]),
     modalOpened() {
       this.setState({
@@ -137,7 +142,8 @@ export default {
       'accidentalsColor',
       'height',
       'visible',
-      'colorMode'
+      'colorMode',
+      'playOnMidi'
       ])
   },
   updated() {

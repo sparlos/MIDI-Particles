@@ -10,7 +10,8 @@ const state = {
     videos: [],
     colors: []
   },
-  overlayOpacity: .7
+  overlayOpacity: .7,
+  playOnMidi: false
 }
 
 const getters = {
@@ -25,6 +26,9 @@ const actions = {
   },
   changeVideoPlaying({ commit }, payload){
     commit('changeVideoPlaying', payload);
+  },
+  changePlayOnMidi({ commit }, payload){
+    commit('changePlayOnMidi', payload);
   }
 }
 
@@ -35,6 +39,9 @@ const mutations = {
   },
   changeVideoPlaying(state, payload){
     state.videoPlaying = payload.videoPlaying;
+  },
+  changePlayOnMidi(state, payload){
+    state.playOnMidi = payload.playOnMidi;
   }
 }
 

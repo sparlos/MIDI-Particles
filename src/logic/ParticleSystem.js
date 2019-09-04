@@ -40,7 +40,6 @@ export default class ParticleSystem {
       let particle = this.particles[this.currentParticle];
       if(particle.strength !== this.strength) {
         particle.changeStrength(this.strength);
-        console.log('updating!');
       }
       particle.active = true;
       if(this.currentParticle>=this.maxParticles-1) {

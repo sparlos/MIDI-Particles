@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="container">
-      <Background />
+      <Background ref="background" />
       <canvas ref="canvas"></canvas>
       <OptionsMenu @resetParticles="resetParticles" />
       <Keyboard
@@ -146,6 +146,11 @@ export default {
       this.blackKeys = black;
     },
     handleActivateNote(note, velocity) {
+      //deal with play video on first midi input
+      if(!this.videoPlaying && this.playOnMidi) {
+        this.$refs.background.player.playVideo();
+      }
+
       if (!this.activeNotes[note]) {
         this.$set(this.activeNotes, note, {});
       }
@@ -195,7 +200,8 @@ export default {
       particleColor: state => state.keyboard.particleColor,
       baseOctave: state => state.keyboard.baseOctave,
       colorMode: state => state.keyboard.colorMode,
-      videoPlaying: state => state.background.videoPlaying
+      videoPlaying: state => state.background.videoPlaying,
+      playOnMidi: state => state.background.playOnMidi
     }),
     ...mapGetters('keyboard', {
       keyboardLength: 'length',
