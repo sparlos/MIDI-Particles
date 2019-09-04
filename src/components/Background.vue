@@ -3,7 +3,14 @@
     <div class="background__overlay" :style="{opacity: overlayOpacity}"></div>
     <div class="background__color" v-if="type==='color'" :style="{backgroundColor: color}"></div>
     <div class="background__video" v-if="type==='video'">
-      <youtube :video-id="id" width="100%" height="100%" ref="youtube"></youtube>
+      <youtube
+        :video-id="id"
+        width="100%"
+        height="100%"
+        ref="youtube"
+        @playing="changeVideoPlaying({videoPlaying: true})"
+        @paused="changeVideoPlaying({videoPlaying: false})"
+      ></youtube>
     </div>
   </div>
 </template>
@@ -14,11 +21,20 @@ import { mapGetters, mapState, mapActions } from "vuex";
 export default {
   name: "Background",
   methods: {
-    ...mapActions('background', [
-      'changeUrl'
-    ]),
+    ...mapActions("background", ["changeUrl", "changeVideoPlaying"]),
     handleVideoError() {
-      console.log('bad');
+      console.log("bad");
+    },
+    setupShortcuts() {
+      document.addEventListener("keydown", e => {
+        if (e.key === " ") {
+          if (!this.videoPlaying) {
+            this.player.playVideo();
+          } else {
+            this.player.pauseVideo();
+          }
+        }
+      });
     }
   },
   computed: {
@@ -28,20 +44,30 @@ export default {
       "color",
       "url",
       "previousUrl",
+      "videoPlaying",
       "presets",
       "overlayOpacity"
-    ])
+    ]),
+    player() {
+      return this.$refs.youtube.player;
+    }
   },
   watch: {
     id(newValue, previousValue) {
       //https://www.youtube.com/watch?v=rZVxXro9YdA
-      if(newValue === null) {
+      if (newValue === null) {
         this.changeUrl({
           url: this.previousUrl
         }),
-        this.$toasted.show('That was not a valid YouTube URL! Reverting to previous URL...')
+          this.$toasted.show(
+            "That was not a valid YouTube URL! Reverting to previous URL..."
+          );
       }
     }
+  },
+  mounted() {
+    this.player.mute();
+    this.setupShortcuts();
   }
 };
 </script>

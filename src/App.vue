@@ -194,7 +194,8 @@ export default {
     ...mapState({
       particleColor: state => state.keyboard.particleColor,
       baseOctave: state => state.keyboard.baseOctave,
-      colorMode: state => state.keyboard.colorMode
+      colorMode: state => state.keyboard.colorMode,
+      videoPlaying: state => state.background.videoPlaying
     }),
     ...mapGetters('keyboard', {
       keyboardLength: 'length',
