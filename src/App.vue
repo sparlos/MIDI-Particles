@@ -20,7 +20,7 @@ import Background from "./components/Background.vue";
 import OptionsMenu from "./components/OptionsMenu.vue";
 import ParticleSystem from "./logic/ParticleSystem";
 import Stats from "stats.js";
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapGetters } from "vuex";
 
 let previousTime = 0;
 
@@ -79,7 +79,15 @@ export default {
       for (let noteNumber in this.activeNotes) {
         let note = this.activeNotes[noteNumber];
         if (note.on && !note.system) {
-          this.createParticleSystem(noteNumber, this.particleColor, note.velocity);
+          if(this.colorMode === 'gradient') {
+            if(this.midiAssignments[noteNumber]) {
+              let position = this.midiAssignments[noteNumber].position;
+              let color = this.gradientArray[position];
+              this.createParticleSystem(noteNumber, color, note.velocity);
+            }
+          } else if (this.colorMode === 'solid') {
+            this.createParticleSystem(noteNumber, this.particleColor, note.velocity);
+          }
         } else if (!note.on && note.system) {
           note.system.active = false;
           if (note.system.toBeDestroyed) note.system = null;
@@ -109,10 +117,12 @@ export default {
     //particle methods
     createParticleSystem(number, color, strength) {
       //calculate position
-      let el = this.midiAssignments[number];
+      let assignment = this.midiAssignments[number];
 
       //stop function if key not visible
-      if (!el) return;
+      if (!assignment) return;
+
+      let el = assignment.el;
 
       let rect = el.getBoundingClientRect();
       let center = Math.floor(rect.left + rect.width / 2);
@@ -140,11 +150,13 @@ export default {
         this.$set(this.activeNotes, note, {});
       }
 
-      this.$set(this.activeNotes[note], "on", true);
-      this.$set(this.activeNotes[note], "velocity", velocity);
+      let activeNote = this.activeNotes[note];
+
+      this.$set(activeNote, "on", true);
+      this.$set(activeNote, "velocity", velocity);
 
       if (this.midiAssignments[note]) {
-        let el = this.midiAssignments[note];
+        let el = this.midiAssignments[note].el;
         el.children[0].style.opacity = 1;
       }
     },
@@ -153,7 +165,7 @@ export default {
       this.activeNotes[note].velocity = 0;
 
       if (this.midiAssignments[note]) {
-        let el = this.midiAssignments[note];
+        let el = this.midiAssignments[note].el;
         el.children[0].style.opacity = 0;
       }
     },
@@ -181,7 +193,12 @@ export default {
   computed: {
     ...mapState({
       particleColor: state => state.keyboard.particleColor,
-      baseOctave: state => state.keyboard.baseOctave
+      baseOctave: state => state.keyboard.baseOctave,
+      colorMode: state => state.keyboard.colorMode
+    }),
+    ...mapGetters('keyboard', {
+      keyboardLength: 'length',
+      gradientArray: 'gradientArray'
     }),
     midiAssignments() {
       //for translating keys to midi values
@@ -194,13 +211,17 @@ export default {
       for (let i = 0; i < this.whiteKeys.length; i++) {
         let octave = Math.floor(i / 7) * 12 + baseOctave;
         let midiValue = WHITE_KEY_MAP[i % 7] + octave;
-        mappedElements[midiValue] = this.whiteKeys[i];
+        mappedElements[midiValue] = {};
+        mappedElements[midiValue].el = this.whiteKeys[i];
+        mappedElements[midiValue].position = midiValue - baseOctave;
       }
 
       for (let i = 0; i < this.blackKeys.length; i++) {
         let octave = Math.floor(i / 5) * 12 + baseOctave;
         let midiValue = BLACK_KEY_MAP[i % 5] + octave;
-        mappedElements[midiValue] = this.blackKeys[i];
+        mappedElements[midiValue] = {};
+        mappedElements[midiValue].el = this.blackKeys[i];
+        mappedElements[midiValue].position = midiValue - baseOctave;
       }
 
       return mappedElements;
