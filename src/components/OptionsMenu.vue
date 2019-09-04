@@ -56,6 +56,7 @@
 
 <script>
 import { mapActions, mapState, mapGetters } from "vuex";
+import mapComputeds from "../logic/mapComputeds";
 
 export default {
   name: "OptionsMenu",
@@ -108,96 +109,17 @@ export default {
       storeParticleGradient: "particleGradient"
     }),
     //two way computed for updating store w/ v-model
-    particleColor: {
-      get() {
-        return this.storeParticleColor;
-      },
-      set(value) {
-        this.changeParticleColor({
-          particleColor: value
-        });
-      }
-    },
-    octaves: {
-      get() {
-        return this.storeOctaves;
-      },
-      set(value) {
-        this.changeOctaves({
-          octaves: value
-        });
-      }
-    },
-    baseOctave: {
-      get() {
-        return this.storeBaseOctave;
-      },
-      set(value) {
-        this.changeBaseOctave({
-          baseOctave: value
-        });
-      }
-    },
-    opacity: {
-      get() {
-        return this.storeOpacity;
-      },
-      set(value) {
-        this.changeOpacity({
-          opacity: value
-        });
-      }
-    },
-    naturalsColor: {
-      get() {
-        return this.storeNaturalsColor;
-      },
-      set(value) {
-        this.changeNaturalsColor({
-          naturalsColor: value
-        });
-      }
-    },
-    accidentalsColor: {
-      get() {
-        return this.storeAccidentalsColor
-      },
-      set(value) {
-        this.changeAccidentalsColor({
-          accidentalsColor: value
-        })
-      }
-    },
-    height: {
-      get() {
-        return this.storeHeight
-      },
-      set(value) {
-        this.changeHeight({
-          height: value
-        })
-      }
-    },
-    visible: {
-      get() {
-        return this.storeVisible
-      },
-      set(value) {
-        this.changeVisible({
-          visible: value
-        })
-      }
-    },
-    colorMode: {
-      get() {
-        return this.storeColorMode
-      },
-      set(value) {
-        this.changeColorMode({
-          colorMode: value
-        })
-      }
-    }
+    ...mapComputeds([
+      'particleColor',
+      'octaves',
+      'baseOctave',
+      'opacity',
+      'naturalsColor',
+      'accidentalsColor',
+      'height',
+      'visible',
+      'colorMode',
+      ])
   },
   updated() {
     this.$emit("resetParticles");
