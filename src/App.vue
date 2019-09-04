@@ -150,8 +150,10 @@ export default {
         this.$set(this.activeNotes, note, {});
       }
 
-      this.$set(this.activeNotes[note], "on", true);
-      this.$set(this.activeNotes[note], "velocity", velocity);
+      let activeNote = this.activeNotes[note];
+
+      this.$set(activeNote, "on", true);
+      this.$set(activeNote, "velocity", velocity);
 
       if (this.midiAssignments[note]) {
         let el = this.midiAssignments[note].el;
