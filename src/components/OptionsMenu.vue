@@ -45,14 +45,34 @@
       keyboard visible:
       <input type="checkbox" v-model="visible">
     </div>
+    <div class="input">
+      Current URL: {{storeUrl}}
+    </div>
+    <div class="input">
+      Play on MIDI input?
+      <input type="checkbox" v-model="playOnMidi">
+    </div>
+    <div class="input">
+      Change Background Video:
+      <br>
+      <ValidationProvider rules="required|youtubeUrl" name="url" v-slot="{errors, valid}">
+        <input type="text" v-model="localUrl" ref="urlInput" @keyup.enter="changeVideo">
+        <button :disabled="!valid" @click="changeVideo">submit</button>
+        <span> {{ errors[0] }} </span>
+      </ValidationProvider>
+    </div>
   </modal>
 </template>
 
 <script>
 import { mapActions, mapState, mapGetters } from "vuex";
+import mapComputeds from "../logic/mapComputeds";
 
 export default {
   name: "OptionsMenu",
+  data: () => ({
+    localUrl: ''
+  }),
   methods: {
     ...mapActions("keyboard", [
       "changeParticleColor",
@@ -66,6 +86,10 @@ export default {
       "changeVisible",
       "changeColorMode",
       "changeParticleGradient"
+    ]),
+    ...mapActions("background", [
+      "changeUrl",
+      "changePlayOnMidi"
     ]),
     modalOpened() {
       this.setState({
@@ -83,6 +107,13 @@ export default {
         index: i,
         color: color
       });
+    },
+    changeVideo() {
+      // https://www.youtube.com/watch?v=DtzpGKadgew
+      this.changeUrl({
+        url: this.localUrl
+      })
+      this.localUrl = "";
     }
   },
   computed: {
@@ -98,97 +129,22 @@ export default {
       storeColorMode: "colorMode",
       storeParticleGradient: "particleGradient"
     }),
+    ...mapState("background", {
+      storeUrl: 'url'
+    }),
     //two way computed for updating store w/ v-model
-    particleColor: {
-      get() {
-        return this.storeParticleColor;
-      },
-      set(value) {
-        this.changeParticleColor({
-          particleColor: value
-        });
-      }
-    },
-    octaves: {
-      get() {
-        return this.storeOctaves;
-      },
-      set(value) {
-        this.changeOctaves({
-          octaves: value
-        });
-      }
-    },
-    baseOctave: {
-      get() {
-        return this.storeBaseOctave;
-      },
-      set(value) {
-        this.changeBaseOctave({
-          baseOctave: value
-        });
-      }
-    },
-    opacity: {
-      get() {
-        return this.storeOpacity;
-      },
-      set(value) {
-        this.changeOpacity({
-          opacity: value
-        });
-      }
-    },
-    naturalsColor: {
-      get() {
-        return this.storeNaturalsColor;
-      },
-      set(value) {
-        this.changeNaturalsColor({
-          naturalsColor: value
-        });
-      }
-    },
-    accidentalsColor: {
-      get() {
-        return this.storeAccidentalsColor
-      },
-      set(value) {
-        this.changeAccidentalsColor({
-          accidentalsColor: value
-        })
-      }
-    },
-    height: {
-      get() {
-        return this.storeHeight
-      },
-      set(value) {
-        this.changeHeight({
-          height: value
-        })
-      }
-    },
-    visible: {
-      get() {
-        return this.storeVisible
-      },
-      set(value) {
-        this.changeVisible({
-          visible: value
-        })
-      }
-    },
-    colorMode: {
-      get() {
-        return this.storeColorMode
-      },
-      set(value) {
-        this.changeColorMode({
-          colorMode: value
-        })
-      }
-    }
+    ...mapComputeds([
+      'particleColor',
+      'octaves',
+      'baseOctave',
+      'opacity',
+      'naturalsColor',
+      'accidentalsColor',
+      'height',
+      'visible',
+      'colorMode',
+      'playOnMidi'
+      ])
   },
   updated() {
     this.$emit("resetParticles");
