@@ -34,10 +34,12 @@ export default {
   },
   watch: {
     id(newValue, previousValue) {
+      //https://www.youtube.com/watch?v=rZVxXro9YdA
       if(newValue === null) {
         this.changeUrl({
           url: this.previousUrl
-        })
+        }),
+        this.$toasted.show('That was not a valid YouTube URL! Reverting to previous URL...')
       }
     }
   }
