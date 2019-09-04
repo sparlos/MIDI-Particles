@@ -9,19 +9,37 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from "vuex";
+import { mapGetters, mapState, mapActions } from "vuex";
 
 export default {
   name: "Background",
+  methods: {
+    ...mapActions('background', [
+      'changeUrl'
+    ]),
+    handleVideoError() {
+      console.log('bad');
+    }
+  },
   computed: {
     ...mapGetters("background", ["id"]),
     ...mapState("background", [
       "type",
       "color",
       "url",
+      "previousUrl",
       "presets",
       "overlayOpacity"
     ])
+  },
+  watch: {
+    id(newValue, previousValue) {
+      if(newValue === null) {
+        this.changeUrl({
+          url: this.previousUrl
+        })
+      }
+    }
   }
 };
 </script>

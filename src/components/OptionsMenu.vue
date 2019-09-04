@@ -46,8 +46,14 @@
       <input type="checkbox" v-model="visible">
     </div>
     <div class="input">
-      <ValidationProvider rules="secret" v-slot="{errors}">
-        <input type="text" v-model="email">
+      Current URL: {{storeUrl}}
+    </div>
+    <div class="input">
+      Change Background Video:
+      <br>
+      <ValidationProvider rules="required|youtubeUrl" name="url" v-slot="{errors, valid}">
+        <input type="text" v-model="localUrl" ref="urlInput" @keyup.enter="changeVideo">
+        <button :disabled="!valid" @click="changeVideo">submit</button>
         <span> {{ errors[0] }} </span>
       </ValidationProvider>
     </div>
@@ -61,7 +67,7 @@ import mapComputeds from "../logic/mapComputeds";
 export default {
   name: "OptionsMenu",
   data: () => ({
-    email: ''
+    localUrl: ''
   }),
   methods: {
     ...mapActions("keyboard", [
@@ -76,6 +82,9 @@ export default {
       "changeVisible",
       "changeColorMode",
       "changeParticleGradient"
+    ]),
+    ...mapActions("background", [
+      "changeUrl"
     ]),
     modalOpened() {
       this.setState({
@@ -93,6 +102,13 @@ export default {
         index: i,
         color: color
       });
+    },
+    changeVideo() {
+      // https://www.youtube.com/watch?v=DtzpGKadgew
+      this.changeUrl({
+        url: this.localUrl
+      })
+      this.localUrl = "";
     }
   },
   computed: {
@@ -108,6 +124,9 @@ export default {
       storeColorMode: "colorMode",
       storeParticleGradient: "particleGradient"
     }),
+    ...mapState("background", {
+      storeUrl: 'url'
+    }),
     //two way computed for updating store w/ v-model
     ...mapComputeds([
       'particleColor',
@@ -118,7 +137,7 @@ export default {
       'accidentalsColor',
       'height',
       'visible',
-      'colorMode',
+      'colorMode'
       ])
   },
   updated() {

@@ -4,6 +4,7 @@ const state = {
   type: 'video',
   color: 'green',
   url: 'https://www.youtube.com/watch?v=bZNFRIwlQxQ',
+  previousUrl: '',
   presets: {
     videos: [],
     colors: []
@@ -18,11 +19,16 @@ const getters = {
 }
 
 const actions = {
-
+  changeUrl({ commit }, payload){
+    commit('changeUrl', payload);
+  }
 }
 
 const mutations = { 
-
+  changeUrl(state, payload){
+    state.previousUrl = state.url;
+    state.url = payload.url;
+  }
 }
 
 export default {
