@@ -6,11 +6,16 @@
 
     <div class="content">
       <div class="navbar">
-        <div class="navbar__item" v-for="(item, i) in menus" :key="i">
+        <div
+          class="navbar__item"
+          :class="activeMenu === item.name ? 'navbar__item--active' : ''"
+          v-for="(item, i) in menus"
+          :key="i"
+        >
           <div class="icon">
-            <ion-icon name="heart"></ion-icon>
+            <ion-icon :name="item.icon"></ion-icon>
           </div>
-          <div class="name">{{item}}</div>
+          <div class="name">{{item.name}}</div>
         </div>
         <div class="navbar__spacer"></div>
         <div class="navbar__item navbar__footer">
@@ -22,12 +27,8 @@
       </div>
 
       <div class="main">
-        <div class="main__header">
-          Background Settings
-        </div>
-        <div class="options">
-          
-        </div>
+        <div class="main__header">Background Settings</div>
+        <div class="options"></div>
       </div>
     </div>
   </div>
@@ -37,7 +38,25 @@
 export default {
   name: "Settings",
   data: () => ({
-    menus: ["Background", "Keyboard", "Particles", "Presets"]
+    menus: [
+      {
+        name: "Background",
+        icon: "image"
+      },
+      {
+        name: "Keyboard",
+        icon: "musical-note"
+      },
+      {
+        name: "Particles",
+        icon: "color-wand"
+      },
+      {
+        name: "Presets",
+        icon: "list"
+      }
+    ],
+    activeMenu: "Background"
   })
 };
 </script>
@@ -96,6 +115,23 @@ $item-padding: calc(#{$item-height} / 2);
     align-items: center;
     font-size: 20px;
     font-weight: 500;
+    transition: color .2s, background-color .2s;
+
+    &--active {
+      color: #2699FB;
+      background-color: #F2F9FF;
+      position: relative;
+
+      &::after {
+        position: absolute;
+        content: '';
+        top: 0;
+        left: 0;
+        width: 2px;
+        height: 100%;
+        background-color: #2699FB;
+      }
+    }
 
     & .icon {
       display: flex;
@@ -120,7 +156,7 @@ $item-padding: calc(#{$item-height} / 2);
   flex: 1 0;
   margin-left: $main-margin;
   margin-right: $main-margin;
-  
+
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;

@@ -43,14 +43,6 @@ export default {
   overflow: hidden;
 }
 
-
-button {
-  position: fixed;
-  z-index: 10000;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
 //transition stuff
 .slide-enter {
   opacity: 0;
