@@ -9,7 +9,7 @@
       <input
         v-bind="setting.attributes"
         :value="getInputValue(setting.storeValue)"
-        @input="setInputValue($event, setting.storeValue, setting.storeAction)"
+        @input="setInputValue($event, setting.storeValue, setting.storeAction, setting.attributes.type)"
       />
     </BaseInput>
   </div>
@@ -30,18 +30,23 @@ export default {
   }),
   methods: {
     ...mapActions("keyboard", ["changeOctaves", "changeBaseOctave"]),
+    ...mapActions("view", ["changeView"]),
     getInputValue(name) {
       return this[name];
     },
-    setInputValue(e, name, action) {
+    setInputValue(e, name, action, type) {
+      let payloadValue = e.target.value;
+      if(type === 'number') payloadValue = e.target.valueAsNumber;
       action({
-        [name]: e.target.value
+        [name]: payloadValue
       });
     },
     handleKeyup(e) {
       switch(e.key) {
         case "Escape":
-          console.log('change back to perform view');
+          this.changeView({
+            view: 'perform'
+          })
           break;
       }
     }
@@ -50,6 +55,9 @@ export default {
     ...mapState("keyboard", {
       octaves: "octaves",
       baseOctave: "baseOctave"
+    }),
+    ...mapState("view", {
+      view: "view"
     }),
     settings() {
       return [
@@ -80,6 +88,9 @@ export default {
   },
   mounted() {
     document.addEventListener("keyup", this.handleKeyup);
+  },
+  beforeDestroy() {
+    document.removeEventListener("keyup", this.handleKeyup);
   }
 };
 </script>

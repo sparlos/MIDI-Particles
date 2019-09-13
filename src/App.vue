@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="container">
-      <transition name="slide" mode="out-in">
+      <transition :name="transition" mode="out-in">
         <Perform v-if="view === 'perform'" key="perform" />
         <Settings v-if="view === 'settings'" key="settings" />
       </transition>
@@ -13,15 +13,20 @@
 import Perform from "./views/Perform.vue";
 import Settings from "./views/Settings.vue";
 
+import { mapState } from "vuex";
+
 export default {
   name: "app",
   components: {
     Perform,
     Settings
   },
-  data: () => ({
-    view: "settings"
-  })
+  computed: {
+    ...mapState("view", ['view']),
+    transition() {
+      return this.view === 'perform' ? 'slide-left' : 'slide-right'
+    }
+  }
 };
 </script>
 
@@ -44,27 +49,51 @@ export default {
 }
 
 //transition stuff
-.slide-enter {
+.slide-left-enter {
   opacity: 0;
 }
 
-.slide-enter-active {
+.slide-left-enter-active {
   transition: opacity .15s;
 }
 
-.slide-enter-to {
+.slide-left-enter-to {
   opacity: 1;
 }
 
-.slide-leave {
+.slide-left-leave {
   transform: translateX(0);
 }
 
-.slide-leave-active {
+.slide-left-leave-active {
   transition: transform .3s;
 }
 
-.slide-leave-to {
+.slide-left-leave-to {
+  transform: translateX(100%);
+}
+
+.slide-right-enter {
+  opacity: 0;
+}
+
+.slide-right-enter-active {
+  transition: opacity .1s;
+}
+
+.slide-right-enter-to {
+  opacity: 1;
+}
+
+.slide-right-leave {
+  transform: translateX(0);
+}
+
+.slide-right-leave-active {
+  transition: transform .3s;
+}
+
+.slide-right-leave-to {
   transform: translateX(-100%);
 }
 </style>

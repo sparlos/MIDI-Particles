@@ -42,6 +42,7 @@ export default {
     stats: new Stats()
   }),
   methods: {
+    ...mapActions("view", ['changeView']),
     //canvas methods
     canvasSetup() {
       //resize canvas on window resize
@@ -185,6 +186,12 @@ export default {
       switch (e.key) {
         case "o":
           this.showModal();
+          break;
+
+        case "Escape":
+          this.changeView({
+            view: 'settings'
+          })
           break;
 
         default:
