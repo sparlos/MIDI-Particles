@@ -20,7 +20,7 @@ export default {
     Settings
   },
   data: () => ({
-    view: "perform"
+    view: "settings"
   })
 };
 </script>
@@ -29,7 +29,7 @@ export default {
 * {
   margin: 0;
   padding: 0;
-  font-family: "Open Sans", sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 #app {
