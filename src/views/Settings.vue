@@ -27,16 +27,25 @@
       </div>
 
       <div class="main">
-        <div class="main__header">Background Settings</div>
-        <div class="options"></div>
+        <div class="main__header">{{activeMenu}} Settings</div>
+        <div class="options">
+          <component :is="activeMenu + 'Settings'"></component>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import BackgroundSettings from "./settings/BackgroundSettings";
+import KeyboardSettings from "./settings/KeyboardSettings";
+
 export default {
   name: "Settings",
+  components: {
+    BackgroundSettings,
+    KeyboardSettings
+  },
   data: () => ({
     menus: [
       {
@@ -56,7 +65,7 @@ export default {
         icon: "list"
       }
     ],
-    activeMenu: "Background"
+    activeMenu: "Keyboard"
   })
 };
 </script>
@@ -172,5 +181,11 @@ $item-padding: calc(#{$item-height} / 2);
   background-color: white;
   flex: 1 0;
   overflow: scroll;
+  padding: 70px;
+}
+
+.settings-window {
+  display: flex;
+  flex-wrap: wrap;
 }
 </style>

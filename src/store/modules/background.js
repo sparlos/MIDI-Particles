@@ -6,10 +6,6 @@ const state = {
   url: 'https://www.youtube.com/watch?v=bZNFRIwlQxQ',
   previousUrl: '',
   videoPlaying: false,
-  presets: {
-    videos: [],
-    colors: []
-  },
   overlayOpacity: .7,
   playOnMidi: false
 }
