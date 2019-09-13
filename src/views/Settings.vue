@@ -4,20 +4,29 @@
       <div class="header__title">MIDI Particles</div>
     </div>
 
-    <div class="navbar">
-      <div class="navbar__item" v-for="(item, i) in menus" :key="i">
-        <div class="icon">
-          <ion-icon name="heart"></ion-icon>
+    <div class="content">
+      <div class="navbar">
+        <div class="navbar__item" v-for="(item, i) in menus" :key="i">
+          <div class="icon">
+            <ion-icon name="heart"></ion-icon>
+          </div>
+          <div class="name">{{item}}</div>
         </div>
-        <div class="name">{{item}}</div>
+        <div class="navbar__spacer"></div>
+        <div class="navbar__item navbar__footer">
+          <div class="icon">
+            <ion-icon name="arrow-back"></ion-icon>
+          </div>
+          <div class="name">Back to Perform</div>
+        </div>
       </div>
-      <div class="navbar__spacer"></div>
-      <div class="navbar__item navbar__footer">
-        <div class="icon">
-          <ion-icon name="arrow-back"></ion-icon>
+
+      <div class="main">
+        <div class="main__header">
+          Background Settings
         </div>
-        <div class="name">
-          Back to Perform
+        <div class="options">
+          
         </div>
       </div>
     </div>
@@ -64,10 +73,16 @@ $item-padding: calc(#{$item-height} / 2);
   }
 }
 
+.content {
+  height: calc((100% - #{$header-height}) - (#{$main-margin} * 2));
+  flex: 0 1 100%;
+  display: flex;
+}
+
 .navbar {
   flex: 0 1 20%;
   min-width: 250px;
-  height: calc((100% - #{$header-height}) - (#{$main-margin} * 2));
+  height: 100%;
   background-color: white;
   border: 1px solid rgba(0, 0, 0, 0.3);
   margin-left: $main-margin;
@@ -99,5 +114,27 @@ $item-padding: calc(#{$item-height} / 2);
   &__footer {
     height: calc(#{$item-height} * 1.5);
   }
+}
+
+.main {
+  flex: 1 0;
+  margin-left: $main-margin;
+  margin-right: $main-margin;
+  
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+
+  &__header {
+    width: 100%;
+    margin-bottom: 16px;
+    font-size: 35px;
+  }
+}
+
+.options {
+  background-color: white;
+  flex: 1 0;
+  overflow: scroll;
 }
 </style>
