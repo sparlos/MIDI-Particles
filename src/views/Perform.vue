@@ -179,16 +179,17 @@ export default {
     },
     //shortcut methods
     setupShortcuts() {
-      document.addEventListener("keyup", e => {
-        switch (e.key) {
-          case "o":
-            this.showModal();
-            break;
+      document.addEventListener("keyup", this.addListeners);
+    },
+    addListeners(e) {
+      switch (e.key) {
+        case "o":
+          this.showModal();
+          break;
 
-          default:
-            break;
-        }
-      });
+        default:
+          break;
+      }
     },
     //settings methods
     showModal() {
@@ -245,11 +246,12 @@ export default {
     this.setupShortcuts();
 
     //stats js stuff
-    this.stats.showPanel(0);
-    document.body.appendChild(this.stats.dom);
+    // this.stats.showPanel(0);
+    // document.body.appendChild(this.stats.dom);
   },
   beforeDestroy() {
     if (this.animationFrame) cancelAnimationFrame(this.animationFrame);
+    document.removeEventListener("keyup", this.addListeners);
   }
 };
 </script>
