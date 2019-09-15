@@ -82,6 +82,7 @@ export default {
           this.changeView({
             view: "perform"
           });
+          this.$toasted.clear();
           break;
       }
     }

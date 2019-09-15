@@ -21,10 +21,32 @@ export default {
     Perform,
     Settings
   },
+  data: () => ({
+    initialToast: false
+  }),
   computed: {
-    ...mapState("view", ['view']),
+    ...mapState("view", ["view"]),
     transition() {
-      return this.view === 'perform' ? 'slide-left' : 'slide-right'
+      return this.view === "perform" ? "slide-left" : "slide-right";
+    }
+  },
+  mounted() {
+    //show initial toast
+    if (!this.initialToast) {
+      this.$toasted.show(
+        "Press Escape to open settings & customize your experience!",
+        {
+          duration: 8000,
+          position: "top-center",
+          action: {
+            text: "close",
+            onClick: (e, toastObject) => {
+              toastObject.goAway(0);
+            }
+          }
+        }
+      );
+      this.initialToast = true;
     }
   }
 };
@@ -54,7 +76,7 @@ export default {
 }
 
 .slide-left-enter-active {
-  transition: opacity .15s;
+  transition: opacity 0.15s;
 }
 
 .slide-left-enter-to {
@@ -66,7 +88,7 @@ export default {
 }
 
 .slide-left-leave-active {
-  transition: transform .3s;
+  transition: transform 0.3s;
 }
 
 .slide-left-leave-to {
@@ -78,7 +100,7 @@ export default {
 }
 
 .slide-right-enter-active {
-  transition: opacity .1s;
+  transition: opacity 0.1s;
 }
 
 .slide-right-enter-to {
@@ -90,7 +112,7 @@ export default {
 }
 
 .slide-right-leave-active {
-  transition: transform .3s;
+  transition: transform 0.3s;
 }
 
 .slide-right-leave-to {

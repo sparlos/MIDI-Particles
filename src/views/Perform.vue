@@ -191,7 +191,8 @@ export default {
         case "Escape":
           this.changeView({
             view: 'settings'
-          })
+          });
+          this.$toasted.clear();
           break;
 
         default:
