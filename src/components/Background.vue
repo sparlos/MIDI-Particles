@@ -20,6 +20,9 @@ import { mapGetters, mapState, mapActions } from "vuex";
 
 export default {
   name: "Background",
+  data: () => ({
+    initialToast: false
+  }),
   methods: {
     ...mapActions("background", ["changeUrl", "changeVideoPlaying"]),
     handleVideoError() {
@@ -59,8 +62,18 @@ export default {
         this.changeUrl({
           url: this.previousUrl
         }),
-          this.$toasted.show(
-            "That was not a valid YouTube URL! Reverting to previous URL..."
+          this.$toasted.error(
+            "That was not a valid YouTube URL! Reverting to previous URL...",
+            {
+              duration: 3000,
+              position: 'bottom-right',
+              action: {
+                text: 'close',
+                onClick: (e, toastObject) => {
+                  toastObject.goAway(0);
+                }
+              }
+            }
           );
       }
     }

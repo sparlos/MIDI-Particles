@@ -1,16 +1,16 @@
 import gradient from "gradient-color";
-import rgbHex from 'rgb-hex';
+import rgbHex from "rgb-hex";
 
 const state = {
   particleColor: "#d16aff",
   particleGradient: ["#108dc7", "#ef8e38"],
-  colorMode: 'gradient',
+  colorMode: "gradient",
   disabled: false,
   octaves: 4,
   baseOctave: 3,
   opacity: 1,
-  naturalsColor: '#ffffff',
-  accidentalsColor: '#000000',
+  naturalsColor: "#ffffff",
+  accidentalsColor: "#000000",
   height: 150,
   visible: true
 };
@@ -24,7 +24,7 @@ const getters = {
   },
   gradientArray: (state, getters) => {
     let colors = gradient(state.particleGradient, getters.length);
-    colors.forEach((v, i) => colors[i] = `#${rgbHex(v)}`);
+    colors.forEach((v, i) => (colors[i] = `#${rgbHex(v)}`));
     return colors;
   }
 };
@@ -39,29 +39,29 @@ const actions = {
   changeOctaves({ commit }, payload) {
     commit("changeOctaves", payload);
   },
-  changeBaseOctave({commit}, payload) {
+  changeBaseOctave({ commit }, payload) {
     commit("changeBaseOctave", payload);
   },
-  changeOpacity({ commit }, payload){
-    commit('changeOpacity', payload);
+  changeOpacity({ commit }, payload) {
+    commit("changeOpacity", payload);
   },
-  changeNaturalsColor({ commit }, payload){
-    commit('changeNaturalsColor', payload);
+  changeNaturalsColor({ commit }, payload) {
+    commit("changeNaturalsColor", payload);
   },
-  changeAccidentalsColor({ commit }, payload){
-    commit('changeAccidentalsColor', payload);
+  changeAccidentalsColor({ commit }, payload) {
+    commit("changeAccidentalsColor", payload);
   },
-  changeHeight({ commit }, payload){
-    commit('changeHeight', payload);
+  changeHeight({ commit }, payload) {
+    commit("changeHeight", payload);
   },
   changeVisible({ commit }, payload) {
-    commit('changeVisible', payload);
+    commit("changeVisible", payload);
   },
-  changeColorMode({ commit }, payload){
-    commit('changeColorMode', payload);
+  changeColorMode({ commit }, payload) {
+    commit("changeColorMode", payload);
   },
-  changeParticleGradient({ commit }, payload){
-    commit('changeParticleGradient', payload);
+  changeParticleGradient({ commit }, payload) {
+    commit("changeParticleGradient", payload);
   }
 };
 
@@ -78,22 +78,22 @@ const mutations = {
   changeBaseOctave(state, payload) {
     state.baseOctave = payload.baseOctave;
   },
-  changeOpacity(state, payload){
+  changeOpacity(state, payload) {
     state.opacity = payload.opacity;
   },
-  changeNaturalsColor(state, payload){
+  changeNaturalsColor(state, payload) {
     state.naturalsColor = payload.naturalsColor;
   },
-  changeAccidentalsColor(state, payload){
+  changeAccidentalsColor(state, payload) {
     state.accidentalsColor = payload.accidentalsColor;
   },
-  changeHeight(state, payload){
+  changeHeight(state, payload) {
     state.height = payload.height;
   },
-  changeVisible(state, payload){
+  changeVisible(state, payload) {
     state.visible = payload.visible;
   },
-  changeColorMode(state, payload){
+  changeColorMode(state, payload) {
     state.colorMode = payload.colorMode;
   },
   changeParticleGradient(state, payload) {

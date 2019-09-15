@@ -18,11 +18,7 @@ Vue.component('ValidationProvider', ValidationProvider);
 Vue.config.productionTip = false
 Vue.use(VueYoutube)
 Vue.use(VModal)
-Vue.use(Toasted, {
-  position: 'bottom-right',
-  duration: 3000,
-  type: 'error'
-})
+Vue.use(Toasted)
 
 new Vue({
   store,
