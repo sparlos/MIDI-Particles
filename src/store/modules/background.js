@@ -25,6 +25,9 @@ const actions = {
   },
   changePlayOnMidi({ commit }, payload){
     commit('changePlayOnMidi', payload);
+  },
+  changeOverlayOpacity({ commit }, payload){
+    commit('changeOverlayOpacity', payload);
   }
 }
 
@@ -38,6 +41,9 @@ const mutations = {
   },
   changePlayOnMidi(state, payload){
     state.playOnMidi = payload.playOnMidi;
+  },
+  changeOverlayOpacity(state, payload) {
+    state.overlayOpacity = payload.overlayOpacity;
   }
 }
 

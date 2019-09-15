@@ -11,7 +11,9 @@
           :class="activeMenu === item.name ? 'navbar__item--active' : ''"
           v-for="(item, i) in menus"
           :key="i"
-          @click="activeMenu = item.name"
+          @click="changeActiveMenu({
+            activeMenu: item.name
+          })"
         >
           <div class="icon">
             <ion-icon :name="item.icon"></ion-icon>
@@ -66,16 +68,16 @@ export default {
         name: "Presets",
         icon: "list"
       }
-    ],
-    activeMenu: "Keyboard"
+    ]
   }),
   computed: {
     ...mapState("view", {
-      view: "view"
+      view: "view",
+      activeMenu: "activeMenu"
     })
-  },
+  },  
   methods: {
-    ...mapActions("view", ["changeView"]),
+    ...mapActions("view", ["changeView", "changeActiveMenu"]),
     handleKeyup(e) {
       switch (e.key) {
         case "Escape":

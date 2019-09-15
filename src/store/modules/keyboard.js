@@ -4,7 +4,7 @@ import rgbHex from "rgb-hex";
 const state = {
   particleColor: "#d16aff",
   particleGradient: ["#108dc7", "#ef8e38"],
-  colorMode: "gradient",
+  colorMode: "solid",
   disabled: false,
   octaves: 4,
   baseOctave: 3,

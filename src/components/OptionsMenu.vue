@@ -121,7 +121,7 @@ export default {
        this.changeUrl({
          url: this.localUrl
        });
-       this.localUrl = "";
+       this.localUrl = "";  
      }
     }
   },

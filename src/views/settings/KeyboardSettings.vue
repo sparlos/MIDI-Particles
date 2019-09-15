@@ -36,7 +36,6 @@ export default {
       "changeHeight",
       "changeVisible"
     ]),
-    ...mapActions("view", ["changeView"]),
     getInputValue(name) {
       return this[name];
     },
