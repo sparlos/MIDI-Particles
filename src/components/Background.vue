@@ -1,6 +1,6 @@
 <template>
   <div class="background">
-    <div class="background__overlay" :style="{opacity: overlayOpacity}"></div>
+    <div class="background__overlay" v-if="type==='video'" :style="{opacity: overlayOpacity}"></div>
     <div class="background__color" v-if="type==='color'" :style="{backgroundColor: color}"></div>
     <div class="background__video" v-if="type==='video'">
       <youtube
