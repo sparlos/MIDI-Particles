@@ -11,6 +11,7 @@
           :class="activeMenu === item.name ? 'navbar__item--active' : ''"
           v-for="(item, i) in menus"
           :key="i"
+          @click="activeMenu = item.name"
         >
           <div class="icon">
             <ion-icon :name="item.icon"></ion-icon>
@@ -125,6 +126,10 @@ $item-padding: calc(#{$item-height} / 2);
     font-size: 20px;
     font-weight: 500;
     transition: color .2s, background-color .2s;
+
+    &:hover {
+      cursor: pointer;
+    }
 
     &--active {
       color: #2699FB;

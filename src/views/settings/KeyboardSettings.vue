@@ -25,37 +25,49 @@ export default {
   components: {
     BaseInput
   },
-  data: () => ({
-    
-  }),
+  data: () => ({}),
   methods: {
-    ...mapActions("keyboard", ["changeOctaves", "changeBaseOctave"]),
+    ...mapActions("keyboard", [
+      "changeOctaves",
+      "changeBaseOctave",
+      "changeNaturalsColor",
+      "changeAccidentalsColor",
+      "changeOpacity",
+      "changeHeight",
+      "changeVisible"
+    ]),
     ...mapActions("view", ["changeView"]),
     getInputValue(name) {
       return this[name];
     },
     setInputValue(e, name, action, type) {
       let payloadValue = e.target.value;
-      if(type === 'number') payloadValue = e.target.valueAsNumber;
+      if (type === "number") payloadValue = e.target.valueAsNumber;
+      if(type === "checkbox") payloadValue = event.target.checked;
       action({
         [name]: payloadValue
       });
     },
     handleKeyup(e) {
-      switch(e.key) {
+      switch (e.key) {
         case "Escape":
           this.changeView({
-            view: 'perform'
-          })
+            view: "perform"
+          });
           break;
       }
     }
   },
   computed: {
-    ...mapState("keyboard", {
-      octaves: "octaves",
-      baseOctave: "baseOctave"
-    }),
+    ...mapState("keyboard", [
+      "octaves",
+      "baseOctave",
+      "naturalsColor",
+      "accidentalsColor",
+      "opacity",
+      "height",
+      "visible"
+    ]),
     ...mapState("view", {
       view: "view"
     }),
@@ -82,7 +94,47 @@ export default {
             min: 0,
             max: 5
           }
-        }
+        },
+        {
+          title: "Naturals Color",
+          subtitle: "(these are usually white on a piano)",
+          storeValue: "naturalsColor",
+          storeAction: this.changeNaturalsColor,
+          attributes: {
+            type: "color"
+          }
+        },
+        {
+          title: "Accidentals Color",
+          subtitle: "(these are usually black on a piano)",
+          storeValue: "accidentalsColor",
+          storeAction: this.changeAccidentalsColor,
+          attributes: {
+            type: "color"
+          }
+        },
+        {
+          title: "Keyboard Height",
+          subtitle: "Between 0-500",
+          storeValue: "height",
+          storeAction: this.changeHeight,
+          attributes: {
+            type: "number",
+            min: "0",
+            max: "500",
+            step: "10"
+          }
+        },
+        {
+          title: "Keyboard Visible",
+          subtitle: "(Particles will remain visible)",
+          storeValue: "visible",
+          storeAction: this.changeVisible,
+          attributes: {
+            type: "checkbox",
+            checked: this.visible
+          }
+        },
       ];
     }
   },
