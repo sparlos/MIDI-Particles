@@ -40,6 +40,7 @@
 <script>
 import BackgroundSettings from "./settings/BackgroundSettings";
 import KeyboardSettings from "./settings/KeyboardSettings";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "Settings",
@@ -67,7 +68,30 @@ export default {
       }
     ],
     activeMenu: "Keyboard"
-  })
+  }),
+  computed: {
+    ...mapState("view", {
+      view: "view"
+    })
+  },
+  methods: {
+    ...mapActions("view", ["changeView"]),
+    handleKeyup(e) {
+      switch (e.key) {
+        case "Escape":
+          this.changeView({
+            view: "perform"
+          });
+          break;
+      }
+    }
+  },
+  mounted() {
+    document.addEventListener("keyup", this.handleKeyup);
+  },
+  beforeDestroy() {
+    document.removeEventListener("keyup", this.handleKeyup);
+  }
 };
 </script>
 
@@ -125,25 +149,25 @@ $item-padding: calc(#{$item-height} / 2);
     align-items: center;
     font-size: 20px;
     font-weight: 500;
-    transition: color .2s, background-color .2s;
+    transition: color 0.2s, background-color 0.2s;
 
     &:hover {
       cursor: pointer;
     }
 
     &--active {
-      color: #2699FB;
-      background-color: #F2F9FF;
+      color: #2699fb;
+      background-color: #f2f9ff;
       position: relative;
 
       &::after {
         position: absolute;
-        content: '';
+        content: "";
         top: 0;
         left: 0;
         width: 2px;
         height: 100%;
-        background-color: #2699FB;
+        background-color: #2699fb;
       }
     }
 

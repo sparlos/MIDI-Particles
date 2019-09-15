@@ -47,15 +47,6 @@ export default {
       action({
         [name]: payloadValue
       });
-    },
-    handleKeyup(e) {
-      switch (e.key) {
-        case "Escape":
-          this.changeView({
-            view: "perform"
-          });
-          break;
-      }
     }
   },
   computed: {
@@ -68,9 +59,6 @@ export default {
       "height",
       "visible"
     ]),
-    ...mapState("view", {
-      view: "view"
-    }),
     settings() {
       return [
         {
@@ -134,15 +122,9 @@ export default {
             type: "checkbox",
             checked: this.visible
           }
-        },
+        }
       ];
     }
-  },
-  mounted() {
-    document.addEventListener("keyup", this.handleKeyup);
-  },
-  beforeDestroy() {
-    document.removeEventListener("keyup", this.handleKeyup);
   }
 };
 </script>
