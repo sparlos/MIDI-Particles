@@ -52,7 +52,7 @@ export default {
       "overlayOpacity"
     ]),
     player() {
-      return this.$refs.youtube.player;
+      if(this.$refs.youtube) return this.$refs.youtube.player;
     }
   },
   watch: {
@@ -79,7 +79,7 @@ export default {
     }
   },
   mounted() {
-    this.player.mute();
+    if(this.player) this.player.mute();
     this.setupShortcuts();
   }
 };

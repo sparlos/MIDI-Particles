@@ -6,7 +6,17 @@
       :title="setting.title"
       :subtitle="setting.subtitle"
     >
+      <select
+        name
+        id
+        v-if="setting.multi"
+        :value="getInputValue(setting.storeValue)"
+        @input="setInputValue($event, setting.storeValue, setting.storeAction, setting.attributes.type)"
+      >
+        <option v-for="option in setting.options" :key="option" :value="option">{{option}}</option>
+      </select>
       <input
+        v-else
         v-bind="setting.attributes"
         :value="getInputValue(setting.storeValue)"
         @input="setInputValue($event, setting.storeValue, setting.storeAction, setting.attributes.type)"
@@ -29,7 +39,9 @@ export default {
   methods: {
     ...mapActions("background", [
       "changeOverlayOpacity",
-      "changePlayOnMidi"
+      "changePlayOnMidi",
+      "changeType",
+      "changeColor"
     ]),
     getInputValue(name) {
       return this[name];
@@ -37,7 +49,7 @@ export default {
     setInputValue(e, name, action, type) {
       let payloadValue = e.target.value;
       if (type === "number") payloadValue = e.target.valueAsNumber;
-      if(type === "checkbox") payloadValue = event.target.checked;
+      if (type === "checkbox") payloadValue = event.target.checked;
       action({
         [name]: payloadValue
       });
@@ -46,7 +58,9 @@ export default {
   computed: {
     ...mapState("background", [
       "overlayOpacity",
-      "playOnMidi"
+      "playOnMidi",
+      "type",
+      "color"
     ]),
     settings() {
       return [
@@ -72,6 +86,24 @@ export default {
             checked: this.playOnMidi
           }
         },
+        {
+          title: "Background Type",
+          subtitle: "Video or solid color background",
+          storeValue: "type",
+          storeAction: this.changeType,
+          multi: true,
+          options: ["color", "video"],
+          attributes: {}
+        },
+        {
+          title: "Solid Background Color",
+          subtitle: "Color of the background when a it's a solid color",
+          storeValue: "color",
+          storeAction: this.changeColor,
+          attributes: {
+            type: "color"
+          }
+        }
       ];
     }
   }

@@ -1,5 +1,5 @@
 const state = {
-  view: "perform",
+  view: "settings",
   activeMenu: "Background"
 }
 

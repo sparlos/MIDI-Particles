@@ -1,8 +1,8 @@
 import { getIdFromUrl } from 'vue-youtube';
 
 const state = {
-  type: 'video',
-  color: 'green',
+  type: 'color',
+  color: '#fff000',
   url: 'https://www.youtube.com/watch?v=bZNFRIwlQxQ',
   previousUrl: '',
   videoPlaying: false,
@@ -28,6 +28,12 @@ const actions = {
   },
   changeOverlayOpacity({ commit }, payload){
     commit('changeOverlayOpacity', payload);
+  },
+  changeType({ commit }, payload){
+    commit('changeType', payload);
+  },
+  changeColor({ commit }, payload) {
+    commit('changeColor', payload);
   }
 }
 
@@ -44,6 +50,12 @@ const mutations = {
   },
   changeOverlayOpacity(state, payload) {
     state.overlayOpacity = payload.overlayOpacity;
+  },
+  changeType(state, payload) {
+    state.type = payload.type;
+  },
+  changeColor(state, payload) {
+    state.color = payload.color;
   }
 }
 
