@@ -40,10 +40,11 @@ export default {
     localUrl: ""
   }),
   methods: {
-    ...mapActions("keyboard", [
-      "changeColorMode",
-      "changeParticleColor",
-      "changeParticleGradient"
+    ...mapActions("particles", [
+      "changeMode",
+      "changeColor",
+      "changeGradientStart",
+      "changeGradientEnd"
     ]),
     getInputValue(name) {
       return this[name];
@@ -58,15 +59,16 @@ export default {
     }
   },
   computed: {
-    ...mapState("keyboard", [
-      "colorMode",
-      "particleColor",
-      "particleGradient"
+    ...mapState("particles", [
+      "mode",
+      "color",
+      "gradientStart",
+      "gradientEnd"
     ]),
     activeSettings() {
       return this.settings.filter((setting) => {
         if(setting.visible) {
-          return setting.visible === this.colorMode;
+          return setting.visible === this.mode;
         }
         return true;
         });
@@ -76,8 +78,8 @@ export default {
         {
           title: "Particle Type",
           subtitle: "Single color or gradient",
-          storeValue: "colorMode",
-          storeAction: this.changeColorMode,
+          storeValue: "mode",
+          storeAction: this.changeMode,
           multi: true,
           options: ["solid", "gradient"],
           attributes: {}
@@ -85,9 +87,29 @@ export default {
         {
           title: "Color",
           subtitle: "Changes color of particles",
-          storeValue: "particleColor",
-          storeAction: this.changeParticleColor,
+          storeValue: "color",
+          storeAction: this.changeColor,
           visible: 'solid',
+          attributes: {
+            type: "color"
+          }
+        },
+        {
+          title: "Gradient Start",
+          subtitle: "Changes color of the start of the gradient",
+          storeValue: "gradientStart",
+          storeAction: this.changeGradientStart,
+          visible: 'gradient',
+          attributes: {
+            type: "color"
+          }
+        },
+        {
+          title: "Gradient End",
+          subtitle: "Changes color of the end of the gradient",
+          storeValue: "gradientEnd",
+          storeAction: this.changeGradientEnd,
+          visible: 'gradient',
           attributes: {
             type: "color"
           }

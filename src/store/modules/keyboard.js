@@ -1,10 +1,4 @@
-import gradient from "gradient-color";
-import rgbHex from "rgb-hex";
-
 const state = {
-  particleColor: "#d16aff",
-  particleGradient: ["#108dc7", "#ef8e38"],
-  colorMode: "solid",
   disabled: false,
   octaves: 4,
   baseOctave: 3,
@@ -21,18 +15,10 @@ const getters = {
   },
   keyLength: state => {
     return 12 * state.octaves;
-  },
-  gradientArray: (state, getters) => {
-    let colors = gradient(state.particleGradient, getters.length);
-    colors.forEach((v, i) => (colors[i] = `#${rgbHex(v)}`));
-    return colors;
   }
 };
 
 const actions = {
-  changeParticleColor({ commit }, payload) {
-    commit("changeParticleColor", payload);
-  },
   setState({ commit }, payload) {
     commit("setState", payload);
   },
@@ -56,19 +42,10 @@ const actions = {
   },
   changeVisible({ commit }, payload) {
     commit("changeVisible", payload);
-  },
-  changeColorMode({ commit }, payload) {
-    commit("changeColorMode", payload);
-  },
-  changeParticleGradient({ commit }, payload) {
-    commit("changeParticleGradient", payload);
   }
 };
 
 const mutations = {
-  changeParticleColor(state, payload) {
-    state.particleColor = payload.particleColor;
-  },
   setState(state, payload) {
     state.disabled = payload.disabled;
   },
@@ -92,12 +69,6 @@ const mutations = {
   },
   changeVisible(state, payload) {
     state.visible = payload.visible;
-  },
-  changeColorMode(state, payload) {
-    state.colorMode = payload.colorMode;
-  },
-  changeParticleGradient(state, payload) {
-    state.particleGradient.splice(payload.index, 1, payload.color);
   }
 };
 
