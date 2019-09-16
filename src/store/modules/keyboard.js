@@ -1,12 +1,14 @@
+import low from 'lowdb';
+import LocalStorage from 'lowdb/adapters/LocalStorage';
+
+const adapter = new LocalStorage('db');
+const db = low(adapter);
+
+let savedValues = db.get('keyboard').value();
+
 const state = {
   disabled: false,
-  octaves: 4,
-  baseOctave: 3,
-  opacity: 1,
-  naturalsColor: "#ffffff",
-  accidentalsColor: "#000000",
-  height: 150,
-  visible: true
+  ...savedValues
 };
 
 const getters = {
@@ -23,24 +25,31 @@ const actions = {
     commit("setState", payload);
   },
   changeOctaves({ commit }, payload) {
+    db.set('keyboard.octaves', payload.octaves).write();
     commit("changeOctaves", payload);
   },
   changeBaseOctave({ commit }, payload) {
+    db.set('keyboard.baseOctave', payload.baseOctave).write();
     commit("changeBaseOctave", payload);
   },
   changeOpacity({ commit }, payload) {
+    db.set('keyboard.opacity', payload.opacity).write();
     commit("changeOpacity", payload);
   },
   changeNaturalsColor({ commit }, payload) {
+    db.set('keyboard.naturalsColor', payload.naturalsColor).write();
     commit("changeNaturalsColor", payload);
   },
   changeAccidentalsColor({ commit }, payload) {
+    db.set('keyboard.accidentalsColor', payload.accidentalsColor).write();
     commit("changeAccidentalsColor", payload);
   },
   changeHeight({ commit }, payload) {
+    db.set('keyboard.height', payload.height).write();
     commit("changeHeight", payload);
   },
   changeVisible({ commit }, payload) {
+    db.set('keyboard.visible', payload.visible).write();
     commit("changeVisible", payload);
   }
 };

@@ -1,11 +1,20 @@
+import low from 'lowdb';
+import LocalStorage from 'lowdb/adapters/LocalStorage';
+
+const adapter = new LocalStorage('db');
+const db = low(adapter);
+
+let savedValues = db.get('shortcuts').value();
+
 const state = {
-  toggleVideo: " "
+  ...savedValues
 }
 
 const getters = {}
 
 const actions = {
   changeShortcut({ commit }, payload) {
+    db.set(`shortcuts.${payload.action}`, payload.key).write();
     commit('changeShortcut', payload);
   }
 }
