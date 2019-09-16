@@ -19,7 +19,7 @@ const getters = {
   heightPixels: state => {
     return `${state.height}px`;
   },
-  length: state => {
+  keyLength: state => {
     return 12 * state.octaves;
   },
   gradientArray: (state, getters) => {

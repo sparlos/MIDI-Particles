@@ -213,14 +213,16 @@ export default {
   },
   computed: {
     ...mapState({
-      particleColor: state => state.keyboard.particleColor,
+      particleColor: state => state.particles.color,
       baseOctave: state => state.keyboard.baseOctave,
-      colorMode: state => state.keyboard.colorMode,
+      colorMode: state => state.particles.mode,
       videoPlaying: state => state.background.videoPlaying,
       playOnMidi: state => state.background.playOnMidi
     }),
     ...mapGetters("keyboard", {
-      keyboardLength: "length",
+      keyboardLength: "keyLength"
+    }),
+    ...mapGetters("particles", {
       gradientArray: "gradientArray"
     }),
     midiAssignments() {
