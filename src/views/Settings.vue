@@ -1,9 +1,5 @@
 <template>
   <div class="settings">
-    <div class="header">
-      <div class="header__title">MIDI Particles</div>
-    </div>
-
     <div class="content">
       <div class="navbar">
         <div
@@ -118,6 +114,7 @@ $header-height: 75px;
 $title-margin: 80px;
 $item-height: 60px;
 $item-padding: calc(#{$item-height} / 2);
+$bg-color: white;
 
 .settings {
   display: flex;
@@ -128,32 +125,18 @@ $item-padding: calc(#{$item-height} / 2);
   background-color: rgba(0, 0, 0, 0.2);
 }
 
-.header {
-  flex: 0 1 100%;
-  background-color: white;
-  height: $header-height;
-  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.2);
-  display: flex;
-  align-items: center;
-
-  &__title {
-    margin-left: $title-margin;
-    font-size: 30px;
-    font-weight: bold;
-  }
-}
-
 .content {
   height: calc((100% - #{$header-height}) - (#{$main-margin} * 2));
   flex: 0 1 100%;
   display: flex;
+  margin-top: 50px;
 }
 
 .navbar {
   flex: 0 1 20%;
   min-width: 250px;
   height: 100%;
-  background-color: white;
+  background-color: $bg-color;
   border: 1px solid rgba(0, 0, 0, 0.3);
   margin-left: $main-margin;
   display: flex;
@@ -217,7 +200,7 @@ $item-padding: calc(#{$item-height} / 2);
   flex-direction: column;
 
   &__header {
-    background-color: white; 
+    background-color: $bg-color; 
     margin-bottom: 16px;
     padding: 10px 25px;
     border-radius: 3px;
@@ -227,7 +210,7 @@ $item-padding: calc(#{$item-height} / 2);
 }
 
 .options {
-  background-color: white;
+  background-color: $bg-color;
   flex: 1 0;
   overflow: scroll;
   padding: 70px;

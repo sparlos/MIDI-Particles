@@ -113,6 +113,18 @@ export default {
           }
         },
         {
+          title: "Keyboard Opacity",
+          subtitle: "Between 0-1",
+          storeValue: "opacity",
+          storeAction: this.changeOpacity,
+          attributes: {
+            type: "number",
+            min: 0,
+            max: 1,
+            step: 0.1
+          }
+        },
+        {
           title: "Keyboard Visible",
           subtitle: "(Particles will remain visible)",
           storeValue: "visible",

@@ -46,6 +46,7 @@ export default {
     canvasSetup() {
       //resize canvas on window resize
       window.addEventListener("resize", () => {
+        this.resetParticles();
         this.resizeCanvas();
       });
     },
