@@ -25,7 +25,7 @@
           <div class="icon">
             <ion-icon name="arrow-back"></ion-icon>
           </div>
-          <div class="name">Back to Perform</div>
+          <div class="name" @click="changeView({view: 'perform'})">Back to Perform</div>
         </div>
       </div>
 
