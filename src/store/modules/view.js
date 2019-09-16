@@ -1,6 +1,6 @@
 const state = {
-  view: "settings",
-  activeMenu: "Shortcut"
+  view: "perform",
+  activeMenu: "Background"
 }
 
 const actions = {
