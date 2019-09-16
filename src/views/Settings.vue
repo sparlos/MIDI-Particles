@@ -1,9 +1,5 @@
 <template>
   <div class="settings">
-    <div class="header">
-      <div class="header__title">MIDI Particles</div>
-    </div>
-
     <div class="content">
       <div class="navbar">
         <div
@@ -18,7 +14,7 @@
           <div class="icon">
             <ion-icon :name="item.icon"></ion-icon>
           </div>
-          <div class="name">{{item.name}}</div>
+          <div class="name">{{item.label}}</div>
         </div>
         <div class="navbar__spacer"></div>
         <div class="navbar__item navbar__footer">
@@ -42,31 +38,45 @@
 <script>
 import BackgroundSettings from "./settings/BackgroundSettings";
 import KeyboardSettings from "./settings/KeyboardSettings";
+import ParticleSettings from "./settings/ParticleSettings";
+import ShortcutSettings from "./settings/ShortcutSettings";
 import { mapState, mapActions } from "vuex";
 
 export default {
   name: "Settings",
   components: {
     BackgroundSettings,
-    KeyboardSettings
+    KeyboardSettings,
+    ParticleSettings,
+    ShortcutSettings
   },
   data: () => ({
     menus: [
       {
         name: "Background",
+        label: "Background",
         icon: "image"
       },
       {
         name: "Keyboard",
+        label: "Keyboard",
         icon: "musical-note"
       },
       {
-        name: "Particles",
+        name: "Particle",
+        label: "Particles",
         icon: "color-wand"
       },
+      //re-add when you actually have a preset system
+      // {
+      //   name: "Preset",
+      //   label: "Presets",
+      //   icon: "bookmark"
+      // },
       {
-        name: "Presets",
-        icon: "list"
+        name: "Shortcut",
+        label: "Shortcuts",
+        icon: "square-outline"
       }
     ]
   }),
@@ -104,6 +114,7 @@ $header-height: 75px;
 $title-margin: 80px;
 $item-height: 60px;
 $item-padding: calc(#{$item-height} / 2);
+$bg-color: white;
 
 .settings {
   display: flex;
@@ -114,32 +125,18 @@ $item-padding: calc(#{$item-height} / 2);
   background-color: rgba(0, 0, 0, 0.2);
 }
 
-.header {
-  flex: 0 1 100%;
-  background-color: white;
-  height: $header-height;
-  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.2);
-  display: flex;
-  align-items: center;
-
-  &__title {
-    margin-left: $title-margin;
-    font-size: 30px;
-    font-weight: bold;
-  }
-}
-
 .content {
   height: calc((100% - #{$header-height}) - (#{$main-margin} * 2));
   flex: 0 1 100%;
   display: flex;
+  margin-top: 50px;
 }
 
 .navbar {
   flex: 0 1 20%;
   min-width: 250px;
   height: 100%;
-  background-color: white;
+  background-color: $bg-color;
   border: 1px solid rgba(0, 0, 0, 0.3);
   margin-left: $main-margin;
   display: flex;
@@ -203,17 +200,21 @@ $item-padding: calc(#{$item-height} / 2);
   flex-direction: column;
 
   &__header {
-    width: 100%;
+    background-color: $bg-color; 
     margin-bottom: 16px;
+    padding: 10px 25px;
+    border-radius: 3px;
     font-size: 35px;
+    align-self: flex-start;
   }
 }
 
 .options {
-  background-color: white;
+  background-color: $bg-color;
   flex: 1 0;
   overflow: scroll;
   padding: 70px;
+  border-radius: 5px;
 }
 
 .settings-window {

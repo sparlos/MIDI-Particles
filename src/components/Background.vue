@@ -1,8 +1,8 @@
 <template>
   <div class="background">
     <div class="background__overlay" v-if="type==='video'" :style="{opacity: overlayOpacity}"></div>
-    <div class="background__color" v-if="type==='color'" :style="{backgroundColor: color}"></div>
-    <div class="background__video" v-if="type==='video'">
+    <div class="background__color" v-show="type==='color'" :style="{backgroundColor: color}"></div>
+    <div class="background__video" v-show="type==='video'">
       <youtube
         :video-id="id"
         width="100%"
@@ -28,18 +28,27 @@ export default {
     handleVideoError() {
       console.log("bad");
     },
-    setupShortcuts() {
-      document.addEventListener("keydown", e => {
-        if (e.key === " ") {
-          if (!this.videoPlaying) {
-            this.player.playVideo();
-          } else {
-            this.player.pauseVideo();
-          }
-        }
-      });
+    toggleVideo() {
+      if (!this.videoPlaying) {
+        this.player.playVideo();
+      } else {
+        this.player.pauseVideo();
+      }
     },
-    validateUrl() {
+    setupShortcuts(e) {
+      if (e.key === this.toggleVideoShortcut) {
+        this.toggleVideo();
+      }
+    },
+    addListeners() {
+      document.addEventListener("keydown", this.setupShortcuts);
+    },
+    destroyListeners() {
+      document.removeEventListener("keydown", this.setupShortcuts);
+    }
+  },
+  watch: {
+    id() {
       if (this.type === "video") {
         if (this.id === null) {
           this.changeUrl({
@@ -60,6 +69,14 @@ export default {
             );
         }
       }
+    },
+    view(newValue) {
+      if (newValue === "perform" && this.type === "video") {
+        this.addListeners();
+      } else if (newValue === "settings") {
+        this.player.pauseVideo();
+        this.destroyListeners();
+      }
     }
   },
   computed: {
@@ -73,14 +90,17 @@ export default {
       "presets",
       "overlayOpacity"
     ]),
+    ...mapState("shortcuts", {
+      toggleVideoShortcut: "toggleVideo"
+    }),
+    ...mapState("view", ["view"]),
     player() {
       if (this.$refs.youtube) return this.$refs.youtube.player;
     }
   },
   mounted() {
     if (this.player) this.player.mute();
-    this.setupShortcuts();
-    this.validateUrl();
+    this.addListeners();
   }
 };
 </script>

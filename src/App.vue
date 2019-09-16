@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <div class="container">
+      <Background ref="background" />
       <transition :name="transition" mode="out-in">
         <Perform v-if="view === 'perform'" key="perform" />
         <Settings v-if="view === 'settings'" key="settings" />
@@ -12,6 +13,7 @@
 <script>
 import Perform from "./views/Perform.vue";
 import Settings from "./views/Settings.vue";
+import Background from "./components/Background.vue"
 
 import { mapState } from "vuex";
 
@@ -19,7 +21,8 @@ export default {
   name: "app",
   components: {
     Perform,
-    Settings
+    Settings,
+    Background
   },
   data: () => ({
     initialToast: false

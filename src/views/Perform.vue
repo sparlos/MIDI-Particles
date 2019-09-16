@@ -1,6 +1,5 @@
 <template>
   <div class="perform">
-    <Background ref="background" />
     <canvas ref="canvas"></canvas>
     <OptionsMenu @resetParticles="resetParticles" />
     <Keyboard
@@ -47,6 +46,7 @@ export default {
     canvasSetup() {
       //resize canvas on window resize
       window.addEventListener("resize", () => {
+        this.resetParticles();
         this.resizeCanvas();
       });
     },
@@ -213,14 +213,16 @@ export default {
   },
   computed: {
     ...mapState({
-      particleColor: state => state.keyboard.particleColor,
+      particleColor: state => state.particles.color,
       baseOctave: state => state.keyboard.baseOctave,
-      colorMode: state => state.keyboard.colorMode,
+      colorMode: state => state.particles.mode,
       videoPlaying: state => state.background.videoPlaying,
       playOnMidi: state => state.background.playOnMidi
     }),
     ...mapGetters("keyboard", {
-      keyboardLength: "length",
+      keyboardLength: "keyLength"
+    }),
+    ...mapGetters("particles", {
       gradientArray: "gradientArray"
     }),
     midiAssignments() {
