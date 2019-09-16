@@ -1,6 +1,6 @@
 <template>
   <div class="background">
-    <div class="background__overlay" :style="{opacity: overlayOpacity}"></div>
+    <div class="background__overlay" v-if="type==='video'" :style="{opacity: overlayOpacity}"></div>
     <div class="background__color" v-if="type==='color'" :style="{backgroundColor: color}"></div>
     <div class="background__video" v-if="type==='video'">
       <youtube
@@ -38,6 +38,28 @@ export default {
           }
         }
       });
+    },
+    validateUrl() {
+      if (this.type === "video") {
+        if (this.id === null) {
+          this.changeUrl({
+            url: this.previousUrl
+          }),
+            this.$toasted.error(
+              "That was not a valid YouTube URL! Reverting to previous URL...",
+              {
+                duration: 3000,
+                position: "bottom-right",
+                action: {
+                  text: "close",
+                  onClick: (e, toastObject) => {
+                    toastObject.goAway(0);
+                  }
+                }
+              }
+            );
+        }
+      }
     }
   },
   computed: {
@@ -52,35 +74,13 @@ export default {
       "overlayOpacity"
     ]),
     player() {
-      return this.$refs.youtube.player;
-    }
-  },
-  watch: {
-    id(newValue, previousValue) {
-      //https://www.youtube.com/watch?v=rZVxXro9YdA
-      if (newValue === null) {
-        this.changeUrl({
-          url: this.previousUrl
-        }),
-          this.$toasted.error(
-            "That was not a valid YouTube URL! Reverting to previous URL...",
-            {
-              duration: 3000,
-              position: 'bottom-right',
-              action: {
-                text: 'close',
-                onClick: (e, toastObject) => {
-                  toastObject.goAway(0);
-                }
-              }
-            }
-          );
-      }
+      if (this.$refs.youtube) return this.$refs.youtube.player;
     }
   },
   mounted() {
-    this.player.mute();
+    if (this.player) this.player.mute();
     this.setupShortcuts();
+    this.validateUrl();
   }
 };
 </script>

@@ -10,9 +10,14 @@
     </div>
     <div class="input">
       particle color mode:
-      <input type="radio" id="color-mode-solid" value="solid" v-model="colorMode">
+      <input
+        type="radio"
+        id="color-mode-solid"
+        value="solid"
+        v-model="colorMode"
+      />
       <label for="color-mode-solid">solid</label>
-      <input type="radio" id="color-mode-gradient" value="gradient" v-model="colorMode">
+      <input type="radio" id="color-mode-gradient" value="gradient" v-model="colorMode" />
       <label for="color-mode-gradient">gradient</label>
     </div>
     <div class="input" v-if="colorMode === 'solid'">
@@ -21,9 +26,17 @@
     </div>
     <div class="input" v-if="colorMode === 'gradient'">
       first stop:
-      <input type="color" :value="storeParticleGradient[0]" @input="handleGradientChange($event, 0)">
+      <input
+        type="color"
+        :value="storeParticleGradient[0]"
+        @input="handleGradientChange($event, 0)"
+      />
       second stop:
-      <input type="color" :value="storeParticleGradient[1]" @input="handleGradientChange($event, 1)">
+      <input
+        type="color"
+        :value="storeParticleGradient[1]"
+        @input="handleGradientChange($event, 1)"
+      />
     </div>
     <div class="input">
       keyboard naturals color:
@@ -39,26 +52,24 @@
     </div>
     <div class="input">
       keyboard height:
-      <input type="number" min="0" max="300" step="10" v-model="height">
+      <input type="number" min="0" max="300" step="10" v-model="height" />
     </div>
     <div class="input">
       keyboard visible:
-      <input type="checkbox" v-model="visible">
+      <input type="checkbox" v-model="visible" />
     </div>
-    <div class="input">
-      Current URL: {{storeUrl}}
-    </div>
+    <div class="input">Current URL: {{storeUrl}}</div>
     <div class="input">
       Play on MIDI input?
-      <input type="checkbox" v-model="playOnMidi">
+      <input type="checkbox" v-model="playOnMidi" />
     </div>
     <div class="input">
       Change Background Video:
-      <br>
+      <br />
       <ValidationProvider rules="required|youtubeUrl" name="url" v-slot="{errors, valid}">
-        <input type="text" v-model="localUrl" ref="urlInput" @keyup.enter="changeVideo">
+        <input type="text" v-model="localUrl" ref="urlInput" @keyup.enter="changeVideo(valid)" />
         <button :disabled="!valid" @click="changeVideo">submit</button>
-        <span> {{ errors[0] }} </span>
+        <span>{{ errors[0] }}</span>
       </ValidationProvider>
     </div>
   </modal>
@@ -71,7 +82,7 @@ import mapComputeds from "../logic/mapComputeds";
 export default {
   name: "OptionsMenu",
   data: () => ({
-    localUrl: ''
+    localUrl: ""
   }),
   methods: {
     ...mapActions("keyboard", [
@@ -87,10 +98,7 @@ export default {
       "changeColorMode",
       "changeParticleGradient"
     ]),
-    ...mapActions("background", [
-      "changeUrl",
-      "changePlayOnMidi"
-    ]),
+    ...mapActions("background", ["changeUrl", "changePlayOnMidi"]),
     modalOpened() {
       this.setState({
         disabled: true
@@ -108,12 +116,13 @@ export default {
         color: color
       });
     },
-    changeVideo() {
-      // https://www.youtube.com/watch?v=DtzpGKadgew
-      this.changeUrl({
-        url: this.localUrl
-      })
-      this.localUrl = "";
+    changeVideo(validation) {
+     if(validation) {
+       this.changeUrl({
+         url: this.localUrl
+       });
+       this.localUrl = "";  
+     }
     }
   },
   computed: {
@@ -130,21 +139,21 @@ export default {
       storeParticleGradient: "particleGradient"
     }),
     ...mapState("background", {
-      storeUrl: 'url'
+      storeUrl: "url"
     }),
     //two way computed for updating store w/ v-model
     ...mapComputeds([
-      'particleColor',
-      'octaves',
-      'baseOctave',
-      'opacity',
-      'naturalsColor',
-      'accidentalsColor',
-      'height',
-      'visible',
-      'colorMode',
-      'playOnMidi'
-      ])
+      "particleColor",
+      "octaves",
+      "baseOctave",
+      "opacity",
+      "naturalsColor",
+      "accidentalsColor",
+      "height",
+      "visible",
+      "colorMode",
+      "playOnMidi"
+    ])
   },
   updated() {
     this.$emit("resetParticles");

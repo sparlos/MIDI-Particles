@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import BaseInput from "../../components/inputs/BaseInput.vue";
+import BaseInput from "../../components/BaseInput.vue";
 import { mapState, mapActions } from "vuex";
 import mapComputeds from "../../logic/mapComputeds";
 
@@ -36,7 +36,6 @@ export default {
       "changeHeight",
       "changeVisible"
     ]),
-    ...mapActions("view", ["changeView"]),
     getInputValue(name) {
       return this[name];
     },

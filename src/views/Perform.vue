@@ -42,7 +42,7 @@ export default {
     stats: new Stats()
   }),
   methods: {
-    ...mapActions("view", ['changeView']),
+    ...mapActions("view", ["changeView"]),
     //canvas methods
     canvasSetup() {
       //resize canvas on window resize
@@ -151,7 +151,11 @@ export default {
     },
     handleActivateNote(note, velocity) {
       //deal with play video on first midi input
-      if (!this.videoPlaying && this.playOnMidi) {
+      if (
+        !this.videoPlaying &&
+        this.playOnMidi &&
+        this.$refs.background.player
+      ) {
         this.$refs.background.player.playVideo();
       }
 
@@ -190,7 +194,7 @@ export default {
 
         case "Escape":
           this.changeView({
-            view: 'settings'
+            view: "settings"
           });
           this.$toasted.clear();
           break;
