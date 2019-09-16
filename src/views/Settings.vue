@@ -18,7 +18,7 @@
           <div class="icon">
             <ion-icon :name="item.icon"></ion-icon>
           </div>
-          <div class="name">{{item.name}}</div>
+          <div class="name">{{item.label}}</div>
         </div>
         <div class="navbar__spacer"></div>
         <div class="navbar__item navbar__footer">
@@ -42,31 +42,42 @@
 <script>
 import BackgroundSettings from "./settings/BackgroundSettings";
 import KeyboardSettings from "./settings/KeyboardSettings";
+import ParticleSettings from "./settings/ParticleSettings";
 import { mapState, mapActions } from "vuex";
 
 export default {
   name: "Settings",
   components: {
     BackgroundSettings,
-    KeyboardSettings
+    KeyboardSettings,
+    ParticleSettings
   },
   data: () => ({
     menus: [
       {
         name: "Background",
+        label: "Background",
         icon: "image"
       },
       {
         name: "Keyboard",
+        label: "Keyboard",
         icon: "musical-note"
       },
       {
-        name: "Particles",
+        name: "Particle",
+        label: "Particles",
         icon: "color-wand"
       },
       {
-        name: "Presets",
-        icon: "list"
+        name: "Preset",
+        label: "Presets",
+        icon: "bookmark"
+      },
+      {
+        name: "Shortcut",
+        label: "Shortcuts",
+        icon: "square-outline"
       }
     ]
   }),

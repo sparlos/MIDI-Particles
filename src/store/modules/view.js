@@ -1,6 +1,6 @@
 const state = {
-  view: "perform",
-  activeMenu: "Background"
+  view: "settings",
+  activeMenu: "Particle"
 }
 
 const actions = {

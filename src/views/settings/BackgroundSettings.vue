@@ -37,8 +37,7 @@ export default {
     BaseInput
   },
   data: () => ({
-    localUrl: "",
-    urlIsValid: true
+    localUrl: ""
   }),
   methods: {
     ...mapActions("background", [
