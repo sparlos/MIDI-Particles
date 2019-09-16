@@ -43,6 +43,7 @@
 import BackgroundSettings from "./settings/BackgroundSettings";
 import KeyboardSettings from "./settings/KeyboardSettings";
 import ParticleSettings from "./settings/ParticleSettings";
+import ShortcutSettings from "./settings/ShortcutSettings";
 import { mapState, mapActions } from "vuex";
 
 export default {
@@ -50,7 +51,8 @@ export default {
   components: {
     BackgroundSettings,
     KeyboardSettings,
-    ParticleSettings
+    ParticleSettings,
+    ShortcutSettings
   },
   data: () => ({
     menus: [
@@ -69,11 +71,12 @@ export default {
         label: "Particles",
         icon: "color-wand"
       },
-      {
-        name: "Preset",
-        label: "Presets",
-        icon: "bookmark"
-      },
+      //re-add when you actually have a preset system
+      // {
+      //   name: "Preset",
+      //   label: "Presets",
+      //   icon: "bookmark"
+      // },
       {
         name: "Shortcut",
         label: "Shortcuts",

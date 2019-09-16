@@ -30,7 +30,7 @@ export default {
     },
     setupShortcuts() {
       document.addEventListener("keydown", e => {
-        if (e.key === " ") {
+        if (e.key === this.toggleVideo) {
           if (!this.videoPlaying) {
             this.player.playVideo();
           } else {
@@ -73,6 +73,7 @@ export default {
       "presets",
       "overlayOpacity"
     ]),
+    ...mapState("shortcuts", ["toggleVideo"]),
     player() {
       if (this.$refs.youtube) return this.$refs.youtube.player;
     }
