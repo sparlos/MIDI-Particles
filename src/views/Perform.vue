@@ -1,6 +1,5 @@
 <template>
   <div class="perform">
-    <Background ref="background" />
     <canvas ref="canvas"></canvas>
     <OptionsMenu @resetParticles="resetParticles" />
     <Keyboard

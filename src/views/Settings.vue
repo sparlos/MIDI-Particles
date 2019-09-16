@@ -217,9 +217,12 @@ $item-padding: calc(#{$item-height} / 2);
   flex-direction: column;
 
   &__header {
-    width: 100%;
+    background-color: white; 
     margin-bottom: 16px;
+    padding: 10px 25px;
+    border-radius: 3px;
     font-size: 35px;
+    align-self: flex-start;
   }
 }
 
@@ -228,6 +231,7 @@ $item-padding: calc(#{$item-height} / 2);
   flex: 1 0;
   overflow: scroll;
   padding: 70px;
+  border-radius: 5px;
 }
 
 .settings-window {

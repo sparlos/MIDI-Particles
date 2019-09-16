@@ -5,7 +5,7 @@ const state = {
   color: "#d16aff",
   gradientStart: "#108dc7", 
   gradientEnd: "#ef8e38",
-  mode: "gradient"
+  mode: "solid"
 };
 
 const getters = {
