@@ -28,7 +28,8 @@ import { mapState, mapGetters, mapActions } from "vuex";
 export default {
   name: "Keyboard",
   data: () => ({
-    accidentalIndicies: [1, 2, 4, 5, 6]
+    accidentalIndicies: [1, 2, 4, 5, 6],
+    access: null
   }),
   methods: {
     ...mapActions('view', ['changeMidiSupport']),
@@ -40,12 +41,28 @@ export default {
         this.changeMidiSupport({midiSupport: false});
       }
     },
+    removeMidiIO() {
+      for(let input of this.access.inputs.values()) {
+        input.onmidimessage = () => {};
+      }
+    },
     handleMidiAccess(access) {
+      this.access = access;
       for (let input of access.inputs.values()) {
         input.onmidimessage = this.handleMidiMessage;
       }
+
+      access.onstatechange = (e) => {
+        let port = e.port;
+        if(port.state === 'connected') {
+          port.onmidimessage = this.handleMidiMessage;
+        } else if (port.state === 'disconnected') {
+          port.onmidimessage = () => {};
+        }
+      }
     },
     handleMidiMessage(message) {
+      console.log('midi message');
       let [value, note, velocity] = message.data;
       const NOTE_ON = 144;
       const NOTE_OFF = 128;
@@ -54,6 +71,9 @@ export default {
       } else if (value === NOTE_OFF && note) {
         this.deactivateNote(note);
       }
+    },
+    handleMidiDisconnect(port) {
+
     },
     activateNote(note, velocity) {
       if (!this.disabled) this.$emit("activateNote", note, velocity);
@@ -90,6 +110,9 @@ export default {
   mounted() {
     this.createMidiIO();
     this.$emit("updateRefs", this.$refs.white, this.$refs.black);
+  },
+  beforeDestroy() {
+    this.removeMidiIO();
   }
 };
 </script>
