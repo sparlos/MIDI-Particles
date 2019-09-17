@@ -1,7 +1,6 @@
 <template>
   <div class="perform">
     <canvas ref="canvas"></canvas>
-    <OptionsMenu @resetParticles="resetParticles" />
     <Keyboard
       @updateRefs="handleUpdateRefs"
       @activateNote="handleActivateNote"
@@ -13,8 +12,6 @@
 
 <script>
 import Keyboard from "../components/Keyboard.vue";
-import Background from "../components/Background.vue";
-import OptionsMenu from "../components/OptionsMenu.vue";
 import ParticleSystem from "../logic/ParticleSystem";
 import Stats from "stats.js";
 import { mapState, mapActions, mapGetters } from "vuex";
@@ -24,9 +21,7 @@ let previousTime = 0;
 export default {
   name: "Perform",
   components: {
-    Keyboard,
-    OptionsMenu,
-    Background
+    Keyboard
   },
   data: () => ({
     ctx: null,
@@ -188,10 +183,6 @@ export default {
     },
     addListeners(e) {
       switch (e.key) {
-        case "o":
-          this.showModal();
-          break;
-
         case "Escape":
           this.changeView({
             view: "settings"
@@ -203,13 +194,6 @@ export default {
           break;
       }
     },
-    //settings methods
-    showModal() {
-      for (let note in this.activeNotes) {
-        this.handleDeactivateNote(note);
-      }
-      this.$modal.show("options");
-    }
   },
   computed: {
     ...mapState({

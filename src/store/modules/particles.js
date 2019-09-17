@@ -1,11 +1,16 @@
 import gradient from "gradient-color";
 import rgbHex from "rgb-hex";
 
+import low from 'lowdb';
+import LocalStorage from 'lowdb/adapters/LocalStorage';
+
+const adapter = new LocalStorage('db');
+const db = low(adapter);
+
+let savedValues = db.get('particles').value();
+
 const state = {
-  color: "#d16aff",
-  gradientStart: "#108dc7", 
-  gradientEnd: "#ef8e38",
-  mode: "solid"
+  ...savedValues
 };
 
 const getters = {
@@ -21,15 +26,19 @@ const getters = {
 
 const actions = {
   changeColor({ commit }, payload) {
+    db.set('particles.color', payload.color).write();
     commit("changeColor", payload);
   },
   changeMode({ commit }, payload) {
+    db.set('particles.mode', payload.mode).write();
     commit("changeMode", payload);
   },
   changeGradientStart({ commit }, payload) {
+    db.set('particles.gradientStart', payload.gradientStart).write();
     commit("changeGradientStart", payload);
   },
   changeGradientEnd({ commit }, payload) {
+    db.set('particles.gradientEnd', payload.gradientEnd).write();
     commit("changeGradientEnd", payload);
   }
 };

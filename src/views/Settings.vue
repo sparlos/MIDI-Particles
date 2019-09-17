@@ -25,8 +25,14 @@
         </div>
       </div>
 
+      <!-- setting reset modal -->
+      <v-dialog />
+
       <div class="main">
-        <div class="main__header">{{activeMenu}} Settings</div>
+        <div class="main__header">
+          {{activeMenu}} Settings
+          <ion-icon name="refresh" @click="promptResetModal"></ion-icon>
+        </div>
         <div class="options">
           <component :is="activeMenu + 'Settings'"></component>
         </div>
@@ -40,7 +46,15 @@ import BackgroundSettings from "./settings/BackgroundSettings";
 import KeyboardSettings from "./settings/KeyboardSettings";
 import ParticleSettings from "./settings/ParticleSettings";
 import ShortcutSettings from "./settings/ShortcutSettings";
-import { mapState, mapActions } from "vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
+
+import low from 'lowdb';
+import LocalStorage from 'lowdb/adapters/LocalStorage';
+
+const adapter = new LocalStorage('db');
+const db = low(adapter);
+
+import defaultSettings from "../logic/defaultSettings";
 
 export default {
   name: "Settings",
@@ -84,7 +98,8 @@ export default {
     ...mapState("view", {
       view: "view",
       activeMenu: "activeMenu"
-    })
+    }),
+    ...mapGetters("view", ['activeStore'])
   },  
   methods: {
     ...mapActions("view", ["changeView", "changeActiveMenu"]),
@@ -97,6 +112,39 @@ export default {
           this.$toasted.clear();
           break;
       }
+    },
+    promptResetModal() {
+      this.$modal.show('dialog', {
+        title: `Reset ${this.activeMenu} Settings?`,
+        text: `This will reset all ${this.activeMenu.toLowerCase()} settings to their default value on page refresh.`,
+        buttons: [
+          {
+            title: 'RESET',
+            handler: this.resetSettings,
+            default: true
+          },
+          {
+            title: 'CLOSE'
+          }
+        ]
+      });
+    },
+    resetSettings() {
+      this.$modal.hide('dialog');
+      db.set(this.activeStore, defaultSettings[this.activeStore]).write();
+      this.$toasted.show(
+        `${this.activeMenu} settings reset. Refresh page to complete.`,
+        {
+          duration: 3000,
+          position: 'bottom-center',
+          action: {
+            text: "close",
+            onClick: (e, toastObject) => {
+              toastObject.goAway(0);
+            }
+          }
+        }
+      )
     }
   },
   mounted() {
@@ -206,6 +254,17 @@ $bg-color: white;
     border-radius: 3px;
     font-size: 35px;
     align-self: flex-start;
+
+    display: flex;
+    align-items: center;
+
+    & ion-icon {
+      margin-left: 10px;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
   }
 }
 

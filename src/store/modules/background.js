@@ -1,14 +1,17 @@
 import { getIdFromUrl } from "vue-youtube";
 
+import low from 'lowdb';
+import LocalStorage from 'lowdb/adapters/LocalStorage';
+
+const adapter = new LocalStorage('db');
+const db = low(adapter);
+
+let savedValues = db.get('background').value();
+
 const state = {
-  type: "video",
-  color: "#fff000",
-  url: "https://www.youtube.com/watch?v=bZNFRIwlQxQ",
   previousUrl: "",
   videoPlaying: false,
-  videoHotkey: " ",
-  overlayOpacity: 0.7,
-  playOnMidi: false
+  ...savedValues
 };
 
 const getters = {
@@ -23,24 +26,30 @@ const actions = {
     if (getIdFromUrl(state.url)) {
       state.previousUrl = state.url;
     }
+    db.set('background.url', payload.url).write();
     commit("changeUrl", payload);
   },
   changeVideoPlaying({ commit }, payload) {
     commit("changeVideoPlaying", payload);
   },
   changePlayOnMidi({ commit }, payload) {
+    db.set('background.playOnMidi', payload.playOnMidi).write();
     commit("changePlayOnMidi", payload);
   },
   changeOverlayOpacity({ commit }, payload) {
+    db.set('background.overlayOpacity', payload.overlayOpacity).write();
     commit("changeOverlayOpacity", payload);
   },
   changeType({ commit }, payload) {
+    db.set('background.type', payload.type).write();
     commit("changeType", payload);
   },
   changeColor({ commit }, payload) {
+    db.set('background.color', payload.color).write();
     commit("changeColor", payload);
   },
   changeVideoHotkey({ commit }, payload) {
+    db.set('background.videoHotkey', payload.videoHotkey).write();
     commit("changeVideoHotkey", payload);
   }
 };

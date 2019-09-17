@@ -3,6 +3,21 @@ const state = {
   activeMenu: "Background"
 }
 
+const getters = {
+  activeStore: state => {
+    console.log(state.activeMenu);
+    const menuParser = {
+      "Background" : "background",
+      "Keyboard" : "keyboard",
+      "Particle" : "particles",
+      "Shortcut" : "shortcuts",
+      "Preset" : "presets"
+    }
+
+    return menuParser[state.activeMenu];
+  }
+}
+
 const actions = {
   changeView({ commit }, payload) {
     commit('changeView', payload);
@@ -24,6 +39,7 @@ const mutations = {
 export default {
   namespaced: true,
   state,
+  getters,
   actions,
   mutations
 }
