@@ -33,7 +33,7 @@ export default {
   }),
   methods: {
     ...mapActions("view", ["changeMidiSupport"]),
-    ...mapActions("midi", ["changePorts"]),
+    ...mapActions("midi", ["connectPort"]),
     createMidiIO() {
       if (navigator.requestMIDIAccess) {
         navigator.requestMIDIAccess().then(this.handleMidiAccess);
@@ -46,6 +46,7 @@ export default {
       for (let input of this.access.inputs.values()) {
         input.onmidimessage = () => {};
       }
+      this.access.onstatechange = () => {};
     },
     handleMidiAccess(access) {
       this.access = access;
@@ -56,42 +57,15 @@ export default {
       access.onstatechange = e => {
         let port = e.port;
 
-        if (
-          !this.ports[port.id] &&
-          port.state === "connected" &&
-          port.type === "input"
-        ) {
-          this.$toasted.show(
-            `${port.name} connected!`,
-            {
-              duration: 3000,
-              position: "top-center",
-              action: {
-                text: "close",
-                onClick: (e, toastObject) => {
-                  toastObject.goAway(0);
-                }
-              }
-            }
-          );
-        }
-
         if (port.state === "connected" && port.type === "input") {
           port.onmidimessage = this.handleMidiMessage;
-          this.changePorts({
-            id: port.id,
-            active: true
-          });
         } else if (port.state === "disconnected" && port.type === "input") {
           port.onmidimessage = () => {};
-          this.changePorts({
-            id: port.id,
-            active: false
-          });
         }
       };
     },
     handleMidiMessage(message) {
+      if(this.ports[message.target.id] && !this.ports[message.target.id].active) return;
       let [value, note, velocity] = message.data;
       const NOTE_ON = 144;
       const NOTE_OFF = 128;
