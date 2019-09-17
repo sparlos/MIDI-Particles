@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from "vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Keyboard",
@@ -31,11 +31,13 @@ export default {
     accidentalIndicies: [1, 2, 4, 5, 6]
   }),
   methods: {
+    ...mapActions('view', ['changeMidiSupport']),
     createMidiIO() {
       if (navigator.requestMIDIAccess) {
         navigator.requestMIDIAccess().then(this.handleMidiAccess);
       } else {
         //handle browser with no midi access
+        this.changeMidiSupport({midiSupport: false});
       }
     },
     handleMidiAccess(access) {
@@ -72,6 +74,7 @@ export default {
     ...mapGetters("keyboard", [
       "heightPixels"
     ]),
+    ...mapState("view", ['midiSupport']),
     keyboardStyle() {
       //change height to 0 if visible is false
       let height = this.visible ? this.heightPixels : '0px';

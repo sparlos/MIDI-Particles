@@ -1,6 +1,7 @@
 const state = {
   view: "perform",
-  activeMenu: "Background"
+  activeMenu: "Background",
+  midiSupport: true
 }
 
 const getters = {
@@ -24,6 +25,9 @@ const actions = {
   },
   changeActiveMenu( { commit }, payload) {
     commit('changeActiveMenu', payload);
+  },
+  changeMidiSupport({ commit }, payload) {
+    commit('changeMidiSupport', payload);
   }
 }
 
@@ -33,6 +37,9 @@ const mutations = {
   },
   changeActiveMenu(state, payload) {
     state.activeMenu = payload.activeMenu;
+  },
+  changeMidiSupport(state, payload) {
+    state.midiSupport = payload.midiSupport;
   }
 }
 

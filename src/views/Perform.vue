@@ -1,5 +1,15 @@
 <template>
   <div class="perform">
+    <div class="no-midi" v-if="!midiSupport">
+      <div class="no-midi__text">
+        Sorry, your browser does not support MIDI!
+      </div>
+      <a
+        class="no-midi__link"
+        href="https://developer.mozilla.org/en-US/docs/Web/API/MIDIAccess#Browser_compatibility"
+        target="_blank"
+      >Please check out this table to see what browsers are supported.</a>
+    </div>
     <canvas ref="canvas"></canvas>
     <Keyboard
       @updateRefs="handleUpdateRefs"
@@ -193,7 +203,7 @@ export default {
         default:
           break;
       }
-    },
+    }
   },
   computed: {
     ...mapState({
@@ -201,7 +211,8 @@ export default {
       baseOctave: state => state.keyboard.baseOctave,
       colorMode: state => state.particles.mode,
       videoPlaying: state => state.background.videoPlaying,
-      playOnMidi: state => state.background.playOnMidi
+      playOnMidi: state => state.background.playOnMidi,
+      midiSupport: state => state.view.midiSupport
     }),
     ...mapGetters("keyboard", {
       keyboardLength: "keyLength"
@@ -241,7 +252,9 @@ export default {
     this.canvasSetup();
     this.ctx = this.$refs.canvas.getContext("2d");
     this.run();
-    this.setupShortcuts();
+    if(this.midiSupport) {
+      this.setupShortcuts();
+    }
 
     //stats js stuff
     // this.stats.showPanel(0);
@@ -255,4 +268,33 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.no-midi {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  text-align: center;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  min-height: 100vh;
+  z-index: 100000000;
+  background-color: white;
+
+  &__text {
+    flex: 0 1 100%;
+    font-size: 4rem;
+    padding: 0 4rem;
+    margin: 60px 0;
+
+  }
+
+  &__link {
+    flex: 0 1 100%;
+    padding: 0 4rem;
+    font-size: 1.3rem;
+  }
+}
 </style>
