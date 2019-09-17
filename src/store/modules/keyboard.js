@@ -1,10 +1,12 @@
 import low from 'lowdb';
 import LocalStorage from 'lowdb/adapters/LocalStorage';
+import defaultSettings from "../../logic/defaultSettings";
 
 const adapter = new LocalStorage('db');
 const db = low(adapter);
 
 let savedValues = db.get('keyboard').value();
+if(!savedValues) savedValues = defaultSettings.keyboard;
 
 const state = {
   disabled: false,

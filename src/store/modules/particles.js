@@ -3,11 +3,13 @@ import rgbHex from "rgb-hex";
 
 import low from 'lowdb';
 import LocalStorage from 'lowdb/adapters/LocalStorage';
+import defaultSettings from "../../logic/defaultSettings";
 
 const adapter = new LocalStorage('db');
 const db = low(adapter);
 
 let savedValues = db.get('particles').value();
+if(!savedValues) savedValues = defaultSettings.particles;
 
 const state = {
   ...savedValues

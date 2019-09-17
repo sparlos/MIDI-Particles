@@ -2,11 +2,13 @@ import { getIdFromUrl } from "vue-youtube";
 
 import low from 'lowdb';
 import LocalStorage from 'lowdb/adapters/LocalStorage';
+import defaultSettings from "../../logic/defaultSettings";
 
 const adapter = new LocalStorage('db');
 const db = low(adapter);
 
 let savedValues = db.get('background').value();
+if(!savedValues) savedValues = defaultSettings.background;
 
 const state = {
   previousUrl: "",
