@@ -31,7 +31,7 @@
       <div class="main">
         <div class="main__header">
           {{activeMenu}} Settings
-          <ion-icon name="refresh" @click="promptResetModal"></ion-icon>
+          <ion-icon v-if="activeMenu !== 'MIDI'" name="refresh" @click="promptResetModal"></ion-icon>
         </div>
         <div class="options">
           <component :is="activeMenu + 'Settings'"></component>
@@ -46,12 +46,13 @@ import BackgroundSettings from "./settings/BackgroundSettings";
 import KeyboardSettings from "./settings/KeyboardSettings";
 import ParticleSettings from "./settings/ParticleSettings";
 import ShortcutSettings from "./settings/ShortcutSettings";
+import MIDISettings from "./settings/MIDISettings";
 import { mapState, mapGetters, mapActions } from "vuex";
 
-import low from 'lowdb';
-import LocalStorage from 'lowdb/adapters/LocalStorage';
+import low from "lowdb";
+import LocalStorage from "lowdb/adapters/LocalStorage";
 
-const adapter = new LocalStorage('db');
+const adapter = new LocalStorage("db");
 const db = low(adapter);
 
 import defaultSettings from "../logic/defaultSettings";
@@ -62,7 +63,8 @@ export default {
     BackgroundSettings,
     KeyboardSettings,
     ParticleSettings,
-    ShortcutSettings
+    ShortcutSettings,
+    MIDISettings
   },
   data: () => ({
     menus: [
@@ -91,6 +93,11 @@ export default {
         name: "Shortcut",
         label: "Shortcuts",
         icon: "square-outline"
+      },
+      {
+        name: "MIDI",
+        label: "MIDI",
+        icon: "construct"
       }
     ]
   }),
@@ -99,8 +106,8 @@ export default {
       view: "view",
       activeMenu: "activeMenu"
     }),
-    ...mapGetters("view", ['activeStore'])
-  },  
+    ...mapGetters("view", ["activeStore"])
+  },
   methods: {
     ...mapActions("view", ["changeView", "changeActiveMenu"]),
     handleKeyup(e) {
@@ -114,29 +121,29 @@ export default {
       }
     },
     promptResetModal() {
-      this.$modal.show('dialog', {
+      this.$modal.show("dialog", {
         title: `Reset ${this.activeMenu} Settings?`,
         text: `This will reset all ${this.activeMenu.toLowerCase()} settings to their default value on page refresh.`,
         buttons: [
           {
-            title: 'RESET',
+            title: "RESET",
             handler: this.resetSettings,
             default: true
           },
           {
-            title: 'CLOSE'
+            title: "CLOSE"
           }
         ]
       });
     },
     resetSettings() {
-      this.$modal.hide('dialog');
+      this.$modal.hide("dialog");
       db.set(this.activeStore, defaultSettings[this.activeStore]).write();
       this.$toasted.show(
         `${this.activeMenu} settings reset. Refresh page to complete.`,
         {
           duration: 3000,
-          position: 'bottom-center',
+          position: "bottom-center",
           action: {
             text: "close",
             onClick: (e, toastObject) => {
@@ -144,7 +151,7 @@ export default {
             }
           }
         }
-      )
+      );
     }
   },
   mounted() {
@@ -248,7 +255,7 @@ $bg-color: white;
   flex-direction: column;
 
   &__header {
-    background-color: $bg-color; 
+    background-color: $bg-color;
     margin-bottom: 16px;
     padding: 10px 25px;
     border-radius: 3px;

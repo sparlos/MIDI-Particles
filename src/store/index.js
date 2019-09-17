@@ -6,6 +6,7 @@ import background from "./modules/background";
 import view from "./modules/view";
 import particles from "./modules/particles";
 import shortcuts from "./modules/shortcuts";
+import midi from "./modules/midi";
 
 Vue.use(Vuex);
 
@@ -27,6 +28,7 @@ export default new Vuex.Store({
     keyboard,
     particles,
     shortcuts,
-    view
+    view,
+    midi
   }
 });

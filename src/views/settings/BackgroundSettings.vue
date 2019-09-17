@@ -64,6 +64,27 @@ export default {
       console.log(this.localUrl);
     }
   },
+  watch: {
+    type(newValue) {
+      if(newValue === 'video') {
+        let videoToggleShortcut = this.toggleVideo;
+        if(videoToggleShortcut === " ") videoToggleShortcut = "Space";
+        this.$toasted.show(
+          `Press the "${videoToggleShortcut}" key to play/pause video on Perform screen.`,
+          {
+            duration: 4000,
+            position: 'bottom-center',
+            action: {
+              text: "close",
+              onClick: (e, toastObject) => {
+                toastObject.goAway(0);
+              }
+            }
+          }
+        );
+      }
+    }
+  },
   computed: {
     ...mapState("background", [
       "overlayOpacity",
@@ -71,6 +92,9 @@ export default {
       "type",
       "color",
       "url"
+    ]),
+    ...mapState("shortcuts", [
+      "toggleVideo"
     ]),
     activeSettings() {
       return this.settings.filter((setting) => {

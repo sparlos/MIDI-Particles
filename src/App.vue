@@ -13,9 +13,9 @@
 <script>
 import Perform from "./views/Perform.vue";
 import Settings from "./views/Settings.vue";
-import Background from "./components/Background.vue"
+import Background from "./components/Background.vue";
 
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "app",
@@ -29,11 +29,61 @@ export default {
   }),
   computed: {
     ...mapState("view", ["view"]),
+    ...mapState("midi", ["ports"]),
     transition() {
       return this.view === "perform" ? "slide-left" : "slide-right";
     }
   },
+  methods: {
+    ...mapActions("midi", ["connectPort"]),
+    setupMidi() {
+      navigator.requestMIDIAccess().then(access => {
+        for(let input of access.inputs.values()) {
+          this.connectPort({
+            id: input.id,
+            connected: true,
+            name: input.name
+          });
+        }
+
+        access.onstatechange = e => {
+          let port = e.port;
+          if (port.state === "connected" && port.type === "input") {
+            port.onmidimessage = this.handleMidiMessage;
+            if (
+              (this.ports[port.id] && !this.ports[port.id].connected) ||
+              !this.ports[port.id]
+            ) {
+              this.$toasted.show(`${port.name} connected!`, {
+                duration: 3000,
+                position: "top-center",
+                action: {
+                  text: "close",
+                  onClick: (e, toastObject) => {
+                    toastObject.goAway(0);
+                  }
+                }
+              });
+            }
+            this.connectPort({
+              id: port.id,
+              connected: true,
+              name: port.name
+            });
+          } else if (port.state === "disconnected" && port.type === "input") {
+            port.onmidimessage = () => {};
+            this.connectPort({
+              id: port.id,
+              connected: false,
+              name: port.name
+            });
+          }
+        };
+      });
+    }
+  },
   mounted() {
+    this.setupMidi();
     //show initial toast
     if (!this.initialToast) {
       this.$toasted.show(

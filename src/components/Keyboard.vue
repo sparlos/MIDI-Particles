@@ -23,27 +23,49 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from "vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Keyboard",
   data: () => ({
-    accidentalIndicies: [1, 2, 4, 5, 6]
+    accidentalIndicies: [1, 2, 4, 5, 6],
+    access: null
   }),
   methods: {
+    ...mapActions("view", ["changeMidiSupport"]),
+    ...mapActions("midi", ["connectPort"]),
     createMidiIO() {
       if (navigator.requestMIDIAccess) {
         navigator.requestMIDIAccess().then(this.handleMidiAccess);
       } else {
         //handle browser with no midi access
+        this.changeMidiSupport({ midiSupport: false });
       }
     },
+    removeMidiIO() {
+      for (let input of this.access.inputs.values()) {
+        input.onmidimessage = () => {};
+      }
+      this.access.onstatechange = () => {};
+    },
     handleMidiAccess(access) {
+      this.access = access;
       for (let input of access.inputs.values()) {
         input.onmidimessage = this.handleMidiMessage;
       }
+
+      access.onstatechange = e => {
+        let port = e.port;
+
+        if (port.state === "connected" && port.type === "input") {
+          port.onmidimessage = this.handleMidiMessage;
+        } else if (port.state === "disconnected" && port.type === "input") {
+          port.onmidimessage = () => {};
+        }
+      };
     },
     handleMidiMessage(message) {
+      if(this.ports[message.target.id] && !this.ports[message.target.id].active) return;
       let [value, note, velocity] = message.data;
       const NOTE_ON = 144;
       const NOTE_OFF = 128;
@@ -53,6 +75,7 @@ export default {
         this.deactivateNote(note);
       }
     },
+    handleMidiDisconnect(port) {},
     activateNote(note, velocity) {
       if (!this.disabled) this.$emit("activateNote", note, velocity);
     },
@@ -69,12 +92,12 @@ export default {
       "accidentalsColor",
       "visible"
     ]),
-    ...mapGetters("keyboard", [
-      "heightPixels"
-    ]),
+    ...mapGetters("keyboard", ["heightPixels"]),
+    ...mapState("view", ["midiSupport"]),
+    ...mapState("midi", ["ports"]),
     keyboardStyle() {
       //change height to 0 if visible is false
-      let height = this.visible ? this.heightPixels : '0px';
+      let height = this.visible ? this.heightPixels : "0px";
       return {
         opacity: this.opacity,
         height: height
@@ -87,6 +110,9 @@ export default {
   mounted() {
     this.createMidiIO();
     this.$emit("updateRefs", this.$refs.white, this.$refs.black);
+  },
+  beforeDestroy() {
+    this.removeMidiIO();
   }
 };
 </script>

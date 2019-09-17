@@ -1,7 +1,7 @@
 export default {
   background: {
-    type: "video",
-    color: "#fff000",
+    type: "color",
+    color: "#000000",
     url: "https://www.youtube.com/watch?v=bZNFRIwlQxQ",
     overlayOpacity: 0.7,
     playOnMidi: false
@@ -16,7 +16,7 @@ export default {
     visible: true
   },
   particles: {
-    color: "#d16aff",
+    color: "#ffffff",
     gradientStart: "#108dc7",
     gradientEnd: "#ef8e38",
     mode: "solid"
