@@ -12,7 +12,6 @@
 
 <script>
 import Keyboard from "../components/Keyboard.vue";
-import Background from "../components/Background.vue";
 import ParticleSystem from "../logic/ParticleSystem";
 import Stats from "stats.js";
 import { mapState, mapActions, mapGetters } from "vuex";
@@ -22,8 +21,7 @@ let previousTime = 0;
 export default {
   name: "Perform",
   components: {
-    Keyboard,
-    Background
+    Keyboard
   },
   data: () => ({
     ctx: null,
