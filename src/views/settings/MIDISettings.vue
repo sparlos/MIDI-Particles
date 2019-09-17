@@ -44,6 +44,7 @@ export default {
       access.onstatechange = (e) => {
         const ON = 'connected';
         const OFF = 'disconnected';
+        console.log(e);
         if(e.port.state === ON && e.port.type === "input") {
           this.controllers.push(e.port);
         } else if (e.port.state === OFF) {

@@ -32,17 +32,18 @@ export default {
     access: null
   }),
   methods: {
-    ...mapActions('view', ['changeMidiSupport']),
+    ...mapActions("view", ["changeMidiSupport"]),
+    ...mapActions("midi", ["changePorts"]),
     createMidiIO() {
       if (navigator.requestMIDIAccess) {
         navigator.requestMIDIAccess().then(this.handleMidiAccess);
       } else {
         //handle browser with no midi access
-        this.changeMidiSupport({midiSupport: false});
+        this.changeMidiSupport({ midiSupport: false });
       }
     },
     removeMidiIO() {
-      for(let input of this.access.inputs.values()) {
+      for (let input of this.access.inputs.values()) {
         input.onmidimessage = () => {};
       }
     },
@@ -52,17 +53,45 @@ export default {
         input.onmidimessage = this.handleMidiMessage;
       }
 
-      access.onstatechange = (e) => {
+      access.onstatechange = e => {
         let port = e.port;
-        if(port.state === 'connected') {
-          port.onmidimessage = this.handleMidiMessage;
-        } else if (port.state === 'disconnected') {
-          port.onmidimessage = () => {};
+
+        if (
+          !this.ports[port.id] &&
+          port.state === "connected" &&
+          port.type === "input"
+        ) {
+          this.$toasted.show(
+            `${port.name} connected!`,
+            {
+              duration: 3000,
+              position: "top-center",
+              action: {
+                text: "close",
+                onClick: (e, toastObject) => {
+                  toastObject.goAway(0);
+                }
+              }
+            }
+          );
         }
-      }
+
+        if (port.state === "connected" && port.type === "input") {
+          port.onmidimessage = this.handleMidiMessage;
+          this.changePorts({
+            id: port.id,
+            active: true
+          });
+        } else if (port.state === "disconnected" && port.type === "input") {
+          port.onmidimessage = () => {};
+          this.changePorts({
+            id: port.id,
+            active: false
+          });
+        }
+      };
     },
     handleMidiMessage(message) {
-      console.log('midi message');
       let [value, note, velocity] = message.data;
       const NOTE_ON = 144;
       const NOTE_OFF = 128;
@@ -72,9 +101,7 @@ export default {
         this.deactivateNote(note);
       }
     },
-    handleMidiDisconnect(port) {
-
-    },
+    handleMidiDisconnect(port) {},
     activateNote(note, velocity) {
       if (!this.disabled) this.$emit("activateNote", note, velocity);
     },
@@ -91,13 +118,12 @@ export default {
       "accidentalsColor",
       "visible"
     ]),
-    ...mapGetters("keyboard", [
-      "heightPixels"
-    ]),
-    ...mapState("view", ['midiSupport']),
+    ...mapGetters("keyboard", ["heightPixels"]),
+    ...mapState("view", ["midiSupport"]),
+    ...mapState("midi", ["ports"]),
     keyboardStyle() {
       //change height to 0 if visible is false
-      let height = this.visible ? this.heightPixels : '0px';
+      let height = this.visible ? this.heightPixels : "0px";
       return {
         opacity: this.opacity,
         height: height

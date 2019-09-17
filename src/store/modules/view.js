@@ -6,7 +6,6 @@ const state = {
 
 const getters = {
   activeStore: state => {
-    console.log(state.activeMenu);
     const menuParser = {
       "Background" : "background",
       "Keyboard" : "keyboard",
