@@ -69,9 +69,11 @@ export default {
       let [value, note, velocity] = message.data;
       const NOTE_ON = 144;
       const NOTE_OFF = 128;
-      if (value === NOTE_ON && note) {
+      console.log(`value: ${value}, note: ${note}, velocity: ${velocity}`);
+      if ((value === NOTE_ON && note) && velocity !== 0) {
         this.activateNote(note, velocity);
-      } else if (value === NOTE_OFF && note) {
+      } else if (note && (velocity === 0 || value === NOTE_OFF)) {
+        console.log('note off!');
         this.deactivateNote(note);
       }
     },
