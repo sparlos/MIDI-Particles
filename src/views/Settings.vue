@@ -12,7 +12,7 @@
           })"
         >
           <div class="icon">
-            <ion-icon :name="item.icon"></ion-icon>
+            <ion-icon v-bind="item.iconAttrs"></ion-icon>
           </div>
           <div class="name">{{item.label}}</div>
         </div>
@@ -67,46 +67,59 @@ export default {
     MIDISettings
   },
   data: () => ({
-    menus: [
-      {
-        name: "Background",
-        label: "Background",
-        icon: "image"
-      },
-      {
-        name: "Keyboard",
-        label: "Keyboard",
-        icon: "musical-note"
-      },
-      {
-        name: "Particle",
-        label: "Particles",
-        icon: "color-wand"
-      },
-      //re-add when you actually have a preset system
-      // {
-      //   name: "Preset",
-      //   label: "Presets",
-      //   icon: "bookmark"
-      // },
-      {
-        name: "Shortcut",
-        label: "Shortcuts",
-        icon: "square-outline"
-      },
-      {
-        name: "MIDI",
-        label: "MIDI",
-        icon: "construct"
-      }
-    ]
+    publicPath: process.env.BASE_URL
   }),
   computed: {
     ...mapState("view", {
       view: "view",
       activeMenu: "activeMenu"
     }),
-    ...mapGetters("view", ["activeStore"])
+    ...mapGetters("view", ["activeStore"]),
+    menus() {
+      return [
+        {
+          name: "Background",
+          label: "Background",
+          iconAttrs: {
+            name: "image"
+          }
+        },
+        {
+          name: "Keyboard",
+          label: "Keyboard",
+          iconAttrs: {
+            src: `${this.publicPath}keyboard-fat.svg`
+            // name: 'square'
+          }
+        },
+        {
+          name: "Particle",
+          label: "Particles",
+          iconAttrs: {
+            name: "color-wand"
+          }
+        },
+        //re-add when you actually have a preset system
+        // {
+        //   name: "Preset",
+        //   label: "Presets",
+        // },
+        {
+          name: "Shortcut",
+          label: "Shortcuts",
+          iconAttrs: {
+            src: `${this.publicPath}kbd-shortcut.svg`            
+          }
+        },
+        {
+          name: "MIDI",
+          label: "MIDI",
+          iconAttrs: {
+            src: `${this.publicPath}midi.svg`            
+          }
+        }
+      ];
+    }
   },
   methods: {
     ...mapActions("view", ["changeView", "changeActiveMenu"]),
