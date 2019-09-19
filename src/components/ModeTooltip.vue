@@ -2,55 +2,56 @@
   <div class="tooltip">
     current height: {{height}}
     current width: {{width}}%
+    press {{transformMode}} to exit transform mode
   </div>
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapState } from "vuex";
 
 export default {
-  name: 'ModeTooltip',
+  name: "ModeTooltip",
   computed: {
-    ...mapState('keyboard', ['width', 'height'])
+    ...mapState("keyboard", ["width", "height"]),
+    ...mapState("shortcuts", ["transformMode"])
   },
   methods: {
-    ...mapActions('keyboard', ['changeWidth', 'changeHeight', 'setState']),
+    ...mapActions("keyboard", ["changeWidth", "changeHeight", "setState"]),
     setListeners() {
       document.addEventListener("keydown", this.setShortcuts);
     },
     setShortcuts(e) {
       switch (e.key) {
         case "ArrowLeft":
-          this.changeKeyboardWidth(this.width-1);
+          this.changeKeyboardWidth(this.width - 1);
           break;
 
         case "ArrowRight":
-          this.changeKeyboardWidth(this.width+1);          
+          this.changeKeyboardWidth(this.width + 1);
           break;
 
         case "ArrowUp":
-          this.changeKeyboardHeight(this.height+1);          
+          this.changeKeyboardHeight(this.height + 1);
           break;
 
         case "ArrowDown":
-          this.changeKeyboardHeight(this.height-1);          
+          this.changeKeyboardHeight(this.height - 1);
           break;
-      
+
         default:
           break;
       }
     },
     changeKeyboardWidth(amount) {
-      if(amount <= 0 || amount > 100) return;
-      this.$emit('resize');
+      if (amount <= 0 || amount > 100) return;
+      this.$emit("resize");
       this.changeWidth({
         width: amount
       });
-      
     },
     changeKeyboardHeight(amount) {
-      if(amount <= 1 || amount >= 500) return;
-      this.$emit('resize');
+      if (amount <= 1 || amount >= 500) return;
+      this.$emit("resize");
       this.changeHeight({
         height: amount
       });
@@ -64,13 +65,12 @@ export default {
   },
   beforeDestroy() {
     document.removeEventListener("keydown", this.setShortcuts);
-    this.$emit('onLoad');
+    this.$emit("onLoad");
     this.setState({
       disabled: false
     });
   }
-}
-
+};
 </script>
 
 <style scoped lang='scss'>

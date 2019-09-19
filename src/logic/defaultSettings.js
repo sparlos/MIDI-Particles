@@ -23,6 +23,7 @@ export default {
     mode: "solid"
   },
   shortcuts: {
-    toggleVideo: " "
+    toggleVideo: " ",
+    transformMode: "t"
   }
 };

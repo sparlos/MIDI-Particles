@@ -204,7 +204,7 @@ export default {
           });
           this.$toasted.clear();
           break;
-        case "t":
+        case this.transformModeShortcut:
           this.mode === "play"
             ? (this.mode = "transform")
             : (this.mode = "play");
@@ -225,7 +225,8 @@ export default {
       colorMode: state => state.particles.mode,
       videoPlaying: state => state.background.videoPlaying,
       playOnMidi: state => state.background.playOnMidi,
-      midiSupport: state => state.view.midiSupport
+      midiSupport: state => state.view.midiSupport,
+      transformModeShortcut: state => state.shortcuts.transformMode
     }),
     ...mapGetters("keyboard", {
       keyboardLength: "keyLength"

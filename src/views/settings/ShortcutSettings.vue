@@ -48,7 +48,8 @@ export default {
   },
   computed: {
     ...mapState("shortcuts", [
-      "toggleVideo"
+      "toggleVideo",
+      "transformMode"
     ]),
     settings() {
       return [
@@ -56,6 +57,15 @@ export default {
           title: "Toggle Video",
           subtitle: "Plays/Pauses the video",
           storeValue: "toggleVideo",
+          storeAction: this.changeShortcut,
+          attributes: {
+            type: "text"
+          }
+        },
+        {
+          title: "Enter Transform Mode",
+          subtitle: "Allows adjustment of keyboard's width & height in perform view",
+          storeValue: "transformMode",
           storeAction: this.changeShortcut,
           attributes: {
             type: "text"
