@@ -34,6 +34,7 @@ export default {
       "changeAccidentalsColor",
       "changeOpacity",
       "changeHeight",
+      "changeWidth",
       "changeVisible"
     ]),
     getInputValue(name) {
@@ -56,6 +57,7 @@ export default {
       "accidentalsColor",
       "opacity",
       "height",
+      "width",
       "visible"
     ]),
     settings() {
@@ -110,6 +112,18 @@ export default {
             min: "0",
             max: "500",
             step: "10"
+          }
+        },
+        {
+          title: "Keyboard Width",
+          subtitle: "Value in %",
+          storeValue: "width",
+          storeAction: this.changeWidth,
+          attributes: {
+            type: "number",
+            min: "0",
+            max: "100",
+            step: "5"
           }
         },
         {

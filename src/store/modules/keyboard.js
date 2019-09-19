@@ -50,6 +50,10 @@ const actions = {
     db.set('keyboard.height', payload.height).write();
     commit("changeHeight", payload);
   },
+  changeWidth({ commit }, payload) {
+    db.set('keyboard.width', payload.width).write();
+    commit("changeWidth", payload);
+  },
   changeVisible({ commit }, payload) {
     db.set('keyboard.visible', payload.visible).write();
     commit("changeVisible", payload);
@@ -77,6 +81,9 @@ const mutations = {
   },
   changeHeight(state, payload) {
     state.height = payload.height;
+  },
+  changeWidth(state, payload) {
+    state.width = payload.width;
   },
   changeVisible(state, payload) {
     state.visible = payload.visible;
