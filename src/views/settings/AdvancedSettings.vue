@@ -8,6 +8,14 @@
 
 <script>
 import BaseInput from "../../components/BaseInput.vue";
+import defaultSettings from "../../logic/defaultSettings";
+
+//low db
+import low from 'lowdb';
+import LocalStorage from 'lowdb/adapters/LocalStorage';
+
+const adapter = new LocalStorage('db');
+const db = low(adapter);
 
 export default {
   name: "AdvancedSettings",
@@ -32,7 +40,12 @@ export default {
       });
     },
     resetSettings() {
-      localStorage.clear();
+      for(let setting in defaultSettings) {
+        let settingOptions = defaultSettings[setting];
+        for(let option in settingOptions) {
+          db.set(`${setting}.${option}`, defaultSettings[setting][option]).write();
+        }
+      }
       this.$modal.hide("dialog");
       this.$toasted.show(
         `All settings reset. Refresh page to complete.`,

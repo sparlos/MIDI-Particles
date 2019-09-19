@@ -13,6 +13,7 @@ export default {
     naturalsColor: "#ffffff",
     accidentalsColor: "#000000",
     height: 150,
+    width: 100,
     visible: true
   },
   particles: {
@@ -22,6 +23,7 @@ export default {
     mode: "solid"
   },
   shortcuts: {
-    toggleVideo: " "
+    toggleVideo: " ",
+    transformMode: "t"
   }
 };

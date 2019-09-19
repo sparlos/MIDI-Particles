@@ -27,6 +27,9 @@ import { mapState, mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Keyboard",
+  props: {
+    mode: String
+  },
   data: () => ({
     accidentalIndicies: [1, 2, 4, 5, 6],
     access: null
@@ -90,7 +93,8 @@ export default {
       "disabled",
       "naturalsColor",
       "accidentalsColor",
-      "visible"
+      "visible",
+      "width"
     ]),
     ...mapGetters("keyboard", ["heightPixels"]),
     ...mapState("view", ["midiSupport"]),
@@ -98,9 +102,15 @@ export default {
     keyboardStyle() {
       //change height to 0 if visible is false
       let height = this.visible ? this.heightPixels : "0px";
+      //change width value to have a percent sign
+      let width = this.width + "%";
+      //add border when in transform mode
+      let border = this.mode === 'transform' ? '3px solid red' : 'none';
       return {
         opacity: this.opacity,
-        height: height
+        height: height,
+        width: width,
+        border: border
       };
     }
   },
@@ -123,6 +133,9 @@ export default {
   position: absolute;
   bottom: 0;
   display: flex;
+  left: 50%;
+  transform: translateX(-50%);
+  box-sizing: border-box;
 }
 
 .octave {

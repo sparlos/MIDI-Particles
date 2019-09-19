@@ -1,20 +1,30 @@
 <template>
   <div class="perform">
+    <!-- browsers with no midi support -->
     <div class="no-midi" v-if="!midiSupport">
-      <div class="no-midi__text">
-        Sorry, your browser does not support MIDI!
-      </div>
+      <div class="no-midi__text">Sorry, your browser does not support MIDI!</div>
       <a
         class="no-midi__link"
         href="https://developer.mozilla.org/en-US/docs/Web/API/MIDIAccess#Browser_compatibility"
         target="_blank"
       >Please check out this table to see what browsers are supported.</a>
     </div>
+    <!-- tooltip -->
+    <transition name="fade">
+      <ModeTooltip
+        v-if="mode === 'transform'"
+        @resize="resetParticles"
+        @onLoad="forceRender"
+        key="modetooltip"
+      />
+    </transition>
     <canvas ref="canvas"></canvas>
     <Keyboard
       @updateRefs="handleUpdateRefs"
       @activateNote="handleActivateNote"
       @deactivateNote="handleDeactivateNote"
+      :key="keyboardKey"
+      :mode="mode"
       ref="keyboard"
     />
   </div>
@@ -23,6 +33,7 @@
 <script>
 import Keyboard from "../components/Keyboard.vue";
 import ParticleSystem from "../logic/ParticleSystem";
+import ModeTooltip from "../components/ModeTooltip";
 import Stats from "stats.js";
 import { mapState, mapActions, mapGetters } from "vuex";
 
@@ -31,7 +42,8 @@ let previousTime = 0;
 export default {
   name: "Perform",
   components: {
-    Keyboard
+    Keyboard,
+    ModeTooltip
   },
   props: {
     player: Object
@@ -46,17 +58,16 @@ export default {
     particleCooldown: false,
     previousParticleTime: 0,
     particleSystems: [],
-    stats: new Stats()
+    stats: new Stats(),
+    mode: "play",
+    keyboardKey: 0
   }),
   methods: {
     ...mapActions("view", ["changeView"]),
     //canvas methods
-    canvasSetup() {
-      //resize canvas on window resize
-      window.addEventListener("resize", () => {
-        this.resetParticles();
-        this.resizeCanvas();
-      });
+    onWindowResize() {
+      this.resetParticles();
+      this.resizeCanvas();
     },
     resizeCanvas() {
       this.$refs.canvas.width = window.innerWidth;
@@ -159,11 +170,7 @@ export default {
     },
     handleActivateNote(note, velocity) {
       //deal with play video on first midi input
-      if (
-        !this.videoPlaying &&
-        this.playOnMidi &&
-        this.player
-      ) {
+      if (!this.videoPlaying && this.playOnMidi && this.player) {
         this.player.playVideo();
       }
 
@@ -202,10 +209,18 @@ export default {
           });
           this.$toasted.clear();
           break;
+        case this.transformModeShortcut:
+          this.mode === "play"
+            ? (this.mode = "transform")
+            : (this.mode = "play");
+          break;
 
         default:
           break;
       }
+    },
+    forceRender() {
+      this.keyboardKey += 1;
     }
   },
   computed: {
@@ -215,7 +230,8 @@ export default {
       colorMode: state => state.particles.mode,
       videoPlaying: state => state.background.videoPlaying,
       playOnMidi: state => state.background.playOnMidi,
-      midiSupport: state => state.view.midiSupport
+      midiSupport: state => state.view.midiSupport,
+      transformModeShortcut: state => state.shortcuts.transformMode
     }),
     ...mapGetters("keyboard", {
       keyboardLength: "keyLength"
@@ -251,11 +267,12 @@ export default {
     }
   },
   mounted() {
+    //listeners
+    window.addEventListener("resize", this.onWindowResize);
     this.resizeCanvas();
-    this.canvasSetup();
     this.ctx = this.$refs.canvas.getContext("2d");
     this.run();
-    if(this.midiSupport) {
+    if (this.midiSupport) {
       this.setupShortcuts();
     }
 
@@ -266,6 +283,7 @@ export default {
   beforeDestroy() {
     if (this.animationFrame) cancelAnimationFrame(this.animationFrame);
     document.removeEventListener("keyup", this.addListeners);
+    window.removeEventListener("resize", this.onWindowResize);
   }
 };
 </script>
@@ -291,7 +309,6 @@ export default {
     font-size: 4rem;
     padding: 0 4rem;
     margin: 60px 0;
-
   }
 
   &__link {
@@ -299,5 +316,23 @@ export default {
     padding: 0 4rem;
     font-size: 1.3rem;
   }
+}
+
+//transition for modeTooltip
+.fade-enter-active {
+  transition: 150ms ease-out;
+}
+
+.fade-leave-active {
+  transition: 75ms;
+}
+
+.fade-enter {
+  opacity: 0;
+  transform: scale(.8);
+}
+
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
