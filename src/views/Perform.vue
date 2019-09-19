@@ -33,6 +33,9 @@ export default {
   components: {
     Keyboard
   },
+  props: {
+    player: Object
+  },
   data: () => ({
     ctx: null,
     animationFrame: null,
@@ -159,9 +162,9 @@ export default {
       if (
         !this.videoPlaying &&
         this.playOnMidi &&
-        this.$refs.background.player
+        this.player
       ) {
-        this.$refs.background.player.playVideo();
+        this.player.playVideo();
       }
 
       if (!this.activeNotes[note]) {

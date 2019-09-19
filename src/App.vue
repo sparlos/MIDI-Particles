@@ -3,7 +3,7 @@
     <div class="container">
       <Background ref="background" />
       <transition :name="transition" mode="out-in">
-        <Perform v-if="view === 'perform'" key="perform" />
+        <Perform v-if="view === 'perform'" key="perform" :player="player"/>
         <Settings v-if="view === 'settings'" key="settings" />
       </transition>
     </div>
@@ -25,7 +25,8 @@ export default {
     Background
   },
   data: () => ({
-    initialToast: false
+    initialToast: false,
+    player: null
   }),
   computed: {
     ...mapState("view", ["view"]),
@@ -84,6 +85,8 @@ export default {
   },
   mounted() {
     this.setupMidi();
+    //get background ref
+    this.player = this.$refs.background.player;
     //show initial toast
     if (!this.initialToast) {
       this.$toasted.show(
