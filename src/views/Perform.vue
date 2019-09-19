@@ -24,6 +24,7 @@
       @activateNote="handleActivateNote"
       @deactivateNote="handleDeactivateNote"
       :key="keyboardKey"
+      :mode="mode"
       ref="keyboard"
     />
   </div>
