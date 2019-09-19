@@ -14,7 +14,7 @@ export default {
     ...mapState('keyboard', ['width', 'height'])
   },
   methods: {
-    ...mapActions('keyboard', ['changeWidth', 'changeHeight']),
+    ...mapActions('keyboard', ['changeWidth', 'changeHeight', 'setState']),
     setListeners() {
       document.addEventListener("keydown", this.setShortcuts);
     },
@@ -42,6 +42,7 @@ export default {
     },
     changeKeyboardWidth(amount) {
       if(amount <= 0 || amount > 100) return;
+      this.$emit('resize');
       this.changeWidth({
         width: amount
       });
@@ -49,6 +50,7 @@ export default {
     },
     changeKeyboardHeight(amount) {
       if(amount <= 1 || amount >= 500) return;
+      this.$emit('resize');
       this.changeHeight({
         height: amount
       });
@@ -56,9 +58,16 @@ export default {
   },
   mounted() {
     this.setListeners();
+    this.setState({
+      disabled: true
+    });
   },
   beforeDestroy() {
     document.removeEventListener("keydown", this.setShortcuts);
+    this.$emit('onLoad');
+    this.setState({
+      disabled: false
+    });
   }
 }
 

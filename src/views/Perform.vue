@@ -10,12 +10,13 @@
       >Please check out this table to see what browsers are supported.</a>
     </div>
     <!-- tooltip -->
-    <ModeTooltip v-if="mode === 'transform'"/>
+    <ModeTooltip v-if="mode === 'transform'" @resize="resetParticles" @onLoad="forceRender"/>
     <canvas ref="canvas"></canvas>
     <Keyboard
       @updateRefs="handleUpdateRefs"
       @activateNote="handleActivateNote"
       @deactivateNote="handleDeactivateNote"
+      :key="keyboardKey"
       ref="keyboard"
     />
   </div>
@@ -50,7 +51,8 @@ export default {
     previousParticleTime: 0,
     particleSystems: [],
     stats: new Stats(),
-    mode: "play"
+    mode: "play",
+    keyboardKey: 0
   }),
   methods: {
     ...mapActions("view", ["changeView"]),
@@ -211,6 +213,9 @@ export default {
         default:
           break;
       }
+    },
+    forceRender() {
+      this.keyboardKey += 1;
     }
   },
   computed: {
