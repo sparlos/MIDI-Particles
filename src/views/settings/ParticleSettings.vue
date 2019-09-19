@@ -44,7 +44,9 @@ export default {
       "changeMode",
       "changeColor",
       "changeGradientStart",
-      "changeGradientEnd"
+      "changeGradientEnd",
+      "changeMinSize",
+      "changeMaxSize"
     ]),
     getInputValue(name) {
       return this[name];
@@ -63,7 +65,9 @@ export default {
       "mode",
       "color",
       "gradientStart",
-      "gradientEnd"
+      "gradientEnd",
+      "minSize",
+      "maxSize"
     ]),
     activeSettings() {
       return this.settings.filter((setting) => {
@@ -112,6 +116,28 @@ export default {
           visible: 'gradient',
           attributes: {
             type: "color"
+          }
+        },
+        {
+          title: "Minimum Size",
+          subtitle: "Between 1-100",
+          storeValue: "minSize",
+          storeAction: this.changeMinSize,
+          attributes: {
+            type: "number",
+            min: "1",
+            max: "100"
+          }
+        },
+        {
+          title: "Maximum Size",
+          subtitle: "Between 1-100",
+          storeValue: "maxSize",
+          storeAction: this.changeMaxSize,
+          attributes: {
+            type: "number",
+            min: "1",
+            max: "100"
           }
         }
       ];

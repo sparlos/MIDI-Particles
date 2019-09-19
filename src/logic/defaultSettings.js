@@ -20,7 +20,9 @@ export default {
     color: "#ffffff",
     gradientStart: "#108dc7",
     gradientEnd: "#ef8e38",
-    mode: "solid"
+    mode: "solid",
+    minSize: 2,
+    maxSize: 5
   },
   shortcuts: {
     toggleVideo: " ",
