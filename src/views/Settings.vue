@@ -47,6 +47,7 @@ import KeyboardSettings from "./settings/KeyboardSettings";
 import ParticleSettings from "./settings/ParticleSettings";
 import ShortcutSettings from "./settings/ShortcutSettings";
 import MIDISettings from "./settings/MIDISettings";
+import AdvancedSettings from "./settings/AdvancedSettings";
 import { mapState, mapGetters, mapActions } from "vuex";
 
 import low from "lowdb";
@@ -64,7 +65,8 @@ export default {
     KeyboardSettings,
     ParticleSettings,
     ShortcutSettings,
-    MIDISettings
+    MIDISettings,
+    AdvancedSettings
   },
   data: () => ({
     publicPath: process.env.BASE_URL
@@ -108,14 +110,21 @@ export default {
           name: "Shortcut",
           label: "Shortcuts",
           iconAttrs: {
-            src: `${this.publicPath}kbd-shortcut.svg`            
+            src: `${this.publicPath}kbd-shortcut.svg`
           }
         },
         {
           name: "MIDI",
           label: "MIDI",
           iconAttrs: {
-            src: `${this.publicPath}midi.svg`            
+            src: `${this.publicPath}midi.svg`
+          }
+        },
+        {
+          name: "Advanced",
+          label: "Advanced",
+          iconAttrs: {
+            name: "construct"
           }
         }
       ];
