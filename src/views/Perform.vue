@@ -10,7 +10,14 @@
       >Please check out this table to see what browsers are supported.</a>
     </div>
     <!-- tooltip -->
-    <ModeTooltip v-if="mode === 'transform'" @resize="resetParticles" @onLoad="forceRender"/>
+    <transition name="fade">
+      <ModeTooltip
+        v-if="mode === 'transform'"
+        @resize="resetParticles"
+        @onLoad="forceRender"
+        key="modetooltip"
+      />
+    </transition>
     <canvas ref="canvas"></canvas>
     <Keyboard
       @updateRefs="handleUpdateRefs"
@@ -57,12 +64,9 @@ export default {
   methods: {
     ...mapActions("view", ["changeView"]),
     //canvas methods
-    canvasSetup() {
-      //resize canvas on window resize
-      window.addEventListener("resize", () => {
-        this.resetParticles();
-        this.resizeCanvas();
-      });
+    onWindowResize() {
+      this.resetParticles();
+      this.resizeCanvas();
     },
     resizeCanvas() {
       this.$refs.canvas.width = window.innerWidth;
@@ -262,8 +266,9 @@ export default {
     }
   },
   mounted() {
+    //listeners
+    window.addEventListener("resize", this.onWindowResize);
     this.resizeCanvas();
-    this.canvasSetup();
     this.ctx = this.$refs.canvas.getContext("2d");
     this.run();
     if (this.midiSupport) {
@@ -277,6 +282,7 @@ export default {
   beforeDestroy() {
     if (this.animationFrame) cancelAnimationFrame(this.animationFrame);
     document.removeEventListener("keyup", this.addListeners);
+    window.removeEventListener("resize", this.onWindowResize);
   }
 };
 </script>
@@ -309,5 +315,23 @@ export default {
     padding: 0 4rem;
     font-size: 1.3rem;
   }
+}
+
+//transition for modeTooltip
+.fade-enter-active {
+  transition: 150ms ease-out;
+}
+
+.fade-leave-active {
+  transition: 75ms;
+}
+
+.fade-enter {
+  opacity: 0;
+  transform: scale(.8);
+}
+
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

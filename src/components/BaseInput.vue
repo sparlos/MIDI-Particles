@@ -33,7 +33,7 @@ export default {
   }
 
   &__text {
-    width: 200px;
+    width: 300px;
   }
 
   &__title {

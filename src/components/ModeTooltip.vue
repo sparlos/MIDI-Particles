@@ -1,8 +1,27 @@
 <template>
   <div class="tooltip">
-    current height: {{height}}
-    current width: {{width}}%
-    press {{transformMode}} to exit transform mode
+    <div class="tooltip__title">Transform Mode Enabled!</div>
+    <div class="tooltip__line">
+      <strong>
+        Left/right arrow keys
+      </strong>
+      - decrease/increase keyboard width
+    </div>
+    <div class="tooltip__line">
+      <strong>
+        Down/up arrow keys
+      </strong>
+      - decrease/increase keyboard height
+    </div>
+    <div class="tooltip__line tooltip__line--leave">
+      Press {{transformMode}} to leave transform mode.
+    </div>
+    <div class="tooltip__line tooltip__line--info">
+      current height: {{height}}px
+    </div>
+    <div class="tooltip__line tooltip__line--info">
+      current width: {{width}}%
+    </div>
   </div>
 </template>
 
@@ -74,13 +93,47 @@ export default {
 </script>
 
 <style scoped lang='scss'>
+$background-color: rgb(47,47,47);
+$radius: 3px;
+$color-highlight: #a1c2fa;
+
 .tooltip {
   display: flex;
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 300px;
-  height: 200px;
-  background-color: red;
+  flex-wrap: wrap;
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  width: 400px;
+  border-radius: $radius;
+  background-color: $background-color;
+  color: white;
+  font-size: 16px;
+  padding: 25px;
+  box-sizing: border-box;
+  line-height: 25px;
+
+  &__title {
+    flex: 0 1 100%;
+    font-size: 22px;
+    color: $color-highlight;
+    margin-bottom: 10px;
+  }
+
+  &__line {
+    flex: 0 1 100%;
+    margin-top: 10px;
+
+    &--leave {
+      color: $color-highlight;
+      font-weight: bold;
+    }
+
+    &--info {
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 14px;
+      flex: 0 1 50%;
+    }
+  }
 }
 </style>
