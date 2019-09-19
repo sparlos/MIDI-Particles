@@ -120,22 +120,24 @@ export default {
         },
         {
           title: "Minimum Size",
-          subtitle: "The minimum size of a generated particle",
+          subtitle: "Between 1-100",
           storeValue: "minSize",
           storeAction: this.changeMinSize,
           attributes: {
             type: "number",
-            min: "1"
+            min: "1",
+            max: "100"
           }
         },
         {
           title: "Maximum Size",
-          subtitle: "The maximum size of a generated particle",
+          subtitle: "Between 1-100",
           storeValue: "maxSize",
           storeAction: this.changeMaxSize,
           attributes: {
             type: "number",
-            min: "1"
+            min: "1",
+            max: "100"
           }
         }
       ];
