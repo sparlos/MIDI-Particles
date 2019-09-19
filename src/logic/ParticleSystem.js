@@ -1,12 +1,13 @@
 import Particle from "./Particle";
-import hexToRgba from 'hex-to-rgba';
+import hexToRgba from "hex-to-rgba";
 
 export default class ParticleSystem {
-  constructor(x, y, color, strength) {
+  constructor(x, y, color, strength, size) {
     this.x = x;
     this.y = y;
     this.color = color;
     this.strength = strength;
+    this.size = size;
 
     this.cooldown = false;
     this.cooldownTime = 0;
@@ -30,19 +31,27 @@ export default class ParticleSystem {
   // }
 
   createParticles() {
-    for(let i=0; i<this.maxParticles; i++) {
-      this.particles.push(new Particle(this.x, this.y, this.randomRange(2, 5), this.strength, this.color));
+    for (let i = 0; i < this.maxParticles; i++) {
+      this.particles.push(
+        new Particle(
+          this.x,
+          this.y,
+          this.randomRange(this.size.min, this.size.max),
+          this.strength,
+          this.color
+        )
+      );
     }
   }
 
   loopParticles() {
-    if(this.active) {
+    if (this.active) {
       let particle = this.particles[this.currentParticle];
-      if(particle.strength !== this.strength) {
+      if (particle.strength !== this.strength) {
         particle.changeStrength(this.strength);
       }
       particle.active = true;
-      if(this.currentParticle>=this.maxParticles-1) {
+      if (this.currentParticle >= this.maxParticles - 1) {
         this.currentParticle = 0;
       } else {
         this.currentParticle++;
@@ -73,29 +82,29 @@ export default class ParticleSystem {
     for (let i in this.particles) {
       let particle = this.particles[i];
 
-      if(particle.active) {
+      if (particle.active) {
         //animate particle
-        particle.y -= (particle.dy) * delta;
-        particle.x += (particle.dx) * delta;
+        particle.y -= particle.dy * delta;
+        particle.x += particle.dx * delta;
         ctx.fillStyle = particle.color;
         //glow stuff
         // ctx.shadowColor = this.color;
         // ctx.shadowBlur = 10;
-  
+
         //fade out stuff
         if (particle.currentLife >= particle.lifespan - 1000) {
           particle.currentAlpha -= particle.fadeSpeed;
           ctx.fillStyle = hexToRgba(particle.color, particle.currentAlpha);
           if (particle.currentAlpha <= 0) particle.currentAlpha = 0;
           ctx.beginPath();
-          ctx.arc(particle.x, particle.y, particle.size, 0, 2*Math.PI);
+          ctx.arc(particle.x, particle.y, particle.size, 0, 2 * Math.PI);
           ctx.fill();
         } else {
           ctx.beginPath();
-          ctx.arc(particle.x, particle.y, particle.size, 0, 2*Math.PI);
+          ctx.arc(particle.x, particle.y, particle.size, 0, 2 * Math.PI);
           ctx.fill();
         }
-  
+
         //remove particle if it has reached the end of its lifespan
         particle.currentLife += delta;
         if (particle.currentLife >= particle.lifespan) {
@@ -107,7 +116,6 @@ export default class ParticleSystem {
           particle.currentAlpha = 1;
         }
       }
-
     }
 
     //system detruction stuff

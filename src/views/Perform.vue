@@ -152,7 +152,10 @@ export default {
       let top = rect.top;
 
       //add particles
-      let system = new ParticleSystem(center, top, color, strength);
+      let system = new ParticleSystem(center, top, color, strength, {
+        min: this.particleMin,
+        max: this.particleMax
+      });
       this.activeNotes[number].system = system;
       this.particleSystems.push(system);
 
@@ -231,7 +234,9 @@ export default {
       videoPlaying: state => state.background.videoPlaying,
       playOnMidi: state => state.background.playOnMidi,
       midiSupport: state => state.view.midiSupport,
-      transformModeShortcut: state => state.shortcuts.transformMode
+      transformModeShortcut: state => state.shortcuts.transformMode,
+      particleMin: state => state.particles.minSize,
+      particleMax: state => state.particles.maxSize
     }),
     ...mapGetters("keyboard", {
       keyboardLength: "keyLength"
@@ -329,7 +334,7 @@ export default {
 
 .fade-enter {
   opacity: 0;
-  transform: scale(.8);
+  transform: scale(0.8);
 }
 
 .fade-leave-to {

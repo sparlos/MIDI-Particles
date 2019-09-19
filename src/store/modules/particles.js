@@ -42,6 +42,14 @@ const actions = {
   changeGradientEnd({ commit }, payload) {
     db.set('particles.gradientEnd', payload.gradientEnd).write();
     commit("changeGradientEnd", payload);
+  },
+  changeMinSize({ commit }, payload) {
+    db.set('particles.minSize', payload.minSize).write();
+    commit("changeMinSize", payload);
+  },
+  changeMaxSize({ commit }, payload) {
+    db.set('particles.maxSize', payload.maxSize).write();
+    commit("changeMaxSize", payload);
   }
 };
 
@@ -57,6 +65,12 @@ const mutations = {
   },
   changeGradientEnd(state, payload) {
     state.gradientEnd = payload.gradientEnd;
+  },
+  changeMinSize(state, payload) {
+    state.minSize = payload.minSize;
+  },
+  changeMaxSize(state, payload) {
+    state.maxSize = payload.maxSize;
   }
 };
 
