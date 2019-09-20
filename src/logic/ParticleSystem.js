@@ -86,7 +86,10 @@ export default class ParticleSystem {
         //animate particle
         particle.y -= particle.dy * delta;
         particle.x += particle.dx * delta;
+        particle.dy -= particle.drag * delta;
+
         ctx.fillStyle = particle.color;
+
         //glow stuff
         // ctx.shadowColor = this.color;
         // ctx.shadowBlur = 10;
@@ -114,6 +117,7 @@ export default class ParticleSystem {
           particle.y = this.y;
           particle.currentLife = 0;
           particle.currentAlpha = 1;
+          particle.dy = .3 * (particle.strength/65);
         }
       }
     }
