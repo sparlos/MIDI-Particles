@@ -1,5 +1,6 @@
 # MIDI Particles
 ![demo of app in action](https://media.giphy.com/media/VgwOYIAm7xXZeatxXc/giphy.gif)
+
 *disclaimer: gif framerate does not accurately represent app framerate (unless run on a potato)*
 
 [MIDI Particles](https://midiparticles.netlify.com/) is a web app built on [Vue JS](https://vuejs.org/) that takes MIDI input to create particle visualizations. It uses the [Web MIDI API](https://www.w3.org/TR/webmidi/), which at is experimental at the moment and only supported in [these browsers](https://developer.mozilla.org/en-US/docs/Web/API/MIDIAccess#Browser_compatibility) (at time of writing, only Chrome and Opera). For this reason, I am considering adapting this into an electron app at some point in the future. 
