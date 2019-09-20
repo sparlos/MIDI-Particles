@@ -62,7 +62,7 @@ It's just me making this app, so you could run into some issues! Try out the fol
 
 -  Make sure the "base octave" and "octave range" settings in the "Keyboard" submenu on the settings page are correct for your keyboard. For example, if you've got a 49-key input device that starts at C1, change the base octave to "1" and then the range to "4". Check what octave transposition your MIDI device is at as well.
 
--  Check to see if your device is listed in the "MIDI" submenu of the settings page. If it's not there, [open an issue](https://github.com/sparlos/MIDI-Particles/issues) and let me know what device your using. I'll attempt to support it as best I can!
+-  Check to see if your device is listed in the "MIDI" submenu of the settings page. If it's not there, [open an issue](https://github.com/sparlos/MIDI-Particles/issues) and let me know. Please include any relevant info, including the device you're using, if it shows up in the settings menu, the browser you're using, the OS you're using, etc. I'll attempt to support it as best I can!
 
 -  If certain settings aren't loading properly or being weird, try resetting the misbehaving settings using the refresh icon next to the setting name, or reset all settings under the Advanced settings. You can also try this if particles aren't emitting.
 
