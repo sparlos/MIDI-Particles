@@ -11,11 +11,11 @@ export default class ParticleSystem {
 
     this.cooldown = false;
     this.cooldownTime = 0;
-    this.maxCooldown = 50;
+    this.maxCooldown = 30;
 
     this.currentParticle = 0;
     this.particles = [];
-    this.maxParticles = 100;
+    this.maxParticles = 120;
     this.queueStrengthChange = false;
 
     this.active = true;
@@ -87,7 +87,7 @@ export default class ParticleSystem {
         particle.y -= particle.dy * delta;
         particle.x += particle.dx * delta;
         particle.dy -= particle.drag * delta;
-
+        
         ctx.fillStyle = particle.color;
 
         //glow stuff
