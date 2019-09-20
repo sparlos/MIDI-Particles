@@ -3,7 +3,7 @@
     <div class="container">
       <Background ref="background" />
       <transition :name="transition" mode="out-in">
-        <Perform v-if="view === 'perform'" key="perform" :player="player"/>
+        <Perform v-if="view === 'perform'" key="perform" :player="player" />
         <Settings v-if="view === 'settings'" key="settings" />
       </transition>
     </div>
@@ -17,6 +17,13 @@ import Background from "./components/Background.vue";
 
 import { mapState, mapActions } from "vuex";
 
+//lowdb stuff
+import low from "lowdb";
+import LocalStorage from "lowdb/adapters/LocalStorage";
+
+const adapter = new LocalStorage("db");
+const db = low(adapter);
+
 export default {
   name: "app",
   components: {
@@ -25,7 +32,7 @@ export default {
     Background
   },
   data: () => ({
-    initialToast: false,
+    initialToast: db.get('view.initialToast').value(),
     player: null
   }),
   computed: {
@@ -39,7 +46,7 @@ export default {
     ...mapActions("midi", ["connectPort"]),
     setupMidi() {
       navigator.requestMIDIAccess().then(access => {
-        for(let input of access.inputs.values()) {
+        for (let input of access.inputs.values()) {
           this.connectPort({
             id: input.id,
             connected: true,
@@ -88,18 +95,28 @@ export default {
     //get background ref
     this.player = this.$refs.background.player;
     //show initial toast
-    if (!this.initialToast) {
+    console.log(this.initialToast);
+    if (this.initialToast) {
       this.$toasted.show(
         "Press Escape to open settings & customize your experience!",
         {
           duration: 8000,
           position: "top-center",
-          action: {
-            text: "close",
-            onClick: (e, toastObject) => {
-              toastObject.goAway(0);
+          action: [
+            {
+              text: "close",
+              onClick: (e, toastObject) => {
+                toastObject.goAway(0);
+              }
+            },
+            {
+              text: "disable message",
+              onClick: (e, toastObject) => {
+                db.set('view.initialToast', false).write();
+                toastObject.goAway(0);
+              }
             }
-          }
+          ]
         }
       );
       this.initialToast = true;

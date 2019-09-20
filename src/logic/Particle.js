@@ -11,6 +11,7 @@ export default class Particle {
 
     this.dy = .3 * (this.strength/65);
     this.dx = (this.randomRange(-.05, .05)) * (this.strength/70);
+    this.drag = this.strength * 0.0000015;
 
     this.currentAlpha = 1;
     this.fadeSpeed = .1;
@@ -27,6 +28,7 @@ export default class Particle {
     this.strength = strength;
     //change strength if it's too low
     this.strength < 10 ? this.strength = 10 : null;
+    this.drag = this.strength * 0.0000015;
 
     this.dy = .3 * (this.strength/65);
     this.dx = (this.randomRange(-.05, .05)) * (this.strength/70);

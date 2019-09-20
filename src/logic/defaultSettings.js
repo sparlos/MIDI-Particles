@@ -27,5 +27,8 @@ export default {
   shortcuts: {
     toggleVideo: " ",
     transformMode: "t"
+  },
+  view: {
+    initialToast: true
   }
 };
