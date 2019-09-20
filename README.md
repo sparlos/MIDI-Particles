@@ -1,14 +1,16 @@
 # MIDI Particles
+![demo of app in action](https://media.giphy.com/media/VgwOYIAm7xXZeatxXc/giphy.gif)
+*disclaimer: gif framerate does not accurately represent app framerate (unless run on a potato)*
 
-<center> 
-
-*disclaimer: frame rate of gif does not match actual product*
- </center>
-[MIDI Particles](https://midiparticles.netlify.com/) is a web app that takes MIDI input to create particle visualizations. It uses the [Web MIDI API](https://www.w3.org/TR/webmidi/), which at is experimental at the moment and only supported in [these browsers](https://developer.mozilla.org/en-US/docs/Web/API/MIDIAccess#Browser_compatibility) (at time of writing, only Chrome and Opera). For this reason, I am considering adapting this into an electron app at some point in the future. 
+[MIDI Particles](https://midiparticles.netlify.com/) is a web app built on [Vue JS](https://vuejs.org/) that takes MIDI input to create particle visualizations. It uses the [Web MIDI API](https://www.w3.org/TR/webmidi/), which at is experimental at the moment and only supported in [these browsers](https://developer.mozilla.org/en-US/docs/Web/API/MIDIAccess#Browser_compatibility) (at time of writing, only Chrome and Opera). For this reason, I am considering adapting this into an electron app at some point in the future. 
 
 **PLEASE NOTE:** This app does *not* create any sort of sound. Boot up a Digital Audio Workstation or other means of creating sound via MIDI input alongside the app.
 ## How to Use
-[Open up the app](https://midiparticles.netlify.com/) and start inputting MIDI! If you don't see anything immediately, you might have to adjust some settings so the app works properly with your device. You can press Escape at any time to open the settings view. This will allow you to change all sorts of things, detailed in the [customization](#customization) section below. The first thing to do would be to adjust the "base octave" and "octave range" settings in the "Keyboard" submenu and make sure they correspond to your MIDI input device (base octave should match the octave the lowest key on your device has, for example if it starts at C1, set bae octave to "1". Just mess around with it and it should eventually line up!).
+*if video is more your thing, I do a walkthrough of the app in this video!*
+
+[Open up the app](https://midiparticles.netlify.com/) and start inputting MIDI! If you don't see anything immediately, you might have to adjust some settings so the app works properly with your device. You can press Escape at any time to open the settings view. This will allow you to change all sorts of things, detailed in the [customization](#customization) section below. 
+
+The first thing to do in settings would be to adjust the "base octave" and "octave range" settings in the "Keyboard" submenu and make sure they correspond to your MIDI input device (base octave should match the octave the lowest key on your device has, for example if it starts at C1, set bae octave to "1". Just mess around with it and it should eventually line up!). And then, customize to your heart's content!
 ## Customization
 This app has a ton of customizability, with more and more customization options being released as often as I can. All of these options can be accessed at any point by hitting the Escape key. These options include: 
 
