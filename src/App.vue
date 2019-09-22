@@ -95,7 +95,6 @@ export default {
     //get background ref
     this.player = this.$refs.background.player;
     //show initial toast
-    console.log(this.initialToast);
     if (this.initialToast) {
       this.$toasted.show(
         "Press Escape to open settings & customize your experience!",
