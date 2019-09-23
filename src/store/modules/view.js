@@ -1,4 +1,15 @@
+import low from 'lowdb';
+import LocalStorage from 'lowdb/adapters/LocalStorage';
+import defaultSettings from "../../logic/defaultSettings";
+
+const adapter = new LocalStorage('db');
+const db = low(adapter);
+
+let savedValues = db.get('view').value();
+if(!savedValues) savedValues = defaultSettings.view;
+
 const state = {
+  ...savedValues,
   view: "perform",
   activeMenu: "Background",
   midiSupport: true
@@ -27,6 +38,9 @@ const actions = {
   },
   changeMidiSupport({ commit }, payload) {
     commit('changeMidiSupport', payload);
+  },
+  changeInitialToast({ commit }, payload) {
+    commit('changeInitialToast', payload);
   }
 }
 
@@ -39,6 +53,10 @@ const mutations = {
   },
   changeMidiSupport(state, payload) {
     state.midiSupport = payload.midiSupport;
+  },
+  changeInitialToast(state, payload) {
+    db.set('view.initialToast', payload.initialToast).write();
+    state.initialToast = payload.initialToast;
   }
 }
 
