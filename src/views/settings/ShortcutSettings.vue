@@ -49,7 +49,9 @@ export default {
   computed: {
     ...mapState("shortcuts", [
       "toggleVideo",
-      "transformMode"
+      "transformMode",
+      "skimBack",
+      "skimForward"
     ]),
     settings() {
       return [
@@ -70,6 +72,24 @@ export default {
           attributes: {
             type: "text"
           }
+        },
+        {
+          title: "Skim Video Back",
+          subtitle: "Move backwards in the video background by 10 seconds",
+          storeValue: "skimBack",
+          storeAction: this.changeShortcut,
+          attributes: {
+            type: "text"
+          }
+        },
+        {
+          title: "Skim Video Forwards",
+          subtitle: "Move forwards in the video background by 10 seconds",
+          storeValue: "skimForward",
+          storeAction: this.changeShortcut,
+          attributes: {
+            type: "text"
+          }
         }
       ];
     }
@@ -82,6 +102,6 @@ export default {
 
 <style scoped lang='scss'>
 input[type="text"] {
-  width: 40px;
+  width: 100px;
 }
 </style>
