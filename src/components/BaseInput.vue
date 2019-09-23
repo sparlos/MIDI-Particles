@@ -50,25 +50,4 @@ export default {
     margin-left: 80px;
   }
 }
-
-button {
-  padding: 10px 25px;
-  color: white;
-  background-color: #2699fb;
-  border: none;
-  font-size: 15px;
-  border-radius: 4px;
-  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
-  transition: 0.2s transform, 0.2s box-shadow;
-
-  &:hover {
-    cursor: pointer;
-    transform: translate(0px, -2px);
-    box-shadow: 3px 3px 12px rgba(0, 0, 0, 0.3);
-  }
-
-  &:active {
-    transform: translate(0px, 1px);
-  }
-}
 </style>

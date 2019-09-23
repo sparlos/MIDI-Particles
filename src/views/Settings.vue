@@ -31,7 +31,11 @@
       <div class="main">
         <div class="main__header">
           {{activeMenu}} Settings
-          <ion-icon v-if="activeMenu !== 'MIDI'" name="refresh" @click="promptResetModal"></ion-icon>
+          <ion-icon
+            v-if="activeMenu !== 'MIDI' && activeMenu !== 'Advanced'"
+            name="refresh"
+            @click="promptResetModal"
+          ></ion-icon>
         </div>
         <div class="options">
           <component :is="activeMenu + 'Settings'"></component>

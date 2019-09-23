@@ -1,13 +1,24 @@
 <template>
   <div>
+
     <BaseInput title="Reset All Settings" subtitle="If unexpected behaviour is happening, try this">
       <button @click="promptResetModal">Reset</button>
     </BaseInput>
+
+    <BaseInput title="Open MIDI Troubleshooter" subtitle="If you're experiencing issues with MIDI input">
+      <button @click="promptDebugModal">Open</button>
+    </BaseInput>
+
+     <!-- debug midi modal -->
+    <modal name="debug-midi">
+      <DebugMIDI />
+    </modal>
   </div>
 </template>
 
 <script>
 import BaseInput from "../../components/BaseInput.vue";
+import DebugMIDI from "../../components/DebugMIDI.vue";
 import defaultSettings from "../../logic/defaultSettings";
 
 //low db
@@ -20,7 +31,8 @@ const db = low(adapter);
 export default {
   name: "AdvancedSettings",
   components: {
-    BaseInput
+    BaseInput,
+    DebugMIDI
   },
   methods: {
     promptResetModal() {
@@ -38,6 +50,9 @@ export default {
           }
         ]
       });
+    },
+    promptDebugModal() {
+      this.$modal.show("debug-midi");
     },
     resetSettings() {
       for(let setting in defaultSettings) {
