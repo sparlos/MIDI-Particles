@@ -26,7 +26,9 @@ export default {
   },
   shortcuts: {
     toggleVideo: " ",
-    transformMode: "t"
+    transformMode: "t",
+    skimBack: "ArrowLeft",
+    skimForward: "ArrowRight"
   },
   view: {
     initialToast: true

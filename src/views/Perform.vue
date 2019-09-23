@@ -218,6 +218,18 @@ export default {
             : (this.mode = "play");
           break;
 
+        case this.skimBackShortcut:
+          this.player.getCurrentTime().then((time)=>{
+            this.player.seekTo(time - 10);
+          });
+          break;
+        
+        case this.skimForwardShortcut:
+          this.player.getCurrentTime().then((time)=>{
+            this.player.seekTo(time + 10);
+          });
+          break;
+
         default:
           break;
       }
@@ -235,6 +247,8 @@ export default {
       playOnMidi: state => state.background.playOnMidi,
       midiSupport: state => state.view.midiSupport,
       transformModeShortcut: state => state.shortcuts.transformMode,
+      skimBackShortcut: state => state.shortcuts.skimBack,
+      skimForwardShortcut: state => state.shortcuts.skimForward,
       particleMin: state => state.particles.minSize,
       particleMax: state => state.particles.maxSize
     }),
