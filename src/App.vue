@@ -20,6 +20,7 @@ import { mapState, mapActions } from "vuex";
 //lowdb stuff
 import low from "lowdb";
 import LocalStorage from "lowdb/adapters/LocalStorage";
+import defaultSettings from "./logic/defaultSettings";
 
 const adapter = new LocalStorage("db");
 const db = low(adapter);
@@ -32,17 +33,17 @@ export default {
     Background
   },
   data: () => ({
-    initialToast: db.get('view.initialToast').value(),
     player: null
   }),
   computed: {
-    ...mapState("view", ["view"]),
+    ...mapState("view", ["view", "initialToast"]),
     ...mapState("midi", ["ports"]),
     transition() {
       return this.view === "perform" ? "slide-left" : "slide-right";
     }
   },
   methods: {
+    ...mapActions("view", ["changeInitialToast"]),
     ...mapActions("midi", ["connectPort"]),
     setupMidi() {
       navigator.requestMIDIAccess().then(access => {
@@ -90,6 +91,34 @@ export default {
       });
     }
   },
+  created() {
+    for (let submenu in defaultSettings) {
+      let settings = defaultSettings[submenu];
+
+      for (let setting in settings) {
+        let savedValue = db.get(`${submenu}.${setting}`).value();
+        let defaultValue = defaultSettings[submenu][setting];
+
+        if (savedValue === undefined) {
+          //handle a shortcut
+          if (submenu === "shortcuts") {
+            this.$store.dispatch("shortcuts/changeShortcut", {
+              action: setting,
+              key: defaultValue
+            });
+          //handle everything else
+          } else {
+            let capitalizedSetting =
+              setting.charAt(0).toUpperCase() + setting.slice(1);
+            let action = `change${capitalizedSetting}`;
+            this.$store.dispatch(`${submenu}/${action}`, {
+              [setting]: defaultValue
+            });
+          }
+        }
+      }
+    }
+  },
   mounted() {
     this.setupMidi();
     //get background ref
@@ -111,14 +140,15 @@ export default {
             {
               text: "disable message",
               onClick: (e, toastObject) => {
-                db.set('view.initialToast', false).write();
+                this.changeInitialToast({
+                  initialToast: false
+                });
                 toastObject.goAway(0);
               }
             }
           ]
         }
       );
-      this.initialToast = true;
     }
   }
 };
