@@ -1,5 +1,5 @@
 
-#  MIDI Particles
+#  [MIDI Particles](https://midiparticles.netlify.com/)
 
 ![demo of app in action](https://media.giphy.com/media/VgwOYIAm7xXZeatxXc/giphy.gif)
 
