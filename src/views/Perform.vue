@@ -219,15 +219,19 @@ export default {
           break;
 
         case this.skimBackShortcut:
-          this.player.getCurrentTime().then((time)=>{
-            this.player.seekTo(time - 10);
-          });
+          if(this.mode !== 'transform') {
+            this.player.getCurrentTime().then((time)=>{
+              this.player.seekTo(time - 10);
+            });
+          }
           break;
         
         case this.skimForwardShortcut:
-          this.player.getCurrentTime().then((time)=>{
-            this.player.seekTo(time + 10);
-          });
+          if(this.mode !== 'transform') {
+            this.player.getCurrentTime().then((time)=>{
+              this.player.seekTo(time + 10);
+            });
+          }
           break;
 
         default:
