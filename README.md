@@ -1,5 +1,5 @@
 
-#  [MIDI Particles](https://midiparticles.netlify.com)
+#  MIDI Particles
 
 ![demo of app in action](https://media.giphy.com/media/VgwOYIAm7xXZeatxXc/giphy.gif)
 
@@ -24,7 +24,7 @@ Table of contents:
 
 ##  How to Use
 
-*if video is more your thing, I do a walkthrough of the app in this video!*
+*[if video is more your thing, I do a walkthrough of the app in this video!](https://www.youtube.com/watch?v=ePkDcQCXh74)*
 
   
 
@@ -50,7 +50,7 @@ This app has a ton of customizability, with more and more customization options 
 
 -  Particle color type (solid or gradient across the keyboard), particle min & max size (more options for particles coming eventually)
 
--  Customizable keyboard shortcuts for toggling the background video, as well as entering "transform" mode (allows you to edit keyboard size while in perform mode)
+-  Customizable keyboard shortcuts for toggling the background video, moving backwards and forwards in the video, and entering "transform" mode (allows you to edit keyboard size while in perform mode)
 
 -  Enabling/disabling of MIDI devices
 
@@ -62,8 +62,8 @@ It's just me making this app, so you could run into some issues! Try out the fol
 
 -  Make sure the "base octave" and "octave range" settings in the "Keyboard" submenu on the settings page are correct for your keyboard. For example, if you've got a 49-key input device that starts at C1, change the base octave to "1" and then the range to "4". Check what octave transposition your MIDI device is at as well.
 
--  Check to see if your device is listed in the "MIDI" submenu of the settings page. If it's not there, [open an issue](https://github.com/sparlos/MIDI-Particles/issues) and let me know. Please include any relevant info, including the device you're using, if it shows up in the settings menu, the browser you're using, the OS you're using, etc. I'll attempt to support it as best I can!
+-  Check to see if your device is listed in the "MIDI" submenu of the settings page. If it's not there, [open an issue](https://github.com/sparlos/MIDI-Particles/issues) and let me know. Please include any relevant info, including the device you're using, if it shows up in the settings menu, the browser you're using, the OS you're using, etc. You can also [hit me up on Twitter](https://twitter.com/sparloscode). I'll attempt to support it as best I can!
 
 -  If certain settings aren't loading properly or being weird, try resetting the misbehaving settings using the refresh icon next to the setting name, or reset all settings under the Advanced settings. You can also try this if particles aren't emitting.
 
--  If your MIDI device *still* isn't triggering the particles properly, I'm working on a debug log in Advanced settings in order to track MIDI input. MIDI is sort of weird and some devices send different values for different things, and as of right now I've only been able to test my devices.
+-  If your MIDI device *still* isn't triggering the particles properly, head to advanced settings and open up the MIDI Troubleshooter and hit the same key on your MIDI device a couple of times. Some text should show up in the log; please copy that text and send it to me via either [an issue](https://github.com/sparlos/MIDI-Particles/issues) or email it to me at [sparlingcreations@gmail.com](mailto:sparlingcreations@gmail.com).
