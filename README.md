@@ -10,10 +10,17 @@
 
 
 Table of contents:
+- [Demos](#demos)
 - [Introduction](#introduction)
 - [How to use](#how-to-use)
 - [Customization](#customization)
 - [Troubleshooting](#troubleshooting)
+# Demos
+[![Song of Healing Demo](https://img.youtube.com/vi/tWWzV2m2OYA/maxresdefault.jpg)](https://www.youtube.com/watch?v=tWWzV2m2OYA)
+[*Song of Healing - Live Demo*](https://www.youtube.com/watch?v=tWWzV2m2OYA)
+
+[![Song of Healing Demo](https://img.youtube.com/vi/XLlwbdB_DEw/maxresdefault.jpg)](https://www.youtube.com/watch?v=XLlwbdB_DEw)
+[*Par for the Course - Sequenced Demo*](https://www.youtube.com/watch?v=XLlwbdB_DEw)
 
 # Introduction
 [MIDI Particles](https://midiparticles.netlify.com/) is a web app built on [Vue JS](https://vuejs.org/) that takes MIDI input to create particle visualizations. It uses the [Web MIDI API](https://www.w3.org/TR/webmidi/), which is experimental at the moment and only supported in [these browsers](https://developer.mozilla.org/en-US/docs/Web/API/MIDIAccess#Browser_compatibility) (at time of writing, only Chrome and Opera). For this reason, I am considering adapting this into an electron app at some point in the future.
